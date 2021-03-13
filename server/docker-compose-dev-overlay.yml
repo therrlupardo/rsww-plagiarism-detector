@@ -1,0 +1,22 @@
+version: "3.2"
+
+services:
+  apigateway:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+
+  identity-service:
+    ports:
+      - 8083:80
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+
+#  rabbitmq:
+#    ports:
+#      - 15672:15672
+#      - 5672:5672
+
+  postgres:
+    ports:
+      - 5432:5432
+  

@@ -1,0 +1,66 @@
+version: "3.2"
+
+services:
+  apigateway:
+    image: rsww/apigateway:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: ApiGateway/Dockerfile
+    deploy:
+      mode: replicated
+      replicas: 3
+    networks:
+      - backend
+    ports:
+      - 8080:443
+    environment:
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=${SECRET_PASS}
+
+  identity-service:
+    image: rsww/indentity-service:${TAG:-latest}
+    networks:
+      - backend
+      - auth_db
+    build:
+      context: .
+      dockerfile: IdentityService/Dockerfile
+
+#  rabbitmq:
+#    image: "rabbitmq:3-management"
+#    environment:
+#      - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
+#      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
+#      - RABBITMQ_ERLANG_COOKIE=${RABBITMQ_ERLANG_COOKIE}
+#    networks:
+#      - backend
+#    healthcheck:
+#      test: rabbitmq-diagnostics -q ping
+#      interval: 30s
+#      timeout: 30s
+#      retries: 3
+
+  postgres:
+    image: postgres:13-alpine
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    volumes:
+      - local_postgres_data:/var/lib/postgresql/data
+      - ./dbscripts/seed.sql:/docker-entrypoint-initdb.d/seed.sql
+    networks:
+      - auth_db
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
+      interval: 10s
+      timeout: 5s
+
+volumes:
+  local_postgres_data: {}
+
+networks:
+  backend:
+    driver: overlay
+  auth_db:
+    driver: overlay

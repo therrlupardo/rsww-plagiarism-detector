@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiGateway", "ApiGateway\ApiGateway.csproj", "{987CAAEF-C19D-4EDA-ADDA-F65B765DDE14}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityService", "IdentityService\IdentityService.csproj", "{FF6518A0-B80C-435E-9F8B-104E16CD990E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{987CAAEF-C19D-4EDA-ADDA-F65B765DDE14}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{987CAAEF-C19D-4EDA-ADDA-F65B765DDE14}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{987CAAEF-C19D-4EDA-ADDA-F65B765DDE14}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF6518A0-B80C-435E-9F8B-104E16CD990E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF6518A0-B80C-435E-9F8B-104E16CD990E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF6518A0-B80C-435E-9F8B-104E16CD990E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF6518A0-B80C-435E-9F8B-104E16CD990E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
