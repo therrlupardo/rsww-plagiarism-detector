@@ -50,6 +50,7 @@ namespace ApiGateway
                     x.TokenValidationParameters = tokenValidationParameters;
                 });
 
+            services.AddMvc();
             services.AddOcelot();
             services.AddSwaggerForOcelot(Configuration);
         }
