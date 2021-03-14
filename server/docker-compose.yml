@@ -6,9 +6,6 @@ services:
     build:
       context: .
       dockerfile: ApiGateway/Dockerfile
-    deploy:
-      mode: replicated
-      replicas: 1
     networks:
       - backend
     ports:
@@ -19,12 +16,12 @@ services:
 
   identity-service:
     image: rsww/indentity-service:${TAG:-latest}
-    networks:
-      - backend
-      - auth_db
     build:
       context: .
       dockerfile: IdentityService/Dockerfile
+    networks:
+      - backend
+      - auth_db
 
 #  rabbitmq:
 #    image: "rabbitmq:3-management"
@@ -61,6 +58,4 @@ volumes:
 
 networks:
   backend:
-    driver: overlay
   auth_db:
-    driver: overlay

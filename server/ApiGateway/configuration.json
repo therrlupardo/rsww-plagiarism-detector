@@ -6,8 +6,8 @@
       "SwaggerKey": "identity-service",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 5000
+          "Host": "identity-service",
+          "Port": 80
         }
       ],
       "UpstreamPathTemplate": "/api/identity/{everything}",
@@ -24,13 +24,13 @@
       {
         "Name": "Identity API",
         "Version": "v1",
-        "Url": "http://localhost:5000/swagger/v1/swagger.json"
+        "Url": "http://identity-service:80/swagger/v1/swagger.json"
       }
     ]
   }
 ],
   
   "GlobalConfiguration": {
-    "BaseUrl": "http://localhost:5002"
+    "BaseUrl": "http://localhost:8080"
   }
 }

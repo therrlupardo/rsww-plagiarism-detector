@@ -1,16 +1,14 @@
 # Project from Distributed Systems of High Availability 
 
-## Running using Docker Swarm
-(FIXME: copied from fintech, may not be working correctly)
-`docker swarm init` (only at first use)
+## Running using docker-compose
+Go to server directory:\
+`cd server`
 
-`docker-compose config >docker-compose.processed.yml`
+To start all containers:\
+`docker-compose up`
 
-`docker-compose build --parallel`
+To stop and remove all containers:\
+`docker-compose down`
 
-`docker stack deploy --compose-file=docker-compose.processed.yml rsww`
-
-To stop:
-
-`docker stack rm fintech`
-
+To stop and remove all containers and volumes:\
+`docker-compose down -v`
