@@ -16,23 +16,50 @@ namespace IdentityService.Controllers
             _identityService = identityService;
         }
 
-        [HttpGet]
+        /// <summary>
+        /// Checks if given credentials are valid and returns token
+        /// </summary>
+        /// <param name="login">Login of user</param>
+        /// <param name="password">Password of user</param>
+        /// <response code="200">Returns object with accessToken</response>
+        /// <response code="401">Returned if credentials are not valid</response>
+        [HttpPost]
         [Route("login")]
-        public IActionResult Get([FromQuery] string name, [FromQuery] string password)
+        public IActionResult Login([FromQuery] string login, [FromQuery] string password)
         {
-            var token = _identityService.Login(name, password);
-            if (token == null)
+            try
+            {
+                var token = _identityService.Login(login, password);
+                return new OkObjectResult(new LoginResponse(token));
+            }
+            catch (NullReferenceException e)
+            {
                 return new UnauthorizedResult();
-            return new OkObjectResult(new LoginResponse(token));
+            }
+
+            ;
         }
 
+        /// <summary>
+        /// Returns list of all accounts
+        /// </summary>
+        /// <returns>List of accounts</returns>
+        /// <response code="200">Return list of users</response>
         [HttpGet]
         [Route("all")]
-        public IActionResult GetAll()
+        public IActionResult GetAccounts()
         {
-            return new OkObjectResult(_identityService.GetAll());
+            return new OkObjectResult(_identityService.GetAccounts());
         }
 
+        /// <summary>
+        /// Creates new user
+        /// </summary>
+        /// <param name="login">Login of new user</param>
+        /// <param name="password">Password of new user</param>
+        /// <returns>Data of created user</returns>
+        /// <response code="201">User created successfully. Response contains data of user</response>
+        /// <response code="400">Error while adding user, more info about it in body</response>
         [HttpPost]
         [Route("create")]
         public IActionResult CreateUser([FromQuery] string login, [FromQuery] string password)

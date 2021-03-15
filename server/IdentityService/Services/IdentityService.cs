@@ -6,6 +6,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using IdentityService.Models;
+using IdentityService.Utils;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
@@ -24,9 +25,13 @@ namespace IdentityService.Services
 
         public string Login(string login, string password)
         {
-            var passwordHash = User.CreatePasswordHash(password);
+            var passwordHash = PasswordUtil.CreatePasswordHash(password);
             var user = _context.Users.FirstOrDefault(u => u.Login.Equals(login) && u.PasswordHash.Equals(passwordHash));
-            return user == null ? null : GenerateTokenFor(user);
+            if (user == null)
+            {
+                throw new NullReferenceException();
+            } 
+            return GenerateTokenFor(user);
         }
 
         public User CreateUser(string login, string password)
@@ -40,7 +45,7 @@ namespace IdentityService.Services
             return user;
         }
 
-        public List<User> GetAll()
+        public List<User> GetAccounts()
         {
             return _context.Users.ToList();
         }

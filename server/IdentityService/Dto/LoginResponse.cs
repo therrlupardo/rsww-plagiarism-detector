@@ -10,7 +10,7 @@ namespace IdentityService.Dto
             ExpiresAt = (int) TimeSpan.FromMinutes(30).TotalSeconds;
         }
 
-        public string AccessToken { get; set; }
-        public int ExpiresAt { get; set; }
+        private string AccessToken { get; }
+        private int ExpiresAt { get; }
     }
 }

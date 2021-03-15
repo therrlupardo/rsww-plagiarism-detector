@@ -1,3 +1,6 @@
+using System;
+using System.IO;
+using System.Reflection;
 using IdentityService.Models;
 using IdentityService.Services;
 using Microsoft.AspNetCore.Builder;
@@ -27,10 +30,17 @@ namespace IdentityService
             services.Configure<Audience>(Configuration.GetSection("Audience"));
             services.AddScoped<IIdentityService, Services.IdentityService>();
             services.AddControllers();
-            services.AddSwaggerGen();
+            services.AddSwaggerGen(x =>
+            {
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                x.IncludeXmlComments(xmlPath);
+            });
+
+            
             services.AddDbContext<UserContext>(options =>
             {
-                options.UseNpgsql("host=postgres;port=5432;database=postgres;username=postgres;password=postgres;");
+                options.UseNpgsql("host=localhost;port=5432;database=postgres;username=postgres;password=postgres;");
             });
         }
 

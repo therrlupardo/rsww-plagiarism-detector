@@ -7,6 +7,6 @@ namespace IdentityService.Services
     {
         string Login(string login, string password);
         User CreateUser(string login, string password);
-        List<User> GetAll();
+        List<User> GetAccounts();
     }
 }
