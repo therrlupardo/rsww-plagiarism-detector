@@ -40,7 +40,7 @@ namespace IdentityService
             
             services.AddDbContext<UserContext>(options =>
             {
-                options.UseNpgsql("host=localhost;port=5432;database=postgres;username=postgres;password=postgres;");
+                options.UseNpgsql(Configuration.GetConnectionString("Postgres"));
             });
         }
 

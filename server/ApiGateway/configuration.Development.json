@@ -1,0 +1,36 @@
+{
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/api/identity/{everything}",
+      "DownstreamScheme": "http",
+      "SwaggerKey": "identity-service",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5002
+        }
+      ],
+      "UpstreamPathTemplate": "/api/identity/{everything}",
+      "UpstreamHttpMethod": [
+        "GET",
+        "POST"
+      ]
+    }
+  ],
+  "SwaggerEndPoints": [
+  {
+    "Key": "identity-service",
+    "Config": [
+      {
+        "Name": "Identity API",
+        "Version": "v1",
+        "Url": "http://localhost:5002/swagger/v1/swagger.json"
+      }
+    ]
+  }
+],
+  
+  "GlobalConfiguration": {
+    "BaseUrl": "http://localhost:8080"
+  }
+}

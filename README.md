@@ -14,44 +14,7 @@
 2. Restore dependencies using `dotnet restore`
 3. Run service using `dotnet run`
 
-### Configuration changes
-By default services are set to run in docker containers. To run them locally you have to change some configurations manually:
-
-### Identity Service
-1. Go to file `Startup.cs`
-2. Find connection string for postgres and change it's host and port to your local instances
-
-For example it can look like that:
-```cs
-services.AddDbContext<UserContext>(options =>
-{
-    options.UseNpgsql("host=postgres;port=5432;database=postgres;username=postgres;password=postgres;");
-    // change host=postgres to host=localhost or whereever is your database located
-});
-```
-
-### ApiGateway
-1. Go to file `configuration.json`
-2. Look for all services you are running and change their host, ports and url according to example below:
-```json
-"DownstreamHostAndPorts": [
-        {
-          "Host": "identity-service", // <- here you have to change for hostname of your local instance, probably localhost
-          "Port": 80 // <- here you set http port of your service, you can check it in launchSettings.json
-        }
-```
-and later in `SwaggerEndPoints`:
-```json
-"Config": [
-      {
-        "Name": "Identity API",
-        "Version": "v1",
-        "Url": "http://localhost:5000/swagger/v1/swagger.json" // here you have to set again same host:port as above
-      }
-    ]
-```
-
-
+> Running locally assumes that postgres is running on localhost:5432 (for example as docker container run with `docker-compose up postgres`). If you want to connect to another instance change connection string in `IdentityService/appsettings.Development.json`
 
 ## API Documentation
 Project is using swagger as API documentation. To access it you go to page `localhost:8080/swagger` (assuming you are running docker version). 
