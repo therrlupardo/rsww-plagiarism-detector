@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 
 namespace Common.Utils
@@ -14,17 +15,17 @@ namespace Common.Utils
         /// <returns>User identifier</returns>
         public static Guid GetUserIdFromToken(string token)
         {
-            token = removeBearer(token);
+            token = RemoveBearer(token);
 
             var readToken = new JwtSecurityTokenHandler().ReadJwtToken(token);
-            var userId = ((List<Claim>) readToken.Claims).Find(c => c.Type.Equals("sub"));
+            var userId = ((List<Claim>) readToken.Claims).First(c => c.Type.Equals("sub"));
             return Guid.Parse(userId.Value);
         }
 
-        private static string removeBearer(string token)
+        private static string RemoveBearer(string token)
         {
-            if (token.Contains("Bearer ")) token = token.Substring(7);
-            return token;
+            const string bearer = "Bearer ";
+            return token.Contains(bearer) ? token.Substring(bearer.Length) :  token;
         }
     }
 }
