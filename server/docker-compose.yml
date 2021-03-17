@@ -27,15 +27,31 @@ services:
     depends_on:
       - postgres
 
-#  rabbitmq:
-#    image: "rabbitmq:3-management"
-#    environment:
-#      - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
-#      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
-#      - RABBITMQ_ERLANG_COOKIE=${RABBITMQ_ERLANG_COOKIE}
-#    networks:
-#      - backend
-#    healthcheck:
+  query-service:
+    image: rsww/query-service:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: QueryService/Dockerfile
+    networks:
+      - backend
+
+  command-service:
+    image: rsww/ommand-service:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: CommandService/Dockerfile
+    networks:
+      - backend
+
+  #  rabbitmq:
+  #    image: "rabbitmq:3-management"
+  #    environment:
+  #      - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
+  #      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
+  #      - RABBITMQ_ERLANG_COOKIE=${RABBITMQ_ERLANG_COOKIE}
+  #    networks:
+  #      - backend
+  #    healthcheck:
 #      test: rabbitmq-diagnostics -q ping
 #      interval: 30s
 #      timeout: 30s
@@ -52,8 +68,10 @@ services:
       - ./db-scripts/seed.sql:/docker-entrypoint-initdb.d/seed.sql
     networks:
       - auth_db
+    ports:
+      - 5432:5432
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER}" ]
       interval: 10s
       timeout: 5s
 

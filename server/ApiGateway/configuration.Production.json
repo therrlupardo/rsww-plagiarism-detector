@@ -15,21 +15,143 @@
         "GET",
         "POST"
       ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/analysis/{everything}",
+      "DownstreamScheme": "http",
+      "SwaggerKey": "query-service",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "query-service",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/analysis/{everything}",
+      "UpstreamHttpMethod": [
+        "GET"
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "TestKey",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/reports/{everything}",
+      "DownstreamScheme": "http",
+      "SwaggerKey": "query-service",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "query-service",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/reports/{everything}",
+      "UpstreamHttpMethod": [
+        "GET"
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "TestKey",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/sources/{everything}",
+      "DownstreamScheme": "http",
+      "SwaggerKey": "query-service",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "query-service",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/sources/{everything}",
+      "UpstreamHttpMethod": [
+        "GET"
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "TestKey",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/sources/{everything}",
+      "DownstreamScheme": "http",
+      "SwaggerKey": "command-service",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "command-service",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/sources/{everything}",
+      "UpstreamHttpMethod": [
+        "POST"
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "TestKey",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/analysis/{everything}",
+      "DownstreamScheme": "http",
+      "SwaggerKey": "command-service",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "command-service",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/analysis/{everything}",
+      "UpstreamHttpMethod": [
+        "POST"
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "TestKey",
+        "AllowedScopes": []
+      }
     }
   ],
   "SwaggerEndPoints": [
-  {
-    "Key": "identity-service",
-    "Config": [
-      {
-        "Name": "Identity API",
-        "Version": "v1",
-        "Url": "http://identity-service:80/swagger/v1/swagger.json"
+    {
+      "Key": "identity-service",
+      "Config": [
+        {
+          "Name": "Identity API",
+          "Version": "v1",
+          "Url": "http://identity-service:80/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "query-service",
+      "Config": [
+        {
+          "Name": "Query API",
+          "Version": "v1",
+          "Url": "http://query-service:80/swagger/v1/swagger.json"
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "TestKey",
+        "AllowedScopes": []
       }
-    ]
-  }
-],
-  
+    },
+    {
+      "Key": "command-service",
+      "Config": [
+        {
+          "Name": "Command API",
+          "Version": "v1",
+          "Url": "http://command-service:80/swagger/v1/swagger.json"
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "TestKey",
+        "AllowedScopes": []
+      }
+    }
+  ],
   "GlobalConfiguration": {
     "BaseUrl": "http://localhost:8080"
   }

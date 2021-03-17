@@ -1,50 +1,48 @@
+using System.Reflection;
 using Common.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Ocelot.DependencyInjection;
-using Ocelot.Middleware;
 
-namespace ApiGateway
+namespace CommandService
 {
     public class Startup
     {
-        public Startup(IConfiguration config)
+        public Startup(IConfiguration configuration)
         {
-            Configuration = config;
+            Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
+        private IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddControllers();
             services.AddHealthChecks();
             services.AddRswwApiGatewayAuthentication(Configuration);
-            services.AddMvc();
-            services.AddOcelot();
-            services.AddSwaggerForOcelot(Configuration);
+            services.AddRswwSwaggerGen();
+            services.AddRswwSwaggerDocumentation(Assembly.GetExecutingAssembly().GetName().Name);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public async void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment()) app.UseDeveloperExceptionPage();
+            if (env.IsDevelopment())
+                app.UseDeveloperExceptionPage();
+            else
+                app.UseHttpsRedirection();
 
-            app.UseHttpsRedirection();
-
-            app.UseSwaggerForOcelotUI();
-
+            app.UseSwagger();
+            app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "Query API V1"); });
             app.UseRouting();
-
-            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
-
             app.UseHealthChecks("/healthcheck");
-
-            await app.UseOcelot();
+            app.UseAuthorization();
+            app.UseAuthentication();
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }
 }

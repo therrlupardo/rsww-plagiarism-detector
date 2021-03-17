@@ -1,6 +1,5 @@
-using System;
-using System.IO;
 using System.Reflection;
+using Common.Extensions;
 using IdentityService.Models;
 using IdentityService.Services;
 using Microsoft.AspNetCore.Builder;
@@ -30,12 +29,7 @@ namespace IdentityService
             services.Configure<Audience>(Configuration.GetSection("Audience"));
             services.AddScoped<IIdentityService, Services.IdentityService>();
             services.AddControllers();
-            services.AddSwaggerGen(x =>
-            {
-                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-                x.IncludeXmlComments(xmlPath);
-            });
+            services.AddRswwSwaggerDocumentation(Assembly.GetExecutingAssembly().GetName().Name);
             services.AddDbContext<UserContext>(options =>
             {
                 options.UseNpgsql(Configuration.GetConnectionString("Postgres"));
