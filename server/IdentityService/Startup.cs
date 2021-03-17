@@ -36,8 +36,6 @@ namespace IdentityService
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 x.IncludeXmlComments(xmlPath);
             });
-
-            
             services.AddDbContext<UserContext>(options =>
             {
                 options.UseNpgsql(Configuration.GetConnectionString("Postgres"));
@@ -48,15 +46,10 @@ namespace IdentityService
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment()) app.UseDeveloperExceptionPage();
-
             app.UseSwagger();
-
             app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "Identity API V1"); });
-
             app.UseRouting();
-
             app.UseHealthChecks("/healthcheck");
-
             app.UseEndpoints(endpoints => endpoints.MapControllers());
         }
     }

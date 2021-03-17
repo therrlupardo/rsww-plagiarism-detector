@@ -5,7 +5,7 @@ namespace IdentityService.Services
 {
     public interface IIdentityService
     {
-        string Login(string login, string password);
+        bool TryToLogin(string login, string password, out string token);
         User CreateUser(string login, string password);
         List<User> GetAccounts();
     }

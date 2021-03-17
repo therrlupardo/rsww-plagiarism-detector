@@ -1,11 +1,9 @@
-using System;
-using System.Text;
+using ApiGateway.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.IdentityModel.Tokens;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 
@@ -24,32 +22,8 @@ namespace ApiGateway
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddHealthChecks();
-
-            var audienceConfig = Configuration.GetSection("Audience");
-
-            var signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(audienceConfig["Secret"]));
-            var tokenValidationParameters = new TokenValidationParameters
-            {
-                ValidateIssuerSigningKey = true,
-                IssuerSigningKey = signingKey,
-                ValidateIssuer = true,
-                ValidIssuer = audienceConfig["Iss"],
-                ValidateAudience = true,
-                ValidAudience = audienceConfig["Aud"],
-                ValidateLifetime = true,
-                ClockSkew = TimeSpan.Zero,
-                RequireExpirationTime = true
-            };
-
-            services.AddAuthentication()
-                .AddJwtBearer("TestKey", x =>
-                {
-                    x.RequireHttpsMetadata = false;
-                    x.TokenValidationParameters = tokenValidationParameters;
-                });
-
+            services.AddRswwApiGatewayAuthentication(Configuration);
             services.AddMvc();
             services.AddOcelot();
             services.AddSwaggerForOcelot(Configuration);

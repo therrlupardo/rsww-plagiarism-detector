@@ -2,15 +2,8 @@ using System;
 
 namespace IdentityService.Dto
 {
-    public class LoginResponse
+    public record LoginResponse(string AccessToken)
     {
-        public LoginResponse(string token)
-        {
-            AccessToken = token;
-            ExpiresAt = (int) TimeSpan.FromMinutes(30).TotalSeconds;
-        }
-
-        private string AccessToken { get; }
-        private int ExpiresAt { get; }
+        public int ExpiresAt => (int) TimeSpan.FromMinutes(30).TotalSeconds;
     }
 }

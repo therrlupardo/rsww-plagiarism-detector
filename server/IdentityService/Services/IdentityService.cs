@@ -1,14 +1,16 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
+using IdentityService.Extensions;
 using IdentityService.Models;
-using IdentityService.Utils;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using static System.String;
 
 namespace IdentityService.Services
 {
@@ -23,21 +25,24 @@ namespace IdentityService.Services
             _context = context;
         }
 
-        public string Login(string login, string password)
+        public bool TryToLogin(string login, string password, out string token)
         {
-            var passwordHash = PasswordUtil.CreatePasswordHash(password);
+            var passwordHash = password.CreateHash();
             var user = _context.Users.FirstOrDefault(u => u.Login.Equals(login) && u.PasswordHash.Equals(passwordHash));
             if (user == null)
             {
-                throw new NullReferenceException();
-            } 
-            return GenerateTokenFor(user);
+                token = Empty;
+                return false;
+            }
+
+            token = GenerateTokenFor(user);
+            return true;
         }
 
         public User CreateUser(string login, string password)
         {
             if (_context.Users.FirstOrDefault(u => u.Login.Equals(login)) != null)
-                throw new ArgumentException("User already exists");
+                throw new DuplicateNameException("User already exists");
 
             var user = new User(login, password);
             _context.Users.Add(user);

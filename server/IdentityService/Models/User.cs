@@ -1,6 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
-using IdentityService.Utils;
+using IdentityService.Extensions;
 
 namespace IdentityService.Models
 {
@@ -13,7 +13,7 @@ namespace IdentityService.Models
         public User(string login, string password)
         {
             Login = login;
-            PasswordHash = PasswordUtil.CreatePasswordHash(password);
+            PasswordHash = password.CreateHash();
             Id = Guid.NewGuid();
         }
 
@@ -21,7 +21,5 @@ namespace IdentityService.Models
         public string PasswordHash { get; }
 
         [Key] public Guid Id { get; }
-
-        
     }
 }

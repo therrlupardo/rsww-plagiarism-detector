@@ -17,7 +17,7 @@ namespace IdentityService.Controllers
         }
 
         /// <summary>
-        /// Checks if given credentials are valid and returns token
+        ///     Checks if given credentials are valid and returns token
         /// </summary>
         /// <param name="login">Login of user</param>
         /// <param name="password">Password of user</param>
@@ -27,21 +27,12 @@ namespace IdentityService.Controllers
         [Route("login")]
         public IActionResult Login([FromQuery] string login, [FromQuery] string password)
         {
-            try
-            {
-                var token = _identityService.Login(login, password);
-                return new OkObjectResult(new LoginResponse(token));
-            }
-            catch (NullReferenceException e)
-            {
-                return new UnauthorizedResult();
-            }
-
-            ;
+            var success = _identityService.TryToLogin(login, password, out var token);
+            return success ? new OkObjectResult(new LoginResponse(token)) : new UnauthorizedResult();
         }
 
         /// <summary>
-        /// Returns list of all accounts
+        ///     Returns list of all accounts
         /// </summary>
         /// <returns>List of accounts</returns>
         /// <response code="200">Return list of users</response>
@@ -53,7 +44,7 @@ namespace IdentityService.Controllers
         }
 
         /// <summary>
-        /// Creates new user
+        ///     Creates new user
         /// </summary>
         /// <param name="login">Login of new user</param>
         /// <param name="password">Password of new user</param>
