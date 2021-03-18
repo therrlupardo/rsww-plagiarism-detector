@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -36,7 +36,11 @@ export class AuthService {
 
   // tslint:disable-next-line: typedef
   login(username: string, password: string) {
-    return this.http.post<any>(`${environment.apiUrl}/api/identity/login`, { username, password })
+    let params = new HttpParams();
+    params = params.append('login', username);
+    params = params.append('password', password);
+
+    return this.http.post<any>(`${environment.apiUrl}/api/identity/login?login=${username}&password=${password}`, params)
         .pipe(map(user => {
             localStorage.setItem('currentUser', JSON.stringify(user));
             this.currentUserSubject.next(user);
