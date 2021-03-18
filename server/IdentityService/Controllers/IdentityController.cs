@@ -1,12 +1,14 @@
 using System;
 using IdentityService.Dto;
 using IdentityService.Services;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IdentityService.Controllers
 {
     [ApiController]
     [Route("api/identity")]
+    [EnableCors("AllowAllHeaders")]
     public class IdentityController : Controller
     {
         private readonly IIdentityService _identityService;
