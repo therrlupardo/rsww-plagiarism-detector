@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { first } from 'rxjs/operators';
 import { AuthService } from 'src/app/service/auth.service';
 
@@ -8,27 +10,44 @@ import { AuthService } from 'src/app/service/auth.service';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
+  loginForm!: FormGroup;
+  isLoading = false;
+  credentialsError = false;
 
-  constructor(private authService: AuthService) { }
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private formBuilder: FormBuilder
+  ) { 
+
+    if (this.authService.currentUserValue.token) { 
+        this.router.navigate(['/dashboard']);
+    }
+  }
 
   ngOnInit(): void {
-      //this.submitted = true;
+    this.loginForm = this.formBuilder.group({
+        username: ['', Validators.required],
+        password: ['', Validators.required]
+    });
+  }
 
-      // stop here if form is invalid
-      // if (this.loginForm.invalid) {
-      //     return;
-      // }
+  onSubmit() {    
+    this.authService.login(
+      this.loginForm.controls['username'].value, 
+      this.loginForm.controls['password'].value
+      )
+      .pipe(first())
+      .subscribe(
+          data => {
+            console.log(`Hello ${this.authService.currentUserValue.username}`);
+            this.credentialsError = false;
+          },
+          error => {
+            console.log('login error');
+            this.credentialsError = true;
+          });
 
-      // this.loading = true;
-      this.authService.login('admin', 'admin')
-        .pipe(first())
-        .subscribe(
-            data => {
-              console.log('hello');
-            },
-            error => {
-              console.log('error');
-            });
   }
 
 }

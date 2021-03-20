@@ -68,10 +68,11 @@ h2.active {
 }
 
 
-input[type=button], input[type=submit], input[type=reset]  {
-  background-color: #56baed;
+  .button-submit {
+  background-color: #295cb7;
   border: none;
   color: white;
+  margin: 10px auto 10px !important;
   padding: 15px 80px;
   text-align: center;
   text-decoration: none;
@@ -87,11 +88,14 @@ input[type=button], input[type=submit], input[type=reset]  {
   transition: all 0.3s ease-in-out;
 }
 
-input[type=button]:hover, input[type=submit]:hover, input[type=reset]:hover  {
-  background-color: #39ace7;
+.button-submit:hover {
+  background-color: #092cb7;
+}
+.button-submit:disabled {
+  background-color: #aaaaaa;
 }
 
-input[type=button]:active, input[type=submit]:active, input[type=reset]:active  {
+.button-submit :active {
   -moz-transform: scale(0.95);
   -webkit-transform: scale(0.95);
   -o-transform: scale(0.95);
@@ -242,4 +246,9 @@ width:60%;
 
 .login-text {
   font-size: 3vw;
+}
+
+.warning {
+  color: red;
+  margin: auto auto 20px;
 }

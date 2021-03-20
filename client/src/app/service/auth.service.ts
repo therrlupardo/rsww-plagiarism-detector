@@ -5,9 +5,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 export interface User {
-  id: number;
   username: string;
-  password: string;
   token?: string;
 }
 
@@ -16,17 +14,19 @@ export interface User {
 })
 export class AuthService {
   private currentUserSubject: BehaviorSubject<User>;
-  public currentUser: Observable<User>;
 
   constructor(private http: HttpClient) {
-    const user: string | null = localStorage.getItem('currentUser');
-    if(user) {
-      this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(user));
-      this.currentUser = this.currentUserSubject.asObservable();
+    const token: string | null = localStorage.getItem('userToken');
+    const username: string | null = localStorage.getItem('username');
+    if(token) {
+      const user = {
+        username: username,
+        token: token
+      } as User
+      this.currentUserSubject = new BehaviorSubject<User>(user);
     }
     else {
       this.currentUserSubject = new BehaviorSubject<User>({} as User)
-      this.currentUser = this.currentUserSubject.asObservable();
     }
   }
 
@@ -41,17 +41,22 @@ export class AuthService {
     params = params.append('password', password);
 
     return this.http.post<any>(`${environment.apiUrl}/api/identity/login?login=${username}&password=${password}`, params)
-        .pipe(map(user => {
-            localStorage.setItem('currentUser', JSON.stringify(user));
+        .pipe(map(token => {
+            localStorage.setItem('userToken', JSON.stringify(token));
+            localStorage.setItem('username', JSON.stringify(username));
+            const user = {
+              username: username,
+              token: token
+            } as User
             this.currentUserSubject.next(user);
-            return user;
+            return token;
         }));
   }
 
   // tslint:disable-next-line: typedef
   logout() {
-      // remove user from local storage to log user out
-      localStorage.removeItem('currentUser');
-      this.currentUserSubject.next({} as User);
+    localStorage.removeItem('userToken');
+    localStorage.removeItem('username');
+    this.currentUserSubject.next({} as User);
   }
 }

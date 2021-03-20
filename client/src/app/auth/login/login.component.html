@@ -10,10 +10,15 @@
       <h1>Sign in</h1>
     </div>
 
-    <form>
-      <input type="text" id="login" class="fadeIn second" name="login" placeholder="username">
-      <input type="text" id="password" class="fadeIn third" name="login" placeholder="password">
-      <input type="submit" class="fadeIn fourth" value="Log In">
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+
+      <input type="text" class="fadeIn second" 
+      formControlName="username" placeholder="username">
+      <input type="text" class="fadeIn third" 
+      formControlName="password" placeholder="password">
+      <button class="button-submit fadeIn fourth"
+      type="submit" [disabled]="!loginForm.valid">Log in</button>
+      <p *ngIf="credentialsError" class="warning">Wrong username or password!</p>
     </form>
 
     <div id="formFooter">
