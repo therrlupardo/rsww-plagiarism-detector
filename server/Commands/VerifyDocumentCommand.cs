@@ -1,13 +1,8 @@
-﻿namespace Commands
+﻿using System;
+
+namespace Commands
 {
-    public record VerifyDocumentCommand : BaseCommand
+    public record VerifyDocumentCommand(Guid Id, Guid UserId, FileModel FileToVerify) : BaseCommand(Id, UserId)
     {
-        public VerifyDocumentCommand(
-            Guid id,
-            Guid userId,
-            FileModel fileToVerify
-        ) : base(id, userId)
-        {
-        }
     }
 }

@@ -1,12 +1,8 @@
-﻿namespace Commands
+﻿using System;
+
+namespace Commands
 {
-    public record BaseCommand
+    public abstract record BaseCommand(Guid Id, Guid UserId)
     {
-        protected BaseCommand(
-            Guid id,
-            Guid userId
-        )
-        {
-        }
     }
 }

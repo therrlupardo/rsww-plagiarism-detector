@@ -1,4 +1,8 @@
 using System.Reflection;
+using Commands;
+using CommandService.Extensions;
+using CommandService.Handlers;
+using CommandService.Services;
 using Common.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -26,6 +30,12 @@ namespace CommandService
             services.AddRswwApiGatewayAuthentication(Configuration);
             services.AddRswwSwaggerGen();
             services.AddRswwSwaggerDocumentation(Assembly.GetExecutingAssembly().GetName().Name);
+            services.AddRabbitMqConnection(Configuration.GetSection("rabbitmq"));
+            services.AddSingleton<ISourceService, SourceService>();
+            services.AddSingleton<IAnalysisService, AnalysisService>();
+
+            services.AddTransient<IHandler<AddDocumentToSourceStoreCommand>, TestHandler>();
+            services.AddTransient<IHandler<VerifyDocumentCommand>, VerifyTestHandler>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -43,6 +53,9 @@ namespace CommandService
             app.UseAuthorization();
             app.UseAuthentication();
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+
+            app.AddHandler<AddDocumentToSourceStoreCommand>();
+            app.AddHandler<VerifyDocumentCommand>();
         }
     }
 }

@@ -5,6 +5,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using RawRabbit;
+using RawRabbit.Configuration;
+using RawRabbit.vNext;
 
 namespace Common.Extensions
 {
@@ -75,6 +78,15 @@ namespace Common.Extensions
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 x.IncludeXmlComments(xmlPath);
             });
+        }
+
+        public static void AddRabbitMqConnection(this IServiceCollection services, IConfigurationSection section)
+        {
+            var options = new RawRabbitConfiguration();
+            section.Bind(options);
+            var client = BusClientFactory.CreateDefault(options);
+
+            services.AddSingleton<IBusClient>(_ => client);
         }
     }
 }

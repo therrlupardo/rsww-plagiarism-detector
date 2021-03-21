@@ -1,12 +1,8 @@
-﻿namespace Commands
+﻿using System.Collections.Generic;
+
+namespace Commands
 {
-    public record FileModel
+    public record FileModel (string FileName, IEnumerable<byte> Content)
     {
-        public FileModel(
-            string fileName,
-            IEnumerable<byte> content
-        )
-        {
-        }
     }
 }

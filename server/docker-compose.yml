@@ -36,26 +36,30 @@ services:
       - backend
 
   command-service:
-    image: rsww/ommand-service:${TAG:-latest}
+    image: rsww/command-service:${TAG:-latest}
     build:
       context: .
       dockerfile: CommandService/Dockerfile
     networks:
       - backend
+    depends_on:
+      - rabbitmq
 
-  #  rabbitmq:
-  #    image: "rabbitmq:3-management"
-  #    environment:
-  #      - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
-  #      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
-  #      - RABBITMQ_ERLANG_COOKIE=${RABBITMQ_ERLANG_COOKIE}
-  #    networks:
-  #      - backend
-  #    healthcheck:
-#      test: rabbitmq-diagnostics -q ping
-#      interval: 30s
-#      timeout: 30s
-#      retries: 3
+  rabbitmq:
+    image: "rabbitmq:3-management"
+    environment:
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
+      - RABBITMQ_ERLANG_COOKIE=${RABBITMQ_ERLANG_COOKIE}
+    networks:
+      - backend
+    ports:
+      - 5672:5672
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 30s
+      timeout: 30s
+      retries: 3
 
   postgres:
     image: postgres:13-alpine

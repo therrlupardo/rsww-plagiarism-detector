@@ -13,5 +13,12 @@ namespace QueryService.Controllers
         {
             throw new NotImplementedException();
         }
+
+        [HttpGet("{id}")]
+        [Produces("application/json")]
+        public IActionResult GetSourceStatus([FromRoute] Guid id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
