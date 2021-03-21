@@ -1,0 +1,20 @@
+<div class="wrapper fadeInDown">
+  <div id="formContent">
+
+    <div class="fadeIn first">
+      <h1>Registration</h1>
+    </div>
+
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      <input type="text" class="input-form fadeIn second" 
+      formControlName="username" placeholder="username">
+      <input type="password" class="input-form fadeIn third" 
+      formControlName="password" placeholder="password">
+      <input type="password" class="input-form fadeIn third" 
+      formControlName="confirmPassword" placeholder="confirm password">
+      <button class="button-submit fadeIn fourth"
+      type="submit" [disabled]="!registerForm.valid">Sign up</button>
+    </form>
+
+  </div>
+</div>
