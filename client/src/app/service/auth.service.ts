@@ -6,7 +6,12 @@ import { environment } from 'src/environments/environment';
 
 export interface User {
   username: string;
-  token?: string;
+  authProps?: AuthProps;
+}
+
+interface AuthProps {
+  accessToken: string;
+  expiresAt: number;
 }
 
 @Injectable({
@@ -16,12 +21,16 @@ export class AuthService {
   private currentUserSubject: BehaviorSubject<User>;
 
   constructor(private http: HttpClient) {
-    const token: string | null = localStorage.getItem('userToken');
+    const accessToken: string | null = localStorage.getItem('accessToken');
+    const expiresAt: string | null = localStorage.getItem('expiresAt');
     const username: string | null = localStorage.getItem('username');
-    if(token) {
+    if(accessToken && expiresAt && username) {
       const user = {
         username: username,
-        token: token
+        authProps: {
+          accessToken: accessToken,
+          expiresAt: Number(expiresAt)
+        }
       } as User
       this.currentUserSubject = new BehaviorSubject<User>(user);
     }
@@ -34,28 +43,28 @@ export class AuthService {
     return this.currentUserSubject.value;
   }
 
-  // tslint:disable-next-line: typedef
-  login(username: string, password: string) {
+  login(username: string, password: string): Observable<AuthProps> {
     let params = new HttpParams();
     params = params.append('login', username);
     params = params.append('password', password);
 
-    return this.http.post<any>(`${environment.apiUrl}/api/identity/login?login=${username}&password=${password}`, params)
-        .pipe(map(token => {
-            localStorage.setItem('userToken', JSON.stringify(token));
+    return this.http.post<AuthProps>(`${environment.apiUrl}/api/identity/login?login=${username}&password=${password}`, params)
+        .pipe(map(authProps => {
+            localStorage.setItem('accessToken', JSON.stringify(authProps.accessToken));
+            localStorage.setItem('expiresAt', JSON.stringify(authProps.expiresAt));
             localStorage.setItem('username', JSON.stringify(username));
             const user = {
               username: username,
-              token: token
+              authProps
             } as User
             this.currentUserSubject.next(user);
-            return token;
+            return authProps;
         }));
   }
 
-  // tslint:disable-next-line: typedef
-  logout() {
-    localStorage.removeItem('userToken');
+  logout(): void {
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('expiresAt');
     localStorage.removeItem('username');
     this.currentUserSubject.next({} as User);
   }

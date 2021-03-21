@@ -1,8 +1,3 @@
-<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
-
 <div class="wrapper fadeInDown">
   <div id="formContent">
 
@@ -11,14 +6,13 @@
     </div>
 
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-
-      <input type="text" class="fadeIn second" 
+      <input type="text" class="input-form fadeIn second" 
       formControlName="username" placeholder="username">
-      <input type="text" class="fadeIn third" 
+      <input type="password" class="input-form fadeIn third" 
       formControlName="password" placeholder="password">
       <button class="button-submit fadeIn fourth"
       type="submit" [disabled]="!loginForm.valid">Log in</button>
-      <p *ngIf="credentialsError" class="warning">Wrong username or password!</p>
+      <p *ngIf="loginForm?.hasError('invalid-credentials')" class="warning-text">Wrong username or password!</p>
     </form>
 
     <div id="formFooter">

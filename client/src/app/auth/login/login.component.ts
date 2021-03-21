@@ -7,20 +7,17 @@ import { AuthService } from 'src/app/service/auth.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['../auth-style.scss']
 })
 export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
-  isLoading = false;
-  credentialsError = false;
 
   constructor(
     private authService: AuthService,
     private router: Router,
     private formBuilder: FormBuilder
   ) { 
-
-    if (this.authService.currentUserValue.token) { 
+    if (this.authService.currentUserValue.authProps) { 
         this.router.navigate(['/dashboard']);
     }
   }
@@ -41,11 +38,11 @@ export class LoginComponent implements OnInit {
       .subscribe(
           data => {
             console.log(`Hello ${this.authService.currentUserValue.username}`);
-            this.credentialsError = false;
+            this.router.navigate(['/dashboard']);
           },
           error => {
             console.log('login error');
-            this.credentialsError = true;
+            this.loginForm.setErrors({'invalid-credentials': true});
           });
 
   }

@@ -1,8 +1,3 @@
-<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
-
 <div class="wrapper fadeInDown">
   <div id="formContent">
 
@@ -10,11 +5,15 @@
       <h1>Registration</h1>
     </div>
 
-    <form>
-      <input type="text" id="login" class="fadeIn second" name="login" placeholder="username">
-      <input type="text" id="password" class="fadeIn third" name="login" placeholder="password">
-      <input type="text" id="password" class="fadeIn fourth" name="login" placeholder="confirm password">
-      <input type="submit" class="fadeIn fifth" value="Sign Up">
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      <input type="text" class="input-form fadeIn second" 
+      formControlName="username" placeholder="username">
+      <input type="password" class="input-form fadeIn third" 
+      formControlName="password" placeholder="password">
+      <input type="password" class="input-form fadeIn third" 
+      formControlName="confirmPassword" placeholder="confirm password">
+      <button class="button-submit fadeIn fourth"
+      type="submit" [disabled]="!registerForm.valid">Sign up</button>
     </form>
 
   </div>
