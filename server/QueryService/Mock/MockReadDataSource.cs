@@ -15,16 +15,14 @@ namespace QueryService.Mock
                 Guid.Parse("a81bc81b-dead-4e5d-abff-90865d1e13b1"),
                 OperationStatus.Running,
                 "running.py",
-                DateTime.Now,
-                null
+                DateTime.Now
             ),
             new AnalysisFile(
                 Guid.NewGuid(),
                 Guid.Parse("a81bc81b-dead-4e5d-abff-90865d1e13b1"),
                 OperationStatus.Waiting,
                 "waiting.py",
-                DateTime.Now,
-                null
+                DateTime.Now
             ),
             new AnalysisFile(
                 Guid.NewGuid(),
@@ -32,15 +30,15 @@ namespace QueryService.Mock
                 OperationStatus.Complete,
                 "complete.py",
                 DateTime.Now,
-                "10%"
+                10
             ),
             new AnalysisFile(
-                Guid.NewGuid(),
+                Guid.Parse("a5b5a7ee-6406-4579-abc4-5f4bac38b0a2"),
                 Guid.Parse("a81bc81b-dead-4e5d-abff-90865d1e13b1"),
                 OperationStatus.Complete,
                 "complete2.py",
                 DateTime.Now,
-                "100%"
+                30
             ),
             new AnalysisFile(
                 Guid.NewGuid(),
@@ -48,7 +46,7 @@ namespace QueryService.Mock
                 OperationStatus.Complete,
                 "analysis_done_by_other_user__should_be_skipped_in_results.py",
                 DateTime.Now,
-                "100%"
+                100
             )
         };
 

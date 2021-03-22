@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Queries;
 using QueryService.Services;
 
 namespace QueryService
@@ -29,6 +30,7 @@ namespace QueryService
             services.AddRswwSwaggerDocumentation(Assembly.GetExecutingAssembly().GetName().Name);
             services.AddSingleton<IAnalysisService, AnalysisService>();
             services.AddSingleton<ISourceService, SourceService>();
+            services.AddSingleton<IReportService<AnalysisFile>, AnalysisReportService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

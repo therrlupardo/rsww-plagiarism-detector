@@ -14,4 +14,8 @@
         <ProjectReference Include="..\Queries\Queries.csproj"/>
     </ItemGroup>
 
+    <ItemGroup>
+        <PackageReference Include="iTextSharp" Version="5.5.13.2"/>
+    </ItemGroup>
+
 </Project>

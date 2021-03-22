@@ -9,8 +9,7 @@ namespace Queries
         OperationStatus Status,
         string FileName,
         DateTime Date,
-        // FIXME: maybe it should be some numeric type, depends on what will analysis algorithm return 
-        string Result
+        double Result = 0
     )
     {
     }

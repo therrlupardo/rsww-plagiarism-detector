@@ -8,7 +8,7 @@ namespace QueryService.Controllers
 {
     [ApiController]
     [Route("api/sources")]
-    public class SourceController
+    public class SourceController : Controller
     {
         private readonly ISourceService _sourceService;
 

@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using Common.Utils;
 using Microsoft.AspNetCore.Mvc;
+using Queries;
 using QueryService.Dto;
 using QueryService.Services;
 
@@ -9,13 +10,15 @@ namespace QueryService.Controllers
 {
     [ApiController]
     [Route("api/analysis")]
-    public class AnalysisController
+    public class AnalysisController : Controller
     {
         private readonly IAnalysisService _analysisService;
+        private readonly IReportService<AnalysisFile> _reportService;
 
-        public AnalysisController(IAnalysisService analysisService)
+        public AnalysisController(IAnalysisService analysisService, IReportService<AnalysisFile> reportService)
         {
             _analysisService = analysisService;
+            _reportService = reportService;
         }
 
         /// <summary>
@@ -37,6 +40,23 @@ namespace QueryService.Controllers
                 return new OkObjectResult(new AnalysisFileResponse(analysis));
             }
             catch (InvalidOperationException exception)
+            {
+                return new NotFoundResult();
+            }
+        }
+
+        [HttpGet("{id}/report")]
+        [Produces("application/pdf")]
+        public IActionResult GetAnalysisReport([FromRoute] Guid id, [FromHeader] string authorization)
+        {
+            var userId = JwtUtil.GetUserIdFromToken(authorization);
+            try
+            {
+                var analysis = _analysisService.GetById(id, userId);
+                var report = _reportService.GenerateReport(analysis);
+                return File(report, "application/pdf");
+            }
+            catch (InvalidOperationException e)
             {
                 return new NotFoundResult();
             }

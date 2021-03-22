@@ -9,7 +9,7 @@ namespace CommandService.Controllers
 {
     [ApiController]
     [Route("api/analysis")]
-    public class AnalysisController
+    public class AnalysisController : Controller
     {
         private readonly IAnalysisService _analysisService;
 
