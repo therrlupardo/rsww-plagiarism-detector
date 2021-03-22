@@ -12,28 +12,11 @@ services:
       - 8080:443
     environment:
       - ASPNETCORE_URLS=https://+:443;http://+:80
-      - ASPNETCORE_Kestrel__Certificates__Default__Password=${SECRET_PASS}
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=${CERT_PASS}
     depends_on:
+      - command-service
       - identity-service
-
-  identity-service:
-    image: rsww/indentity-service:${TAG:-latest}
-    build:
-      context: .
-      dockerfile: IdentityService/Dockerfile
-    networks:
-      - backend
-      - auth_db
-    depends_on:
-      - postgres
-
-  query-service:
-    image: rsww/query-service:${TAG:-latest}
-    build:
-      context: .
-      dockerfile: QueryService/Dockerfile
-    networks:
-      - backend
+      - query-service
 
   command-service:
     image: rsww/command-service:${TAG:-latest}
@@ -45,6 +28,25 @@ services:
     depends_on:
       - rabbitmq
 
+  identity-service:
+    image: rsww/indentity-service:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: IdentityService/Dockerfile
+    networks:
+      - auth_db
+      - backend
+    depends_on:
+      - postgres
+
+  query-service:
+    image: rsww/query-service:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: QueryService/Dockerfile
+    networks:
+      - backend
+
   command-handler:
     image: rsww/command-handler:${TAG:-latest}
     build:
@@ -52,17 +54,17 @@ services:
       dockerfile: CommandHandler/Dockerfile
     networks:
       - backend
+    depends_on:
+      - rabbitmq
 
   rabbitmq:
-    image: "rabbitmq:3-management"
+    image: rabbitmq:3-management
     environment:
       - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
       - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
       - RABBITMQ_ERLANG_COOKIE=${RABBITMQ_ERLANG_COOKIE}
     networks:
       - backend
-    ports:
-      - 5672:5672
     healthcheck:
       test: rabbitmq-diagnostics -q ping
       interval: 30s
@@ -77,11 +79,9 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     volumes:
       - local_postgres_data:/var/lib/postgresql/data
-      - ./db-scripts/seed.sql:/docker-entrypoint-initdb.d/seed.sql
+      - ./db-scripts:/docker-entrypoint-initdb.d
     networks:
       - auth_db
-    ports:
-      - 5432:5432
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER}" ]
       interval: 10s
@@ -91,5 +91,5 @@ volumes:
   local_postgres_data: {}
 
 networks:
-  backend:
   auth_db:
+  backend:

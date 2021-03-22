@@ -1,19 +1,19 @@
-FROM mcr.microsoft.com/dotnet/aspnet:5.0-buster-slim AS base
-WORKDIR /app
-
 FROM mcr.microsoft.com/dotnet/sdk:5.0-buster-slim AS build
 WORKDIR /src
-COPY ["CommandHandler/CommandHandler.csproj", "CommandHandler/"]
-RUN dotnet restore "CommandHandler/CommandHandler.csproj"
-COPY . .
-WORKDIR "/src/CommandHandler"
-RUN dotnet build "CommandHandler.csproj" -c Release -o /app/build
 
-FROM build AS publish
-RUN dotnet publish "CommandHandler.csproj" -c Release -o /app/publish
+COPY CommandHandler/ ./CommandHandler/
+COPY Commands/ ./Commands/
+COPY Common/ ./Common/
 
-FROM base AS final
+RUN dotnet restore CommandHandler/CommandHandler.csproj &&\
+    dotnet build CommandHandler/CommandHandler.csproj -c Release -o /app/build &&\
+    dotnet publish CommandHandler/CommandHandler.csproj -c Release -o /app/publish
+
+
+FROM mcr.microsoft.com/dotnet/aspnet:5.0-buster-slim
 WORKDIR /app
-COPY --from=publish /app/publish .
+
+COPY --from=build /app/publish .
+
 HEALTHCHECK --interval=10s --timeout=10s --retries=3 CMD curl --fail http://localhost:80/healthcheck || exit 1
 ENTRYPOINT ["dotnet", "CommandHandler.dll"]
