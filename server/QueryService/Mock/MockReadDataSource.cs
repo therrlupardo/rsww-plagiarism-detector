@@ -52,7 +52,7 @@ namespace QueryService.Mock
             )
         };
 
-        private static List<SourceFile> _sourceFiles = new()
+        private static readonly List<SourceFile> _sourceFiles = new()
         {
             new SourceFile(Guid.NewGuid(),
                 Guid.NewGuid(),
@@ -80,9 +80,19 @@ namespace QueryService.Mock
             return _analysisFiles.FindAll(file => file.UserId.Equals(userId));
         }
 
-        public static AnalysisFile GetById(Guid id, Guid userId)
+        public static AnalysisFile GetAnalysisById(Guid id, Guid userId)
         {
             return _analysisFiles.First(file => file.Id.Equals(id) && file.UserId.Equals(userId));
+        }
+
+        public static List<SourceFile> GetAllSources()
+        {
+            return _sourceFiles;
+        }
+
+        public static SourceFile GetSourceById(Guid id)
+        {
+            return _sourceFiles.First(file => file.Id.Equals(id));
         }
     }
 }

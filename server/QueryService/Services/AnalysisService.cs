@@ -14,7 +14,7 @@ namespace QueryService.Services
 
         public AnalysisFile GetById(Guid analysisId, Guid userId)
         {
-            return MockReadDataSource.GetById(analysisId, userId);
+            return MockReadDataSource.GetAnalysisById(analysisId, userId);
         }
     }
 }

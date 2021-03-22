@@ -28,6 +28,7 @@ namespace QueryService
             services.AddRswwSwaggerGen();
             services.AddRswwSwaggerDocumentation(Assembly.GetExecutingAssembly().GetName().Name);
             services.AddSingleton<IAnalysisService, AnalysisService>();
+            services.AddSingleton<ISourceService, SourceService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
