@@ -33,10 +33,10 @@ namespace QueryService.Controllers
         [Produces("application/json")]
         public IActionResult GetAnalysisResult(Guid id, [FromHeader] string authorization)
         {
-            var userId = JwtUtil.GetUserIdFromToken(authorization);
+            var model = JwtUtil.GetUserIdFromToken(authorization);
             try
             {
-                var analysis = _analysisService.GetById(id, userId);
+                var analysis = _analysisService.GetById(id, model.UserId);
                 return new OkObjectResult(new AnalysisFileResponse(analysis));
             }
             catch (InvalidOperationException exception)
@@ -49,10 +49,10 @@ namespace QueryService.Controllers
         [Produces("application/pdf")]
         public IActionResult GetAnalysisReport([FromRoute] Guid id, [FromHeader] string authorization)
         {
-            var userId = JwtUtil.GetUserIdFromToken(authorization);
+            var model = JwtUtil.GetUserIdFromToken(authorization);
             try
             {
-                var analysis = _analysisService.GetById(id, userId);
+                var analysis = _analysisService.GetById(id, model.UserId);
                 var report = _reportService.GenerateReport(analysis);
                 return File(report, "application/pdf");
             }
@@ -72,8 +72,8 @@ namespace QueryService.Controllers
         [Produces("application/json")]
         public IActionResult GetAllAnalysisResults([FromHeader] string authorization)
         {
-            var userId = JwtUtil.GetUserIdFromToken(authorization);
-            var allAnalysis = _analysisService.GetAllAnalysis(userId);
+            var model = JwtUtil.GetUserIdFromToken(authorization);
+            var allAnalysis = _analysisService.GetAllAnalysis(model.UserId);
             var dtos = allAnalysis.Select(analysis => new AnalysisFileResponse(analysis));
             return new OkObjectResult(dtos);
         }

@@ -6,6 +6,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
+using IdentityService.Dto;
 using IdentityService.Extensions;
 using IdentityService.Models;
 using Microsoft.Extensions.Options;
@@ -25,10 +26,10 @@ namespace IdentityService.Services
             _context = context;
         }
 
-        public bool TryToLogin(string login, string password, out string token)
+        public bool TryToLogin(LoginRequest loginRequest, out string token)
         {
-            var passwordHash = password.CreateHash();
-            var user = _context.Users.FirstOrDefault(u => u.Login.Equals(login) && u.PasswordHash.Equals(passwordHash));
+            var passwordHash = loginRequest.Password.CreateHash();
+            var user = _context.Users.FirstOrDefault(u => u.Login.Equals(loginRequest.Login) && u.PasswordHash.Equals(passwordHash));
             if (user == null)
             {
                 token = Empty;
@@ -78,7 +79,8 @@ namespace IdentityService.Services
                 new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(JwtRegisteredClaimNames.Iat, time.ToUniversalTime().ToString(CultureInfo.InvariantCulture),
-                    ClaimValueTypes.Integer64)
+                    ClaimValueTypes.Integer64),
+                new Claim("login", user.Login)
             };
         }
     }

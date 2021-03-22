@@ -31,8 +31,8 @@ namespace CommandService.Controllers
         [Consumes("multipart/form-data")]
         public async Task<IActionResult> CreateSource(IFormFile file, [FromHeader] string authorization)
         {
-            var userId = JwtUtil.GetUserIdFromToken(authorization);
-            var taskId = await _sourceService.CreateSource(file, userId);
+            var model = JwtUtil.GetUserIdFromToken(authorization);
+            var taskId = await _sourceService.CreateSource(file, model.UserId);
             return new AcceptedResult($"api/source/{taskId}", new CreateSourceResponse(taskId));
         }
     }

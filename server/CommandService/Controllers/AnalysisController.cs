@@ -28,8 +28,8 @@ namespace CommandService.Controllers
         [HttpPost("perform")]
         public async Task<IActionResult> PerformAnalysis(IFormFile file, [FromHeader] string authorization)
         {
-            var userId = JwtUtil.GetUserIdFromToken(authorization);
-            var taskId = await _analysisService.PerformAnalysis(file, userId);
+            var model = JwtUtil.GetUserIdFromToken(authorization);
+            var taskId = await _analysisService.PerformAnalysis(file, model.UserId);
             return new AcceptedResult($"api/analysis/{taskId}", new PerformAnalysisResponse(taskId));
         }
     }
