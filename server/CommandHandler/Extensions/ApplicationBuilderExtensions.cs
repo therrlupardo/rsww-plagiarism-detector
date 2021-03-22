@@ -1,11 +1,11 @@
 using System;
 using System.Threading;
+using CommandHandler.Handlers;
 using Commands;
-using CommandService.Handlers;
 using Microsoft.AspNetCore.Builder;
 using RawRabbit;
 
-namespace CommandService.Extensions
+namespace CommandHandler.Extensions
 {
     public static class ApplicationBuilderExtensions
     {

@@ -2,7 +2,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Commands;
 
-namespace CommandService.Handlers
+namespace CommandHandler.Handlers
 {
     public interface IHandler<in T> where T : BaseCommand
     {

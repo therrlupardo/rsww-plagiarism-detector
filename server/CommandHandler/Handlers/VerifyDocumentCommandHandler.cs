@@ -3,13 +3,13 @@ using System.Threading;
 using System.Threading.Tasks;
 using Commands;
 
-namespace CommandService.Handlers
+namespace CommandHandler.Handlers
 {
-    public class VerifyTestHandler : IHandler<VerifyDocumentCommand>
+    public class VerifyDocumentCommandHandler : IHandler<VerifyDocumentCommand>
     {
         public async Task<Task> HandleAsync(VerifyDocumentCommand command, CancellationToken cancellationToken)
         {
-            Console.WriteLine($"[VerifyTestHandler] received command {command}");
+            Console.WriteLine($"[VerifyDocumentCommandHandler] received command {command}");
             return Task.CompletedTask;
         }
     }

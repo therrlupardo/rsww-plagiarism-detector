@@ -1,5 +1,6 @@
-using System.Reflection;
-using CommandService.Services;
+using CommandHandler.Extensions;
+using CommandHandler.Handlers;
+using Commands;
 using Common.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -7,7 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace CommandService
+namespace CommandHandler
 {
     public class Startup
     {
@@ -22,14 +23,9 @@ namespace CommandService
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
-            services.AddHealthChecks();
-            services.AddRswwApiGatewayAuthentication(Configuration);
-            services.AddRswwSwaggerGen();
-            services.AddRswwSwaggerDocumentation(Assembly.GetExecutingAssembly().GetName().Name);
             services.AddRabbitMqConnection(Configuration.GetSection("rabbitmq"));
-            services.AddSingleton<ISourceService, SourceService>();
-            services.AddSingleton<IAnalysisService, AnalysisService>();
+            services.AddTransient<IHandler<AddDocumentToSourceStoreCommand>, AddDocumentToSourceStoreCommandHandler>();
+            services.AddTransient<IHandler<VerifyDocumentCommand>, VerifyDocumentCommandHandler>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -37,16 +33,8 @@ namespace CommandService
         {
             if (env.IsDevelopment())
                 app.UseDeveloperExceptionPage();
-            else
-                app.UseHttpsRedirection();
-
-            app.UseSwagger();
-            app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "Query API V1"); });
-            app.UseRouting();
-            app.UseHealthChecks("/healthcheck");
-            app.UseAuthorization();
-            app.UseAuthentication();
-            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+            app.AddHandler<AddDocumentToSourceStoreCommand>();
+            app.AddHandler<VerifyDocumentCommand>();
         }
     }
 }

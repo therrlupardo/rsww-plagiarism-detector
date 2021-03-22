@@ -3,14 +3,14 @@ using System.Threading;
 using System.Threading.Tasks;
 using Commands;
 
-namespace CommandService.Handlers
+namespace CommandHandler.Handlers
 {
-    public class TestHandler : IHandler<AddDocumentToSourceStoreCommand>
+    public class AddDocumentToSourceStoreCommandHandler : IHandler<AddDocumentToSourceStoreCommand>
     {
         public async Task<Task> HandleAsync(AddDocumentToSourceStoreCommand command,
             CancellationToken cancellationToken)
         {
-            Console.WriteLine($"[TestHandler] received command {command}");
+            Console.WriteLine($"[AddDocumentToSourceStoreCommandHandler] received command {command}");
             return Task.CompletedTask;
         }
     }

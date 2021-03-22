@@ -45,6 +45,14 @@ services:
     depends_on:
       - rabbitmq
 
+  command-handler:
+    image: rsww/command-handler:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: CommandHandler/Dockerfile
+    networks:
+      - backend
+
   rabbitmq:
     image: "rabbitmq:3-management"
     environment:
