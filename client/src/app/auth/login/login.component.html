@@ -1,0 +1,23 @@
+<div class="wrapper fadeInDown">
+  <div id="formContent">
+
+    <div class="fadeIn first">
+      <h1>Sign in</h1>
+    </div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <input type="text" class="input-form fadeIn second" 
+      formControlName="username" placeholder="username">
+      <input type="password" class="input-form fadeIn third" 
+      formControlName="password" placeholder="password">
+      <button class="button-submit fadeIn fourth"
+      type="submit" [disabled]="!loginForm.valid">Log in</button>
+      <p *ngIf="loginForm?.hasError('invalid-credentials')" class="warning-text">Wrong username or password!</p>
+    </form>
+
+    <div id="formFooter">
+      <a class="underlineHover" routerLink="/register">Don't have account?  Sign Up</a>
+    </div>
+
+  </div>
+</div>
