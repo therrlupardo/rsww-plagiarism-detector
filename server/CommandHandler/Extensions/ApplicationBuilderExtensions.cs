@@ -9,7 +9,7 @@ namespace CommandHandler.Extensions
 {
     public static class ApplicationBuilderExtensions
     {
-        public static IApplicationBuilder AddHandler<T>(this IApplicationBuilder app, IBusClient client)
+        private static IApplicationBuilder AddRabbitMqCommandHandler<T>(this IApplicationBuilder app, IBusClient client)
             where T : BaseCommand
         {
             if (!(app.ApplicationServices.GetService(typeof(IHandler<T>)) is IHandler<T> handler))
@@ -23,12 +23,13 @@ namespace CommandHandler.Extensions
             return app;
         }
 
-        public static IApplicationBuilder AddHandler<T>(this IApplicationBuilder app) where T : BaseCommand
+        public static IApplicationBuilder AddRabbitMqCommandHandler<T>(this IApplicationBuilder app)
+            where T : BaseCommand
         {
             if (!(app.ApplicationServices.GetService(typeof(IBusClient)) is IBusClient busClient))
                 throw new NullReferenceException();
 
-            return AddHandler<T>(app, busClient);
+            return AddRabbitMqCommandHandler<T>(app, busClient);
         }
     }
 }

@@ -33,8 +33,8 @@ namespace CommandHandler
         {
             if (env.IsDevelopment())
                 app.UseDeveloperExceptionPage();
-            app.AddHandler<AddDocumentToSourceStoreCommand>();
-            app.AddHandler<VerifyDocumentCommand>();
+            app.AddRabbitMqCommandHandler<AddDocumentToSourceStoreCommand>();
+            app.AddRabbitMqCommandHandler<VerifyDocumentCommand>();
         }
     }
 }
