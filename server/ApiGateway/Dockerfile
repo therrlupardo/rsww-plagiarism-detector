@@ -9,7 +9,7 @@ RUN dotnet restore ApiGateway/ApiGateway.csproj &&\
     dotnet publish ApiGateway/ApiGateway.csproj -c Release -o /app/publish
 
 
-FROM mcr.microsoft.com/dotnet/sdk:5.0-buster-slim
+FROM mcr.microsoft.com/dotnet/aspnet:5.0-buster-slim
 WORKDIR /app
 ENV ASPNETCORE_Kestrel__Certificates__Default__Path=/app/aspnetapp.pfx
 

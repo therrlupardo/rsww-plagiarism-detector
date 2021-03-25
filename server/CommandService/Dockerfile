@@ -10,7 +10,7 @@ RUN dotnet restore CommandService/CommandService.csproj &&\
     dotnet publish CommandService/CommandService.csproj -c Release -o /app/publish
 
 
-FROM mcr.microsoft.com/dotnet/sdk:5.0-buster-slim
+FROM mcr.microsoft.com/dotnet/aspnet:5.0-buster-slim
 WORKDIR /app
 
 COPY --from=build /app/publish .

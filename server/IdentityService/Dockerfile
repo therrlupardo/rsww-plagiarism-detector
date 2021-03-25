@@ -1,4 +1,6 @@
 FROM mcr.microsoft.com/dotnet/sdk:5.0-buster-slim AS build
+EXPOSE 80
+EXPOSE 443
 WORKDIR /src
 
 COPY IdentityService/ ./IdentityService/    
@@ -9,7 +11,7 @@ RUN dotnet restore IdentityService/IdentityService.csproj &&\
     dotnet publish IdentityService/IdentityService.csproj -c Release -o /app/publish
 
 
-FROM mcr.microsoft.com/dotnet/sdk:5.0-buster-slim
+FROM mcr.microsoft.com/dotnet/aspnet:5.0-buster-slim
 WORKDIR /app
 
 COPY --from=build /app/publish .

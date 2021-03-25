@@ -25,8 +25,6 @@ services:
       dockerfile: CommandService/Dockerfile
     networks:
       - backend
-    depends_on:
-      - rabbitmq
 
   identity-service:
     image: rsww/indentity-service:${TAG:-latest}
@@ -54,8 +52,6 @@ services:
       dockerfile: CommandHandler/Dockerfile
     networks:
       - backend
-    depends_on:
-      - rabbitmq
 
   rabbitmq:
     image: rabbitmq:3-management

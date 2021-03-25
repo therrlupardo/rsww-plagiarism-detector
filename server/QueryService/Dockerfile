@@ -1,4 +1,6 @@
 FROM mcr.microsoft.com/dotnet/sdk:5.0-buster-slim AS build
+EXPOSE 80
+EXPOSE 443
 WORKDIR /src
 
 COPY QueryService/ ./QueryService/
@@ -10,7 +12,7 @@ RUN dotnet restore QueryService/QueryService.csproj &&\
     dotnet publish QueryService/QueryService.csproj -c Release -o /app/publish
 
 
-FROM mcr.microsoft.com/dotnet/sdk:5.0-buster-slim
+FROM mcr.microsoft.com/dotnet/aspnet:5.0-buster-slim
 WORKDIR /app
 
 COPY --from=build /app/publish .
