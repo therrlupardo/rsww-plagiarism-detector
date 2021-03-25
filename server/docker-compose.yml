@@ -12,9 +12,19 @@ services:
       - 8080:443
     environment:
       - ASPNETCORE_URLS=https://+:443;http://+:80
-      - ASPNETCORE_Kestrel__Certificates__Default__Password=${SECRET_PASS}
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=${CERT_PASS}
     depends_on:
+      - command-service
       - identity-service
+      - query-service
+
+  command-service:
+    image: rsww/command-service:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: CommandService/Dockerfile
+    networks:
+      - backend
 
   identity-service:
     image: rsww/indentity-service:${TAG:-latest}
@@ -22,24 +32,40 @@ services:
       context: .
       dockerfile: IdentityService/Dockerfile
     networks:
-      - backend
       - auth_db
+      - backend
     depends_on:
       - postgres
 
-#  rabbitmq:
-#    image: "rabbitmq:3-management"
-#    environment:
-#      - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
-#      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
-#      - RABBITMQ_ERLANG_COOKIE=${RABBITMQ_ERLANG_COOKIE}
-#    networks:
-#      - backend
-#    healthcheck:
-#      test: rabbitmq-diagnostics -q ping
-#      interval: 30s
-#      timeout: 30s
-#      retries: 3
+  query-service:
+    image: rsww/query-service:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: QueryService/Dockerfile
+    networks:
+      - backend
+
+  command-handler:
+    image: rsww/command-handler:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: CommandHandler/Dockerfile
+    networks:
+      - backend
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    environment:
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
+      - RABBITMQ_ERLANG_COOKIE=${RABBITMQ_ERLANG_COOKIE}
+    networks:
+      - backend
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 30s
+      timeout: 30s
+      retries: 3
 
   postgres:
     image: postgres:13-alpine
@@ -49,11 +75,11 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     volumes:
       - local_postgres_data:/var/lib/postgresql/data
-      - ./db-scripts/seed.sql:/docker-entrypoint-initdb.d/seed.sql
+      - ./db-scripts:/docker-entrypoint-initdb.d
     networks:
       - auth_db
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER}" ]
       interval: 10s
       timeout: 5s
 
@@ -61,5 +87,5 @@ volumes:
   local_postgres_data: {}
 
 networks:
-  backend:
   auth_db:
+  backend:

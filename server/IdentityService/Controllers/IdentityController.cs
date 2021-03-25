@@ -21,15 +21,13 @@ namespace IdentityService.Controllers
         /// <summary>
         ///     Checks if given credentials are valid and returns token
         /// </summary>
-        /// <param name="login">Login of user</param>
-        /// <param name="password">Password of user</param>
         /// <response code="200">Returns object with accessToken</response>
         /// <response code="401">Returned if credentials are not valid</response>
         [HttpPost]
         [Route("login")]
-        public IActionResult Login([FromQuery] string login, [FromQuery] string password)
+        public IActionResult Login([FromBody] LoginRequest loginRequest)
         {
-            var success = _identityService.TryToLogin(login, password, out var token);
+            var success = _identityService.TryToLogin(loginRequest, out var token);
             return success ? new OkObjectResult(new LoginResponse(token)) : new UnauthorizedResult();
         }
 
@@ -48,18 +46,16 @@ namespace IdentityService.Controllers
         /// <summary>
         ///     Creates new user
         /// </summary>
-        /// <param name="login">Login of new user</param>
-        /// <param name="password">Password of new user</param>
         /// <returns>Data of created user</returns>
         /// <response code="201">User created successfully. Response contains data of user</response>
         /// <response code="400">Error while adding user, more info about it in body</response>
         [HttpPost]
         [Route("create")]
-        public IActionResult CreateUser([FromQuery] string login, [FromQuery] string password)
+        public IActionResult CreateUser([FromBody] CreateAccountRequest request)
         {
             try
             {
-                var user = _identityService.CreateUser(login, password);
+                var user = _identityService.CreateUser(request.Login, request.Password);
                 return new CreatedResult("", user);
             }
             catch (ArgumentException e)

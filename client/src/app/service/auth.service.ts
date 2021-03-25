@@ -43,18 +43,15 @@ export class AuthService {
     return this.currentUserSubject.value;
   }
 
-  login(username: string, password: string): Observable<AuthProps> {
-    let params = new HttpParams();
-    params = params.append('login', username);
-    params = params.append('password', password);
+  login(login: string, password: string): Observable<AuthProps> {
 
-    return this.http.post<AuthProps>(`${environment.apiUrl}/api/identity/login?login=${username}&password=${password}`, params)
+    return this.http.post<AuthProps>(`${environment.apiUrl}/api/identity/login`, {login, password})
         .pipe(map(authProps => {
             localStorage.setItem('accessToken', JSON.stringify(authProps.accessToken));
             localStorage.setItem('expiresAt', JSON.stringify(authProps.expiresAt));
-            localStorage.setItem('username', JSON.stringify(username));
+            localStorage.setItem('username', JSON.stringify(login));
             const user = {
-              username: username,
+              username: login,
               authProps
             } as User
             this.currentUserSubject.next(user);
