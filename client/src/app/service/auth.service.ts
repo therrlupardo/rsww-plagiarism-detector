@@ -1,4 +1,4 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -13,6 +13,14 @@ interface AuthProps {
   accessToken: string;
   expiresAt: number;
 }
+
+interface RegisterResponse {
+  login: string;
+  passwordHash: string;
+  id: string;
+}
+
+
 
 @Injectable({
   providedIn: 'root'
@@ -45,18 +53,25 @@ export class AuthService {
 
   login(login: string, password: string): Observable<AuthProps> {
 
-    return this.http.post<AuthProps>(`${environment.apiUrl}/api/identity/login`, {login, password})
-        .pipe(map(authProps => {
-            localStorage.setItem('accessToken', JSON.stringify(authProps.accessToken));
-            localStorage.setItem('expiresAt', JSON.stringify(authProps.expiresAt));
-            localStorage.setItem('username', JSON.stringify(login));
-            const user = {
-              username: login,
-              authProps
-            } as User
-            this.currentUserSubject.next(user);
-            return authProps;
-        }));
+    return this.http.post<AuthProps>(`/api/identity/login`, {login, password})
+      .pipe(map(authProps => {
+          localStorage.setItem('accessToken', JSON.stringify(authProps.accessToken));
+          localStorage.setItem('expiresAt', JSON.stringify(authProps.expiresAt));
+          localStorage.setItem('username', JSON.stringify(login));
+          const user = {
+            username: login,
+            authProps
+          } as User
+          this.currentUserSubject.next(user);
+          return authProps;
+      }));
+  }
+
+  register(login: string, password: string): Observable<RegisterResponse> {
+    return this.http.post<RegisterResponse>(`/api/identity/create`, {login, password})
+    .pipe(map(response => {
+        return response;
+    }));
   }
 
   logout(): void {

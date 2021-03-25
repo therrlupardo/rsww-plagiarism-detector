@@ -14,7 +14,16 @@
       formControlName="confirmPassword" placeholder="confirm password">
       <button class="button-submit fadeIn fourth"
       type="submit" [disabled]="!registerForm.valid">Sign up</button>
-    </form>
 
+      <p *ngIf="registerForm?.hasError('user-exists')" class="warning-text">
+        Such user already exists!
+      </p>
+      <p *ngIf="registerForm?.hasError('invalid-credentials')" class="warning-text">
+        Problem with credentials or bad connection!
+      </p>
+      <p *ngIf="redirect" class="info">
+        Success! You will be redirect to login page in few seconds...
+      </p>
+    </form>
   </div>
 </div>
