@@ -206,7 +206,7 @@ html {
   }
   
   .underlineHover {
-    color: #0d0d0d;
+    color: #444444;
     text-decoration: none;
   }
   
@@ -251,4 +251,13 @@ html {
 
   .info {
     color: #22aa22;
+  }
+
+  .appTitle {
+    color: #496cb7;
+    padding: 10px;
+    border-bottom: 1px solid #888888;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    background-color: #eeeeee;
   }

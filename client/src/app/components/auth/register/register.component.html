@@ -21,9 +21,17 @@
       <p *ngIf="registerForm?.hasError('invalid-credentials')" class="warning-text">
         Problem with credentials or bad connection!
       </p>
+      <p *ngIf="registerForm?.hasError('passwords-not-equal')" class="warning-text">
+        Passwords are not equal!
+      </p>
       <p *ngIf="redirect" class="info">
         Success! You will be redirect to login page in few seconds...
       </p>
     </form>
+
+    <div id="formFooter">
+      <a class="underlineHover" routerLink="/login">Return to Login</a>
+    </div>
+
   </div>
 </div>

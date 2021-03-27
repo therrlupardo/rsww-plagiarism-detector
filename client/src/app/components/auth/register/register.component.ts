@@ -28,7 +28,16 @@ export class RegisterComponent implements OnInit {
     });
   }
 
-  onSubmit() {
+  private arePasswordsEqual(): boolean {
+    return this.registerForm.get('password')?.value === this.registerForm.get('confirmPassword')?.value
+  }
+
+  onSubmit(): void {
+    if(!this.arePasswordsEqual()) {
+      this.registerForm.setErrors({'passwords-not-equal': true});
+      return;
+    }
+
     this.authService.register(
       this.registerForm.controls['username'].value, 
       this.registerForm.controls['password'].value
