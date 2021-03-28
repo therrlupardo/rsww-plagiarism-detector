@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AnalysisService } from 'src/app/service/analysis.service';
 
 interface AnalysisObject {
   ID: number;
@@ -16,9 +17,12 @@ interface AnalysisObject {
 export class AnalyzesListComponent implements OnInit {
   analysisData: AnalysisObject[] = []
 
-  constructor() { }
+  constructor(
+    private analysisService: AnalysisService,
+  ) { }
 
   ngOnInit(): void {
+    this.analysisService.getAnalyzes();
     this.getMockupData();
   }
 
