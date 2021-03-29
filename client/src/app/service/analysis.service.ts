@@ -1,6 +1,15 @@
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AuthService } from './auth.service';
+import { Observable } from 'rxjs';
+
+export interface AnalysisObject {
+  id: string;
+  date: string;
+  fileName:string;
+  result: number;
+  status: string;
+  userId: string;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -8,15 +17,18 @@ import { AuthService } from './auth.service';
 export class AnalysisService {
 
   constructor(
-    private http: HttpClient,
-    private authService: AuthService,
+    private http: HttpClient
   ) { }
 
-  getAnalyzes() {
-      this.http.get(`/api/analysis/all`)
-        .subscribe((response) => {
-          console.log(response);
-        })
-    
+  getAnalyzes(): Observable<AnalysisObject[]> {
+    return this.http.get<AnalysisObject[]>(`/api/analysis/all`)
+  }
+
+  getAnalysis(id: string): Observable<any> {
+    return this.http.get(`/api/analysis/${id}`)
+  }
+
+  getAnalysisReport(id: string): Observable<any> {
+    return this.http.get(`/api/analysis/${id}/report`)
   }
 }

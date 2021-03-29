@@ -14,6 +14,9 @@ import { AnalyzesListComponent } from './components/analysis/analyzes-list/analy
 import { DataSetComponent } from './components/data-set/data-set.component';
 import { TopbarComponent } from './components/shared/topbar/topbar.component';
 import { JwtInterceptor } from './util/jwt.interceptor';
+import { ToastrModule } from 'ngx-toastr';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
@@ -34,6 +37,9 @@ import { JwtInterceptor } from './util/jwt.interceptor';
     BrowserModule, 
     FormsModule, 
     ReactiveFormsModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot(),
+    MatProgressSpinnerModule
   ],
   providers: [
       { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
