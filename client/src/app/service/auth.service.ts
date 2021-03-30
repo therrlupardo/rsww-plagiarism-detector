@@ -55,7 +55,7 @@ export class AuthService {
 
     return this.http.post<AuthProps>(`/api/identity/login`, {login, password})
       .pipe(map(authProps => {
-          localStorage.setItem('accessToken', JSON.stringify(authProps.accessToken));
+          localStorage.setItem('accessToken', authProps.accessToken);
           localStorage.setItem('expiresAt', JSON.stringify(authProps.expiresAt));
           localStorage.setItem('username', JSON.stringify(login));
           const user = {

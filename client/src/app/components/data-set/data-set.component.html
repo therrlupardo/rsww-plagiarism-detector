@@ -1,1 +1,27 @@
 <app-topbar title="Data sets"></app-topbar>
+<div class="d-flex flex-column">
+  <div class="row align-self-center w-75 mt-4">
+    <mat-spinner class="loading-spinner" *ngIf="isLoading"></mat-spinner>
+    <div class="col-12">
+      <button class="btn btn-primary mb-3">Add Data set</button>
+    </div>
+    <div *ngIf="!isLoading" class="col-12 table-responsive">
+      <table class="table table-hover">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Date</th>
+            <th scope="col">File name</th>
+            <th scope="col">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of sourcesData">
+            <td>{{item.date}}</td>
+            <td>{{item.fileName}}</td>
+            <td>{{item.status}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

@@ -1,12 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-
-interface AnalysisObject {
-  ID: number;
-  fileName: string;
-  status: string;
-  raports?: string;
-}
-
+import { ToastrService } from 'ngx-toastr';
+import { AnalysisObject, AnalysisService } from 'src/app/service/analysis.service';
+import { SourceService } from 'src/app/service/source.service';
+const DB_ERROR = 'Database connection error';
 
 @Component({
   selector: 'app-analyzes-list',
@@ -14,36 +10,35 @@ interface AnalysisObject {
   styleUrls: ['./analyzes-list.component.scss']
 })
 export class AnalyzesListComponent implements OnInit {
-  analysisData: AnalysisObject[] = []
+  analysisData: AnalysisObject[] = [];
+  isLoading = false;
 
-  constructor() { }
+  constructor(
+    private analysisService: AnalysisService,
+    private toastr: ToastrService
+  ) { }
 
   ngOnInit(): void {
-    this.getMockupData();
+    this.loadData();
   }
 
-  private getMockupData() {
-    const item1 = {
-      ID: 1,
-      fileName: 'example_filename.py',
-      status: 'finished',
-    } as AnalysisObject
-    const item2 = {
-      ID: 2,
-      fileName: 'program.py',
-      status: 'waiting',
-    } as AnalysisObject
-    const item3 = {
-      ID: 3,
-      fileName: 'I_am_not_cheating.py',
-      status: 'canceled',
-    } as AnalysisObject
-    const item4 = {
-      ID: 4,
-      fileName: 'dont_click_me.py',
-      status: 'ready',
-    } as AnalysisObject
-    this.analysisData.push(item1, item2, item3, item4);
+  private loadData() {
+    this.analysisService.getAnalyzes().subscribe(
+      (analysisObject) => {
+        this.analysisData = analysisObject;
+        this.isLoading = false;
+      },
+      (error) => {
+        this.toastr.error(DB_ERROR, 'Error');
+        this.isLoading = true;
+      })
   }
 
+  downloadReport(id: string) {
+    // this.analysisService.getAnalysisReport(id)
+    //   .subscribe(item => {
+    //       console.log(item)
+    //     }
+    //   )
+  }
 }
