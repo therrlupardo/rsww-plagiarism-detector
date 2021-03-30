@@ -13,6 +13,7 @@ import { AuthService } from 'src/app/service/auth.service';
 export class RegisterComponent implements OnInit {
   registerForm!: FormGroup;
   redirect = false;
+  isLoading = false;
 
   constructor(
     private authService: AuthService,
@@ -37,6 +38,7 @@ export class RegisterComponent implements OnInit {
       this.registerForm.setErrors({'passwords-not-equal': true});
       return;
     }
+    this.isLoading = true;
 
     this.authService.register(
       this.registerForm.controls['username'].value, 
@@ -45,14 +47,15 @@ export class RegisterComponent implements OnInit {
       .pipe(first())
       .subscribe(
           data => {
-            console.log(`Hello ${data.login}`);
             this.redirectToLogin();
           },
           error => {
             if(error.status === 500) {
+              this.isLoading = false;
               this.registerForm.setErrors({'user-exists': true});
             }
             else {
+              this.isLoading = false;
               this.registerForm.setErrors({'invalid-credentials': true});
             }
           });
@@ -61,6 +64,7 @@ export class RegisterComponent implements OnInit {
   private redirectToLogin(): void {
     this.redirect = true
     setTimeout(()=>{ 
+      this.isLoading = false;
       this.router.navigate(['/login']);
  }, 3000);
   }

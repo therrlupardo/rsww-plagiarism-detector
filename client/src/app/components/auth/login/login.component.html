@@ -11,7 +11,8 @@
       formControlName="username" placeholder="username">
       <input type="password" class="input-form fadeIn third" 
       formControlName="password" placeholder="password">
-      <button class="button-submit fadeIn fourth"
+      <mat-spinner *ngIf="isLoading" class="loading-spinner"></mat-spinner>
+      <button *ngIf="!isLoading" class="button-submit fadeIn fourth"
       type="submit" [disabled]="!loginForm.valid">Log in</button>
       <p *ngIf="loginForm?.hasError('invalid-credentials')" class="warning-text">Wrong username or password!</p>
     </form>

@@ -12,7 +12,8 @@
       formControlName="password" placeholder="password">
       <input type="password" class="input-form fadeIn third" 
       formControlName="confirmPassword" placeholder="confirm password">
-      <button class="button-submit fadeIn fourth"
+      <mat-spinner *ngIf="isLoading" class="loading-spinner"></mat-spinner>
+      <button *ngIf="!isLoading" class="button-submit fadeIn fourth"
       type="submit" [disabled]="!registerForm.valid">Sign up</button>
 
       <p *ngIf="registerForm?.hasError('user-exists')" class="warning-text">

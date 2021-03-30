@@ -29,16 +29,16 @@ export class AnalyzesListComponent implements OnInit {
         this.isLoading = false;
       },
       (error) => {
-        this.toastr.error(DB_ERROR);
+        this.toastr.error(DB_ERROR, 'Error');
         this.isLoading = true;
       })
   }
 
   downloadReport(id: string) {
-    this.analysisService.getAnalysisReport(id)
-      .subscribe(item => {
-          console.log(item)
-        }
-      )
+    // this.analysisService.getAnalysisReport(id)
+    //   .subscribe(item => {
+    //       console.log(item)
+    //     }
+    //   )
   }
 }

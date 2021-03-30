@@ -11,6 +11,7 @@ import { AuthService } from 'src/app/service/auth.service';
 })
 export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
+  isLoading = false;
 
   constructor(
     private authService: AuthService,
@@ -30,6 +31,7 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit() {    
+    this.isLoading = true;
     this.authService.login(
       this.loginForm.controls['username'].value, 
       this.loginForm.controls['password'].value
@@ -37,11 +39,11 @@ export class LoginComponent implements OnInit {
       .pipe(first())
       .subscribe(
           data => {
-            console.log(`Hello ${this.authService.currentUserValue.username}`);
+            this.isLoading = false;
             this.router.navigate(['/dashboard']);
           },
           error => {
-            console.log('login error');
+            this.isLoading = false;
             this.loginForm.setErrors({'invalid-credentials': true});
           });
 
