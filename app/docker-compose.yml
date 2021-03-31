@@ -1,15 +1,28 @@
 version: "3.2"
 
 services:
+  frontend:
+    image: rsww/frontend:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: client/Dockerfile
+    networks: 
+      - frontend
+    depends_on: 
+      - apigateway
+    ports:
+      - 80:80
+      - 443:443
+      - 8080:8080
+
   apigateway:
     image: rsww/apigateway:${TAG:-latest}
     build:
       context: .
       dockerfile: ApiGateway/Dockerfile
     networks:
+      - frontend
       - backend
-    ports:
-      - 8080:443
     environment:
       - ASPNETCORE_URLS=https://+:443;http://+:80
       - ASPNETCORE_Kestrel__Certificates__Default__Password=${CERT_PASS}
@@ -89,3 +102,5 @@ volumes:
 networks:
   auth_db:
   backend:
+  frontend:
+    driver: bridge

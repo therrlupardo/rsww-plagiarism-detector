@@ -2,11 +2,18 @@
 
 ## Running using docker-compose
 
-1. Go to directory `server`
-2. Run docker using `docker-compose up --build` 
-    - You can skip flag `--build`, if you want to run containers without rebuilding
+1. Go to directory `app`
+2. To start docker containers use:\
+    `docker-compose up -d rabbitmq postgres`
+
+    Wait for services to be up and ready for establishing connections (you can use `docker-compose logs -f`), then to start the rest of services run:
+    
+    `docker-compose up -d`  
+ > In case docker-compose recreates `rabbitmq` and `postgres` containers after `docker-compose up -d`, use `docker-compose up -d --no-recreate`.  
+
+  > You can use `docker-compose up --build` if you want to rebuild all images or `docker-compose up --no-cache` to force their clean build (without using cached layers).
 3. To stop and remove containers use `docker-compose down`. 
-    - You can add flag `-v` to remove also all volumes 
+  > You can use `docker-compose down -v` to remove all volumes 
 
 ## Running locally
 
@@ -17,9 +24,7 @@
 > Running locally assumes that postgres is running on localhost:5432 (for example as docker container run with `docker-compose up postgres`). If you want to connect to another instance change connection string in `IdentityService/appsettings.Development.json`
 
 ## API Documentation
-Project is using swagger as API documentation. To access it you go to page `localhost:8080/swagger` (assuming you are running docker version). 
-
-Swagger should be also available for all services running locally at `service_host:service_port/swagger`.
+Project is using swagger as API documentation. To access it you go to page `https://localhost:8080/swagger` (assuming you are running docker version). 
 
 ## API authorization
 
