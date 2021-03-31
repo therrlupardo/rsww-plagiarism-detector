@@ -103,4 +103,4 @@ networks:
   auth_db:
   backend:
   frontend:
-    driver: bridge
+    

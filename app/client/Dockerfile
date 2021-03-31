@@ -12,5 +12,3 @@ FROM nginx:alpine
 
 COPY nginx/ /etc/nginx/
 COPY --from=nodejs /app/dist/out/ /usr/share/nginx/html
-
-# ENTRYPOINT ["nginx", "-g", "daemon off;"]

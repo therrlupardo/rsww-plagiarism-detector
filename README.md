@@ -9,11 +9,24 @@
     Wait for services to be up and ready for establishing connections (you can use `docker-compose logs -f`), then to start the rest of services run:
     
     `docker-compose up -d`  
- > In case docker-compose recreates `rabbitmq` and `postgres` containers after `docker-compose up -d`, use `docker-compose up -d --no-recreate`.  
+
+    - In case docker-compose recreates `rabbitmq` and `postgres` containers after `docker-compose up -d`, use `docker-compose up -d --no-recreate`.  
 
   > You can use `docker-compose up --build` if you want to rebuild all images or `docker-compose up --no-cache` to force their clean build (without using cached layers).
 3. To stop and remove containers use `docker-compose down`. 
   > You can use `docker-compose down -v` to remove all volumes 
+
+## Running development configuration using docker-compose
+
+1. Go to directory `app`
+2. To start docker containers use:\
+    `docker-compose -f docker-compose.yml -f docker-compose-dev.yml up -d rabbitmq postgres`
+
+    Wait for services to be up and ready for establishing connections (you can use `docker-compose logs -f`), then to start the rest of services run:
+    
+    `docker-compose -f docker-compose.yml -f docker-compose-dev.yml up -d`  
+
+3. To stop and remove containers use `docker-compose down -v`. 
 
 ## Running locally
 
