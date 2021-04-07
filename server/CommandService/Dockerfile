@@ -2,10 +2,12 @@ FROM mcr.microsoft.com/dotnet/sdk:5.0-buster-slim AS build
 WORKDIR /src
 
 COPY CommandService/ ./CommandService/
-COPY Commands/ ./Commands/
 COPY Common/ ./Common/
+COPY Commands/ ./Commands/
+COPY Queries/ ./Queries/
+COPY EventsFacade/ ./EventsFacade
 
-RUN dotnet restore CommandService/CommandService.csproj &&\ 
+RUN dotnet restore CommandService/CommandService.csproj &&\
     dotnet build CommandService/CommandService.csproj -c Release -o /app/build &&\
     dotnet publish CommandService/CommandService.csproj -c Release -o /app/publish
 

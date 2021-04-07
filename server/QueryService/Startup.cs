@@ -1,5 +1,7 @@
 using System.Reflection;
 using Common.Extensions;
+using EventsFacade;
+using EventsFacade.Utilities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -24,6 +26,7 @@ namespace QueryService
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
             services.AddHealthChecks();
             services.AddRswwApiGatewayAuthentication(Configuration);
             services.AddRswwSwaggerGen();
@@ -31,6 +34,7 @@ namespace QueryService
             services.AddSingleton<IAnalysisService, AnalysisService>();
             services.AddSingleton<ISourceService, SourceService>();
             services.AddSingleton<IReportService<AnalysisFile>, AnalysisReportService>();
+            services.RegisterEvents();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -20,7 +20,7 @@ namespace CommandService.Services
         {
             var taskId = Guid.NewGuid();
             var fileModel = file.ToFileModel();
-            var command = new AddDocumentToSourceStoreCommand(taskId, userId, fileModel);
+            var command = new AddDocumentToSourceStoreCommand(taskId, userId, DateTime.Now, fileModel);
             await _client.PublishAsync(command);
             return taskId;
         }

@@ -10,12 +10,13 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Common\Common.csproj"/>
-        <ProjectReference Include="..\Queries\Queries.csproj"/>
+        <ProjectReference Include="..\Common\Common.csproj" />
+        <ProjectReference Include="..\EventsFacade\EventsFacade.csproj" />
+        <ProjectReference Include="..\Queries\Queries.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="iTextSharp" Version="5.5.13.2"/>
+        <PackageReference Include="iTextSharp" Version="5.5.13.2" />
     </ItemGroup>
 
 </Project>

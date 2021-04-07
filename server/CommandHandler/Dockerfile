@@ -3,7 +3,9 @@ WORKDIR /src
 
 COPY CommandHandler/ ./CommandHandler/
 COPY Commands/ ./Commands/
+COPY Queries/ ./Queries/
 COPY Common/ ./Common/
+COPY EventsFacade/ ./EventsFacade/
 
 RUN dotnet restore CommandHandler/CommandHandler.csproj &&\
     dotnet build CommandHandler/CommandHandler.csproj -c Release -o /app/build &&\

@@ -2,7 +2,5 @@
 
 namespace Commands
 {
-    public abstract record BaseCommand(Guid Id, Guid UserId)
-    {
-    }
+    public abstract record BaseCommand(Guid Id, Guid UserId, DateTime IssuedOn) { }
 }

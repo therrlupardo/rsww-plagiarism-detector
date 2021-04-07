@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using QueryService.Dto;
 using QueryService.Services;
@@ -24,9 +25,9 @@ namespace QueryService.Controllers
         /// <response code="200">List of all source files (may be empty)</response>
         [HttpGet("all")]
         [Produces("application/json")]
-        public IActionResult GetAllSources()
+        public async Task<IActionResult> GetAllSources()
         {
-            var sourceFiles = _sourceService.GetAllSourceFiles();
+            var sourceFiles = await _sourceService.GetAllSourceFilesAsync();
             var dtos = sourceFiles.Select(f => new SourceFileResponse(f));
             return new OkObjectResult(dtos);
         }
