@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AnalysisObject, AnalysisService } from 'src/app/service/analysis.service';
-import { SourceService } from 'src/app/service/source.service';
+import { AuthService } from 'src/app/service/auth.service';
 const DB_ERROR = 'Database connection error';
 
 @Component({
@@ -15,6 +16,8 @@ export class AnalyzesListComponent implements OnInit {
 
   constructor(
     private analysisService: AnalysisService,
+    private authService: AuthService,
+    private router: Router,
     private toastr: ToastrService
   ) { }
 
@@ -31,14 +34,20 @@ export class AnalyzesListComponent implements OnInit {
       (error) => {
         this.toastr.error(DB_ERROR, 'Error');
         this.isLoading = true;
+        this.logout();
       })
   }
 
   downloadReport(id: string) {
-    // this.analysisService.getAnalysisReport(id)
-    //   .subscribe(item => {
-    //       console.log(item)
-    //     }
-    //   )
+    this.analysisService.getAnalysisReport(id)
+      .subscribe(item => {
+          console.log(item)
+        }
+      )
+  }
+
+  logout() {
+    this.authService.logout(); 
+    this.router.navigate(['/']);
   }
 }

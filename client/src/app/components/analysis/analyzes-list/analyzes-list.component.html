@@ -14,7 +14,7 @@
         </thead>
         <tbody>
           <tr *ngFor="let item of analysisData">
-            <td>{{item.date}}</td>
+            <td>{{item.date|  date:'dd-MM-yyyy'}}</td>
             <td>{{item.fileName}}</td>
             <td>{{item.status}}</td>
             <td>

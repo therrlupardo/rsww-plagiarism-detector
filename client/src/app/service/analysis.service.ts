@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 
 export interface AnalysisObject {
   id: string;
-  date: string;
+  date: Date;
   fileName:string;
   result: number;
   status: string;

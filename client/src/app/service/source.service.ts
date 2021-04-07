@@ -6,7 +6,7 @@ export interface SourceObject {
   id: string;
   fileName: string;
   status: string;
-  date: string;
+  date: Date;
   userId: string;
 }
 

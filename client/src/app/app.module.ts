@@ -17,6 +17,7 @@ import { JwtInterceptor } from './util/jwt.interceptor';
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { UploadFileComponent } from './components/shared/upload-file/upload-file.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     NewAnalysisComponent,
     AnalyzesListComponent,
     DataSetComponent,
-    TopbarComponent
+    TopbarComponent,
+    UploadFileComponent
   ],
   imports: [
     BrowserModule,
@@ -39,7 +41,7 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     ReactiveFormsModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
   ],
   providers: [
       { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
