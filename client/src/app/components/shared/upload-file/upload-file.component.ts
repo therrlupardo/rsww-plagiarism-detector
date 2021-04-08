@@ -1,22 +1,34 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { AnalysisService } from 'src/app/service/analysis.service';
+import { SourceService } from 'src/app/service/source.service';
 
 @Component({
   selector: 'app-upload-file',
   templateUrl: './upload-file.component.html',
   styleUrls: ['./upload-file.component.scss']
 })
-export class UploadFileComponent {
-  fileToUpload: File | null = null
+export class UploadFileComponent implements OnInit {
+  @Input() title: string = ''
+  loading: boolean = false;
+  file: File | null = null; 
 
-  handleFileInput(files: FileList) {
-    this.fileToUpload = files.item(0);
+  constructor(private analysisService: AnalysisService) { }
+
+  ngOnInit(): void {}
+
+  onChange(event: any) {
+      this.file = event.target.files[0];
   }
-  
-  // uploadFileToActivity() {
-  //   this.fileUploadService.postFile(this.fileToUpload).subscribe(data => {
-  //     // do something, if upload success
-  //     }, error => {
-  //       console.log(error);
-  //     });
-  // }
+
+  onUpload() {
+    this.loading = true;
+      this.analysisService.uploadFile(this.file!).subscribe(
+        data => {
+          console.log('got')
+        },
+        error => {
+          console.log('error');
+        } 
+      );
+  }
 }
