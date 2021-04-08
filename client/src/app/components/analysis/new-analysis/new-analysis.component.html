@@ -1,8 +1,33 @@
 <app-topbar title="New analysis"></app-topbar>
 <div class="d-flex flex-column">
-  <div class="row align-self-center w-50 mt-2">
+  <div class="row align-self-center w-40 mt-2">
     <div class="col-12">
-      <app-upload-file title="Upload file to analysis"></app-upload-file>
+      <app-upload-file [type]="uploadFileType"></app-upload-file>
     </div>
+  </div>
+  <div class="row col-12 align-self-center w-75 mt-4">
+    <button [ngClass]="{'btn-success': selectedRow, 'btn-secondary': !selectedRow}" 
+    class="btn start-button">Start analysis</button>
+  </div>
+  <div class="row col-12 w-75 align-self-center mt-2 table-responsive">
+      <table class="table table-hover">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Date</th>
+            <th scope="col">File name</th>
+            <th scope="col">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr [ngClass]="{'selected-row': item === selectedRow}"
+          class="table-row"
+          (click)="toggleRow(item)"
+          *ngFor="let item of uploadedFiles">
+            <td>{{item.date}}</td>
+            <td>{{item.fileName}}</td>
+            <td>{{item.status}}</td>
+          </tr>
+        </tbody>
+      </table>
   </div>
 </div>

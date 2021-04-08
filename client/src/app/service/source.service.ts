@@ -26,4 +26,8 @@ export class SourceService {
   getSource(id: string): Observable<SourceObject> {
     return this.http.get<SourceObject>(`/api/sources/${id}`)
   }
+
+  uploadSource(file: File): Observable<SourceObject> {
+    return this.http.post<SourceObject>(`/api/sources/create`, file)
+  }
 }

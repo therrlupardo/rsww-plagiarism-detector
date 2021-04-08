@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/service/auth.service';
 import { SourceObject, SourceService } from 'src/app/service/source.service';
+import { UploadFileType } from '../shared/upload-file/upload-file.component';
 
 const DB_ERROR = 'Database connection error';
 
@@ -15,6 +16,7 @@ const DB_ERROR = 'Database connection error';
 export class DataSetComponent implements OnInit {
   sourcesData: SourceObject[] = [];
   isLoading = true;
+  uploadFileType = UploadFileType.DATASET
 
   constructor(
     private sourceService: SourceService,
