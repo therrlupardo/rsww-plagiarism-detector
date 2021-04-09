@@ -57,6 +57,11 @@ services:
       dockerfile: QueryService/Dockerfile
     networks:
       - backend
+    expose:
+      - "1113"
+      - "2113"
+    depends_on:
+      - eventstore.db
 
   command-handler:
     image: rsww/command-handler:${TAG:-latest}
@@ -65,6 +70,12 @@ services:
       dockerfile: CommandHandler/Dockerfile
     networks:
       - backend
+    expose:
+      - "1113"
+      - "2113"
+    depends_on:
+      - rabbitmq
+      - eventstore.db
 
   rabbitmq:
     image: rabbitmq:3-management
@@ -74,6 +85,9 @@ services:
       - RABBITMQ_ERLANG_COOKIE=${RABBITMQ_ERLANG_COOKIE}
     networks:
       - backend
+    ports:
+      - 5672:5672
+      - 15672:15672
     healthcheck:
       test: rabbitmq-diagnostics -q ping
       interval: 30s
@@ -96,8 +110,35 @@ services:
       interval: 10s
       timeout: 5s
 
+  eventstore.db:
+    image: eventstore/eventstore:21.2.0-buster-slim
+    environment:
+      - EVENTSTORE_CLUSTER_SIZE=1
+      - EVENTSTORE_RUN_PROJECTIONS=All
+      - EVENTSTORE_START_STANDARD_PROJECTIONS=true
+      - EVENTSTORE_EXT_TCP_PORT=1113
+      - EVENTSTORE_EXT_HTTP_PORT=2113
+      - EVENTSTORE_INSECURE=true
+      - EVENTSTORE_ENABLE_EXTERNAL_TCP=true
+      - EVENTSTORE_ENABLE_ATOM_PUB_OVER_HTTP=true
+    ports:
+      - "1113:1113"
+      - "2113:2113"
+    networks:
+      - backend
+    volumes:
+      - type: volume
+        source: eventstore-volume-data
+        target: /var/lib/eventstore
+      - type: volume
+        source: eventstore-volume-logs
+        target: /var/log/eventstore
+
+
 volumes:
   local_postgres_data: {}
+  eventstore-volume-data:
+  eventstore-volume-logs:
 
 networks:
   auth_db:

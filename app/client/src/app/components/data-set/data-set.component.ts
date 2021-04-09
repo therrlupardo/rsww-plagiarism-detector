@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { AuthService } from 'src/app/service/auth.service';
 import { SourceObject, SourceService } from 'src/app/service/source.service';
+import { UploadFileType } from '../shared/upload-file/upload-file.component';
 
+const DB_ERROR = 'Database connection error';
 
 
 @Component({
@@ -12,9 +16,12 @@ import { SourceObject, SourceService } from 'src/app/service/source.service';
 export class DataSetComponent implements OnInit {
   sourcesData: SourceObject[] = [];
   isLoading = true;
+  uploadFileType = UploadFileType.DATASET
 
   constructor(
     private sourceService: SourceService,
+    private authService: AuthService,
+    private router: Router,
     private toastr: ToastrService
   ) { }
 
@@ -29,8 +36,16 @@ export class DataSetComponent implements OnInit {
         this.isLoading = false;
       },
       (error) => {
+        this.toastr.error(DB_ERROR, 'Error');
         this.isLoading = true;
+        this.logout();
       }
     )
+  }
+
+
+  logout() {
+    this.authService.logout(); 
+    this.router.navigate(['/']);
   }
 }

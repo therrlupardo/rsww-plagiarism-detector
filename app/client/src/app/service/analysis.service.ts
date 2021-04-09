@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 
 export interface AnalysisObject {
   id: string;
-  date: string;
+  date: Date;
   fileName:string;
   result: number;
   status: string;
@@ -30,5 +30,9 @@ export class AnalysisService {
 
   getAnalysisReport(id: string): Observable<any> {
     return this.http.get(`/api/analysis/${id}/report`)
+  }
+
+  uploadFile(file: File): Observable<any> {
+    return this.http.post(`/api/analysis/perform`, file)
   }
 }

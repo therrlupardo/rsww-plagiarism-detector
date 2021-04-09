@@ -15,6 +15,11 @@ namespace Common.Utils
         /// <returns>Model with data passed through jwt</returns>
         public static JwtModel GetUserIdFromToken(string token)
         {
+            if (string.IsNullOrEmpty(token))
+            {
+                throw new UnauthorizedAccessException();
+            }
+
             token = RemoveBearer(token);
 
             var readToken = new JwtSecurityTokenHandler().ReadJwtToken(token);

@@ -4,6 +4,9 @@ WORKDIR /src
 COPY QueryService/ ./QueryService/
 COPY Common/ ./Common/
 COPY Queries/ ./Queries/
+COPY Commands/ ./Commands/
+COPY EventsFacade/ ./EventsFacade
+
 
 RUN dotnet restore QueryService/QueryService.csproj &&\
     dotnet build QueryService/QueryService.csproj -c Release -o /app/build &&\

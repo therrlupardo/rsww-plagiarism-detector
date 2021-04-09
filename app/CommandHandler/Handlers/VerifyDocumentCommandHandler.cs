@@ -7,10 +7,12 @@ namespace CommandHandler.Handlers
 {
     public class VerifyDocumentCommandHandler : IHandler<VerifyDocumentCommand>
     {
-        public async Task<Task> HandleAsync(VerifyDocumentCommand command, CancellationToken cancellationToken)
+        public async Task<Result> HandleAsync(VerifyDocumentCommand command, CancellationToken cancellationToken)
         {
             Console.WriteLine($"[VerifyDocumentCommandHandler] received command {command}");
-            return Task.CompletedTask;
+
+
+            return Result.Success();
         }
     }
 }
