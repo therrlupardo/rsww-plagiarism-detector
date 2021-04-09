@@ -2,11 +2,23 @@
 
 ## Running using docker-compose
 
-1. Go to directory `server`
-2. Run docker using `docker-compose up --build` 
-    - You can skip flag `--build`, if you want to run containers without rebuilding
-3. To stop and remove containers use `docker-compose down`. 
-    - You can add flag `-v` to remove also all volumes 
+1. Go to directory `app`
+2. Start docker containers using: `docker-compose up -d rabbitmq postgres eventstore.db`
+3. Follow logs and wait for services to be up and ready for establishing connections: `docker-compose logs -f`
+4. Start the rest of services: `docker-compose up -d`  
+    > In case docker-compose recreates `rabbitmq`, `postgres` and `eventstore.db` containers after `docker-compose up -d`, use `docker-compose up -d --no-recreate`.  
+
+    > You can use `docker-compose up --build` if you want to rebuild all images.
+5. To stop and remove containers use: `docker-compose down`. 
+   > You can use `docker-compose down -v` to remove all volumes 
+
+## Running development configuration using docker-compose
+
+1. Go to directory `app`
+2. Start docker containers using: `docker-compose -f docker-compose.yml -f docker-compose-dev.yml up -d rabbitmq postgres eventstore.db`
+3. Follow logs and wait for services to be up and ready for establishing connections: `docker-compose logs -f`
+4. Start the rest of services: `docker-compose -f docker-compose.yml -f docker-compose-dev.yml up -d` 
+5. To stop and remove containers use: `docker-compose down -v`. 
 
 ## Running locally
 
@@ -17,9 +29,7 @@
 > Running locally assumes that postgres is running on localhost:5432 (for example as docker container run with `docker-compose up postgres`). If you want to connect to another instance change connection string in `IdentityService/appsettings.Development.json`
 
 ## API Documentation
-Project is using swagger as API documentation. To access it you go to page `localhost:8080/swagger` (assuming you are running docker version). 
-
-Swagger should be also available for all services running locally at `service_host:service_port/swagger`.
+Project is using swagger as API documentation. To access it you go to page `https://localhost:8080/swagger` (assuming you are running docker version). 
 
 ## API authorization
 

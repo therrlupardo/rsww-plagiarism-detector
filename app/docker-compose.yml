@@ -1,15 +1,28 @@
 version: "3.2"
 
 services:
+  frontend:
+    image: rsww/frontend:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: client/Dockerfile
+    networks: 
+      - frontend
+    depends_on: 
+      - apigateway
+    ports:
+      - 80:80
+      - 443:443
+      - 8080:8080
+
   apigateway:
     image: rsww/apigateway:${TAG:-latest}
     build:
       context: .
       dockerfile: ApiGateway/Dockerfile
     networks:
+      - frontend
       - backend
-    ports:
-      - 8080:443
     environment:
       - ASPNETCORE_URLS=https://+:443;http://+:80
       - ASPNETCORE_Kestrel__Certificates__Default__Password=${CERT_PASS}
@@ -23,14 +36,18 @@ services:
     build:
       context: .
       dockerfile: CommandService/Dockerfile
+      network: host
     networks:
       - backend
+    depends_on:
+      - rabbitmq
 
   identity-service:
     image: rsww/indentity-service:${TAG:-latest}
     build:
       context: .
       dockerfile: IdentityService/Dockerfile
+      network: host
     networks:
       - auth_db
       - backend
@@ -42,6 +59,7 @@ services:
     build:
       context: .
       dockerfile: QueryService/Dockerfile
+      network: host
     networks:
       - backend
     expose:
@@ -55,6 +73,7 @@ services:
     build:
       context: .
       dockerfile: CommandHandler/Dockerfile
+      network: host
     networks:
       - backend
     expose:
@@ -108,25 +127,19 @@ services:
       - EVENTSTORE_INSECURE=true
       - EVENTSTORE_ENABLE_EXTERNAL_TCP=true
       - EVENTSTORE_ENABLE_ATOM_PUB_OVER_HTTP=true
-    ports:
-      - "1113:1113"
-      - "2113:2113"
     networks:
       - backend
     volumes:
-      - type: volume
-        source: eventstore-volume-data
-        target: /var/lib/eventstore
-      - type: volume
-        source: eventstore-volume-logs
-        target: /var/log/eventstore
-
+      - eventstore-volume-data:/var/lib/eventstore
+      - eventstore-volume-logs:/var/log/eventstore
 
 volumes:
-  local_postgres_data: {}
+  local_postgres_data:
   eventstore-volume-data:
   eventstore-volume-logs:
 
 networks:
   auth_db:
   backend:
+  frontend:
+    

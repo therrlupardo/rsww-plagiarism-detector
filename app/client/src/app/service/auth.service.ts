@@ -52,7 +52,7 @@ export class AuthService {
   }
 
   login(login: string, password: string): Observable<AuthProps> {
-
+    
     return this.http.post<AuthProps>(`/api/identity/login`, {login, password})
       .pipe(map(authProps => {
           localStorage.setItem('accessToken', authProps.accessToken);
