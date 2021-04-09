@@ -2,7 +2,7 @@
 
 namespace Commands
 {
-    public record VerifyDocumentCommand(Guid Id, Guid UserId, FileModel FileToVerify) : BaseCommand(Id, UserId)
+    public record VerifyDocumentCommand(Guid Id, Guid UserId, FileModel FileToVerify, DateTime IssuedOn) : BaseCommand(Id, UserId, IssuedOn)
     {
     }
 }

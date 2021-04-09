@@ -4,8 +4,13 @@ using Commands;
 
 namespace CommandHandler.Handlers
 {
-    public interface IHandler<in T> where T : BaseCommand
+    public interface IHandler<in TCommand> where TCommand : BaseCommand
     {
-        Task<Task> HandleAsync(T command, CancellationToken cancellationToken);
+        Task<Result> HandleAsync(TCommand command, CancellationToken cancellationToken);
+    }
+
+    public interface IHandler<in TCommand, TResult> where TCommand : BaseCommand
+    {
+        Task<Result<TResult>> HandleAsync(TCommand command, CancellationToken cancellationToken);
     }
 }

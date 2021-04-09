@@ -9,7 +9,5 @@ namespace Queries
         string FileName,
         OperationStatus Status,
         DateTime Date
-    )
-    {
-    }
+    );
 }
