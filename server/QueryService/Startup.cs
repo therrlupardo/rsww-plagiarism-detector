@@ -34,7 +34,7 @@ namespace QueryService
             services.AddSingleton<IAnalysisService, AnalysisService>();
             services.AddSingleton<ISourceService, SourceService>();
             services.AddSingleton<IReportService<AnalysisFile>, AnalysisReportService>();
-            services.RegisterEvents();
+            services.RegisterEvents(Configuration.GetConnectionString("EventStore"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

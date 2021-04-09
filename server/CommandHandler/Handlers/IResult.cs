@@ -8,12 +8,13 @@ namespace CommandHandler.Handlers
         public string ErrorMessage { get; init; }
 
         public static Result Success() => new() { Succeeded = false };
-        public static Result Failed(string errorMessage) => new() { Succeeded = false, ErrorMessage = errorMessage };
+        public static Result Fail(string errorMessage) => new() { Succeeded = false, ErrorMessage = errorMessage };
     }
 
     public record Result<T> : Result
     {
         public T ResultObject { get; init; }
+        public new static Result<T> Fail(string errorMessage) => new() { Succeeded = false, ErrorMessage = errorMessage };
     }
 
     public static class ObjectResultExtensions

@@ -28,7 +28,7 @@ namespace CommandHandler
             services.AddRabbitMqConnection(Configuration.GetSection("rabbitmq"));
             services.AddTransient<IHandler<AddDocumentToSourceStoreCommand>, AddDocumentToSourceStoreCommandHandler>();
             services.AddTransient<IHandler<VerifyDocumentCommand>, VerifyDocumentCommandHandler>();
-            services.RegisterEvents();
+            services.RegisterEvents(Configuration.GetConnectionString("EventStore"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
