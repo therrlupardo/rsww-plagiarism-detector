@@ -15,3 +15,8 @@ services:
   postgres: 
     ports:
       - 5432:5432
+
+  eventstore.db:
+    ports:
+      - 1113:1113
+      - 2113:2113

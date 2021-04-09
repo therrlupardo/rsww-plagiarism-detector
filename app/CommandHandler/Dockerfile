@@ -3,7 +3,6 @@ WORKDIR /src
 
 COPY CommandHandler/ ./CommandHandler/
 COPY Commands/ ./Commands/
-COPY Queries/ ./Queries/
 COPY Common/ ./Common/
 COPY EventsFacade/ ./EventsFacade/
 
