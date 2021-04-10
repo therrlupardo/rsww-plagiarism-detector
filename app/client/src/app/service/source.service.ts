@@ -28,6 +28,8 @@ export class SourceService {
   }
 
   uploadSource(file: File): Observable<SourceObject> {
-    return this.http.post<SourceObject>(`/api/sources/create`, file)
+    const formData = new FormData()
+    formData.append('file', file)
+    return this.http.post<SourceObject>(`/api/sources/create`, formData)
   }
 }

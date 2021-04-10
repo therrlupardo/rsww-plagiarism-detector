@@ -30,6 +30,7 @@ export class DataSetComponent implements OnInit {
   }
 
   private loadData() {
+    this.isLoading = true;
     this.sourceService.getSources().subscribe(
       (sourceObjects) => {
         this.sourcesData = sourceObjects;
@@ -43,6 +44,15 @@ export class DataSetComponent implements OnInit {
     )
   }
 
+  isFileUploadedHandler(message: boolean) {
+    if(message) {
+      this.loadData();
+      this.toastr.success('File uploaded');
+    }
+    else {
+      this.toastr.error('File uploading error');
+    }
+  }
 
   logout() {
     this.authService.logout(); 
