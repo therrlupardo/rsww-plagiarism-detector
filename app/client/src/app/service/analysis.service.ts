@@ -28,8 +28,8 @@ export class AnalysisService {
     return this.http.get(`/api/analysis/${id}`)
   }
 
-  getAnalysisReport(id: string): Observable<any> {
-    return this.http.get(`/api/analysis/${id}/report`)
+  getAnalysisReport(id: string): Observable<Blob> {
+    return this.http.get(`/api/analysis/${id}/report`, {responseType: 'blob'})
   }
 
   uploadFile(file: File): Observable<any> {

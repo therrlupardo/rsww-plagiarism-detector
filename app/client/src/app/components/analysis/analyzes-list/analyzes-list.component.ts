@@ -39,11 +39,32 @@ export class AnalyzesListComponent implements OnInit {
   }
 
   downloadReport(id: string) {
-    this.analysisService.getAnalysisReport(id)
-      .subscribe(item => {
-          console.log(item)
+    this.analysisService.getAnalysisReport(id).subscribe(
+      (data) => {
+        var newBlob = new Blob([data], { type: "application/pdf" });
+
+        if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+            window.navigator.msSaveOrOpenBlob(newBlob);
+            return;
         }
-      )
+
+        const dataObject = window.URL.createObjectURL(newBlob);
+
+        var link = document.createElement('a');
+        link.href = dataObject;
+        link.download = "analysis_report.pdf";
+        link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+
+        setTimeout(function () {
+            window.URL.revokeObjectURL(dataObject);
+            link.remove();
+        }, 100);
+      },
+      (error) => {
+        console.log(error)
+        this.toastr.error('Report downloading error');
+      }
+    )
   }
 
   logout() {
