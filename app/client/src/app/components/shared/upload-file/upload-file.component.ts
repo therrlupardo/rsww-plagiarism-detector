@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter, ElementRef, ViewChild } from '@angular/core';
 import { AnalysisService } from 'src/app/service/analysis.service';
 import { SourceService } from 'src/app/service/source.service';
 
@@ -14,14 +14,20 @@ export enum UploadFileType {
 })
 export class UploadFileComponent implements OnInit {
   @Input() type: UploadFileType = UploadFileType.ANALYSIS
+  @Output() isFileUploaded: EventEmitter<boolean> = new EventEmitter();
+
   title: string = ''
   loading: boolean = false;
   file: File | null = null; 
+  
+  @ViewChild('fileInput', {static: false})
+  myFileInput: ElementRef | undefined;
 
   constructor(
     private analysisService: AnalysisService,
     private sourceService: SourceService,
     ) { }
+
 
   ngOnInit(): void {
     if(this.type === UploadFileType.ANALYSIS) {
@@ -51,12 +57,10 @@ export class UploadFileComponent implements OnInit {
   private uploadAnalysis() {
     this.analysisService.uploadFile(this.file!).subscribe(
       data => {
-        this.loading = false;
-        console.log('got')
+        this.handleUpload(true);
       },
       error => {
-        this.loading = false;
-        console.log('error');
+        this.handleUpload(false);
       } 
     );
   }
@@ -64,13 +68,33 @@ export class UploadFileComponent implements OnInit {
   private uploadDataSet() {
     this.sourceService.uploadSource(this.file!).subscribe(
       data => {
-        this.loading = false;
-        console.log('got')
+        this.handleUpload(true);
       },
       error => {
-        this.loading = false;
-        console.log('error');
+        this.handleUpload(false);
       } 
     );
+  }
+
+  private handleUpload(success: boolean) {
+    if(success) {
+      this.handleUploadSuccess();
+    }
+    else {
+      this.handleUploadError();
+    }
+  }
+
+  private handleUploadSuccess() {
+    this.loading = false;
+    this.isFileUploaded.emit(true);
+    this.file = null
+    this.myFileInput!.nativeElement.value = "";
+  }
+  private handleUploadError() {
+    this.loading = false;
+    this.isFileUploaded.emit(false);
+    this.file = null
+    this.myFileInput!.nativeElement.value = "";
   }
 }

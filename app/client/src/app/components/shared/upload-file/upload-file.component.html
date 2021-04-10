@@ -1,6 +1,6 @@
 <div class="d-flex justify-content-center upload-container">
   <h2 class="title">{{title}}</h2>
-  <input class="file-selector" type="file" 
+  <input class="file-selector" #fileInput type="file" 
   (change)="onChange($event)">
   <button *ngIf="!loading" (click)="onUpload()" 
   class="btn btn-primary">

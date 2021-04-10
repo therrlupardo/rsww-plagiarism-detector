@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
 import { UploadFileType } from '../../shared/upload-file/upload-file.component';
 
 interface UploadedFile {
@@ -18,7 +19,8 @@ export class NewAnalysisComponent implements OnInit {
   selectedRow: UploadedFile | null = null;
   uploadFileType = UploadFileType.ANALYSIS;
 
-  constructor() { }
+  constructor(
+    private toastr: ToastrService) { }
 
   ngOnInit(): void {
     this.createMockupData();
@@ -52,6 +54,16 @@ export class NewAnalysisComponent implements OnInit {
     }
     else {
       this.selectedRow = row;
+    }
+  }
+
+
+  isFileUploadedHandler(message: boolean) {
+    if(message) {
+      this.toastr.success('File uploaded');
+    }
+    else {
+      this.toastr.error('File uploading error');
     }
   }
 }

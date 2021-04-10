@@ -33,6 +33,8 @@ export class AnalysisService {
   }
 
   uploadFile(file: File): Observable<any> {
-    return this.http.post(`/api/analysis/perform`, file)
+    const formData = new FormData()
+    formData.append('file', file)
+    return this.http.post(`/api/analysis/perform`, formData)
   }
 }
