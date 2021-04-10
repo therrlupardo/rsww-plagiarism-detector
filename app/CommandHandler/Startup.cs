@@ -27,7 +27,7 @@ namespace CommandHandler
         {
             services.AddRabbitMqConnection(Configuration.GetSection("rabbitmq"));
             services.AddTransient<IHandler<AddDocumentToSourceStoreCommand>, AddDocumentToSourceStoreCommandHandler>();
-            services.AddTransient<IHandler<VerifyDocumentCommand>, VerifyDocumentCommandHandler>();
+            services.AddTransient<IHandler<AddDocumentToAnalysisCommand>, VerifyDocumentCommandHandler>();
             services.RegisterEvents(Configuration.GetConnectionString("EventStore"));
         }
 
@@ -37,7 +37,7 @@ namespace CommandHandler
             if (env.IsDevelopment())
                 app.UseDeveloperExceptionPage();
             app.AddRabbitMqCommandHandler<AddDocumentToSourceStoreCommand>();
-            app.AddRabbitMqCommandHandler<VerifyDocumentCommand>();
+            app.AddRabbitMqCommandHandler<AddDocumentToAnalysisCommand>();
         }
     }
 }

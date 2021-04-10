@@ -2,7 +2,7 @@
 
 namespace EventsFacade.Events
 {
-    public record DocumentAddedEvent : BaseEvent
+    public record DocumentAddedToSourceEvent : BaseEvent
     {
         public Guid FileId { get; init; }
 

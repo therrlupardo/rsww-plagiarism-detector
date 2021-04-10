@@ -20,7 +20,7 @@ namespace CommandService.Services
         {
             var fileId = Guid.NewGuid();
             var fileModel = file.ToFileModel();
-            var command = new VerifyDocumentCommand(fileId, userId, fileModel, DateTime.Now);
+            var command = new AddDocumentToAnalysisCommand(fileId, userId, fileModel, DateTime.Now);
             await _client.PublishAsync(command);
             return fileId;
         }

@@ -4,9 +4,16 @@ namespace EventsFacade.Utilities
 {
     public static class EventStreamGuidExtensions
     {
-        internal static string ToUserSourceDocumentsEventsStreamIdentifier(this Guid userId)
+        private const string Analysis = "Analysis";
+        private const string DocumentsToAnalysis = "DocumentToAnalysis";
+        internal static string ToUserDocumentsToAnalysisStreamName(this Guid userId)
         {
-            return $"SourceDocuments-{userId}";
+            return $"{DocumentsToAnalysis}-{userId}";
+        }
+
+        internal static string ToUserAnalysisStreamName(this Guid userId)
+        {
+            return $"{Analysis}-{userId}";
         }
     }
 }
