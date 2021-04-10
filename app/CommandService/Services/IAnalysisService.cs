@@ -6,6 +6,8 @@ namespace CommandService.Services
 {
     public interface IAnalysisService
     {
-        Task<Guid> PerformAnalysis(IFormFile file, Guid userId);
+        Task<Guid> SendFileToAnalysis(IFormFile file, Guid userId);
+
+        Task<Guid> AnalyzeFile(Guid fileId, Guid userId);
     }
 }

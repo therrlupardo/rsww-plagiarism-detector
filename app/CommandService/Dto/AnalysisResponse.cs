@@ -2,7 +2,7 @@ using System;
 
 namespace CommandService.Dto
 {
-    public record PerformAnalysisResponse(Guid TaskId)
+    public record AnalysisResponse(Guid TaskId)
     {
     }
 }

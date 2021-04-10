@@ -10,8 +10,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Commands\Commands.csproj"/>
-        <ProjectReference Include="..\Common\Common.csproj"/>
+        <ProjectReference Include="..\Commands\Commands.csproj" />
+        <ProjectReference Include="..\Common\Common.csproj" />
     </ItemGroup>
 
 </Project>
