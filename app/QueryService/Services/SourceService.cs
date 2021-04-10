@@ -20,7 +20,8 @@ namespace QueryService.Services
 
         public async Task<IEnumerable<SourceFile>> GetAllSourceFilesAsync()
         {
-            var documents = await _sourceDocumentFacade.GetDocumentsAddedToSourceByAnyUserAsync();
+            var documents = await _sourceDocumentFacade.GetDocumentAddedToSourceEvents();
+
             return documents.Select(d =>
                 new SourceFile(d.FileId, d.UserId, d.FileName, OperationStatus.Complete, d.OccurenceDate)).ToList();
         }

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace EventsFacade
+namespace EventsFacade.Events
 {
     public abstract record BaseEvent
     {

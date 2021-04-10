@@ -5,11 +5,11 @@ using Commands;
 
 namespace CommandHandler.Handlers
 {
-    public class VerifyDocumentCommandHandler : IHandler<VerifyDocumentCommand>
+    public class VerifyDocumentCommandHandler : IHandler<AddDocumentToAnalysisCommand>
     {
-        public async Task<Result> HandleAsync(VerifyDocumentCommand command, CancellationToken cancellationToken)
+        public async Task<Result> HandleAsync(AddDocumentToAnalysisCommand toAnalysisCommand, CancellationToken cancellationToken)
         {
-            Console.WriteLine($"[VerifyDocumentCommandHandler] received command {command}");
+            Console.WriteLine($"[VerifyDocumentCommandHandler] received command {toAnalysisCommand}");
 
 
             return Result.Success();
