@@ -4,6 +4,7 @@ using Commands;
 using Common.Extensions;
 using EventsFacade;
 using EventsFacade.Utilities;
+using Grpc.Net.Client;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -29,6 +30,7 @@ namespace CommandHandler
             services.AddTransient<IHandler<AddDocumentToSourceStoreCommand>, AddDocumentToSourceStoreCommandHandler>();
             services.AddTransient<IHandler<AddDocumentToAnalysisCommand>, VerifyDocumentCommandHandler>();
             services.RegisterEvents(Configuration.GetConnectionString("EventStore"));
+            services.AddSingleton(GrpcChannel.ForAddress(Configuration.GetConnectionString("grpc")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

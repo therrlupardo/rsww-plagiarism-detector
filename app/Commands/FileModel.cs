@@ -2,7 +2,7 @@
 
 namespace Commands
 {
-    public record FileModel (string FileName, IEnumerable<byte> Content)
+    public record FileModel (string FileName, byte[] Content)
     {
     }
 }
