@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+option csharp_namespace = "AnalysisService";
+
+package Analysis;
+
+service AnalysisStart {
+	rpc StartAnalysis (AnalysisRequest) returns (AnalysisResult);
+	rpc PersistFile (PersistanceRequest) returns (PersistanceResult);
+}
+
+message AnalysisRequest {
+  string fileId = 1;
+}
+
+message AnalysisResult {
+  float plagiarismPercentage = 1;
+}
+
+message PersistanceRequest {
+  string fileId = 1;
+  string userId = 2;
+  bytes fileContent = 3;
+}
+
+message PersistanceResult {
+  bool succeeded = 1;
+}
