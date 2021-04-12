@@ -5,6 +5,7 @@ COPY CommandHandler/ ./CommandHandler/
 COPY Commands/ ./Commands/
 COPY Queries/ ./Queries/
 COPY Common/ ./Common/
+COPY Queries/ ./Queries/
 COPY EventsFacade/ ./EventsFacade/
 
 RUN dotnet restore CommandHandler/CommandHandler.csproj &&\
