@@ -34,3 +34,12 @@ To collect GitHub repositories data scraped during multiple runs into one file, 
 `./cleanup-repository-data.sh`
 
 The script removes duplicate entries from .csv files.
+
+### Processing collected data
+
+To filter python files from scrapped repositories, process them and store in sequence file run:
+
+`py to_parquet.py path_to_archives`
+
+where `path_to_archives` is path to a folder containing repositiories in *.tar.gz archives. The script will output
+sequence file in parquet format (conversion snappy) called 'dataset.parquet'.
