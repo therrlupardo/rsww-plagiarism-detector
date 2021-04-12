@@ -16,7 +16,7 @@ services:
     ports:
       - 5432:5432
 
-  eventstore.db:
+  eventstore:
     ports:
       - 1113:1113
       - 2113:2113
