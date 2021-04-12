@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using QueryService.Dto;
+using QueryService.Services.Implementations;
 
 namespace QueryService.Services
 {
     public interface IDocumentsToAnalysisService
     {
-        Task<IEnumerable<(string fileName, Guid fileId)>> GetDocumentsToAnalysis(Guid userId);
+        Task<IEnumerable<DocumentToAnalysisResponse>> GetDocumentsToAnalysis(Guid userId);
     }
 }

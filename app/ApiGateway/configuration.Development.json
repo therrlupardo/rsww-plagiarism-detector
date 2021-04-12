@@ -36,6 +36,25 @@
       }
     },
     {
+      "DownstreamPathTemplate": "/api/documentsToAnalysis/{everything}",
+      "DownstreamScheme": "http",
+      "SwaggerKey": "query-service",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5004
+        }
+      ],
+      "UpstreamPathTemplate": "/api/documentsToAnalysis/{everything}",
+      "UpstreamHttpMethod": [
+        "GET"
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "TestKey",
+        "AllowedScopes": []
+      }
+    },
+    {
       "DownstreamPathTemplate": "/api/reports/{everything}",
       "DownstreamScheme": "http",
       "SwaggerKey": "query-service",
