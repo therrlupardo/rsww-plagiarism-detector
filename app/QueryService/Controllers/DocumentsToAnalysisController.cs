@@ -1,4 +1,5 @@
-﻿using Common.Utils;
+﻿using System.Threading.Tasks;
+using Common.Utils;
 using Microsoft.AspNetCore.Mvc;
 using QueryService.Services;
 
@@ -25,10 +26,10 @@ namespace QueryService.Controllers
         /// <response code="404"></response>
         [HttpGet("all")]
         [Produces("application/json")]
-        public IActionResult GetUsersDocumentsToAnalysis([FromHeader] string authorization)
+        public async Task<IActionResult> GetUsersDocumentsToAnalysis([FromHeader] string authorization)
         {
             var model = JwtUtil.GetUserIdFromToken(authorization);
-            var documents = _documentsToAnalysisService.GetDocumentsToAnalysis(model.UserId);
+            var documents = await _documentsToAnalysisService.GetDocumentsToAnalysis(model.UserId);
 
             return new OkObjectResult(documents);
         }

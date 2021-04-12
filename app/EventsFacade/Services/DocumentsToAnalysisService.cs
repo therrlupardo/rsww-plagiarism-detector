@@ -17,7 +17,8 @@ namespace EventsFacade.Services
     {
         public DocumentsToAnalysisService(EventStoreClient storeClient) : base(storeClient) { }
 
-        public async Task<List<DocumentToAnalysisAddedEvent>> GetAllUserDocumentsAddedToAnalysis(Guid userId) => await GetAllEventsFromStream<DocumentToAnalysisAddedEvent>(userId.ToUserDocumentsToAnalysisStreamName());
+        public async Task<List<DocumentToAnalysisAddedEvent>> GetAllUserDocumentsAddedToAnalysis(Guid userId) =>
+            await GetAllEventsFromStream<DocumentToAnalysisAddedEvent>(userId.ToUserDocumentsToAnalysisStreamName());
 
         public async Task SaveDocumentToAnalysisAddedEvent(DocumentToAnalysisAddedEvent @event) =>
             await SaveEvent(@event, @event.UserId.ToUserDocumentsToAnalysisStreamName());
