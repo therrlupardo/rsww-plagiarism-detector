@@ -31,7 +31,7 @@ namespace EventsFacade.Services
             return docs;
         }
 
-        public async Task SaveEvent<TEvent>(TEvent @event, string stream) where TEvent : BaseEvent
+        protected async Task SaveEvent<TEvent>(TEvent @event, string stream) where TEvent : BaseEvent
         {
             Debug.WriteLine($"Appending data to {stream}");
 

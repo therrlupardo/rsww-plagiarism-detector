@@ -1,5 +1,4 @@
 ﻿using EventsFacade.Services;
-using EventStore.Client;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace EventsFacade.Utilities
@@ -10,10 +9,13 @@ namespace EventsFacade.Utilities
         {
             services.AddEventStoreClient(connectionString);
 
+            services.AddTransient<IDocumentAnalysisService, DocumentAnalysisService>();
+            services.AddTransient<ISourceDocumentsService, SourceDocumentsService>();
+            services.AddTransient<IDocumentsToAnalysisService, DocumentsToAnalysisService>();
+
             services.AddTransient<SourceDocumentFacade>();
-            services.AddTransient<DocumentAnalysisService>();
-            services.AddTransient<SourceDocumentsService>();
-            services.AddTransient<DocumentAnalysisService>();
+            services.AddTransient<AnalysisFacade>();
+            services.AddTransient<DocumentsToAnalysisFacade>();
 
             return services;
         }

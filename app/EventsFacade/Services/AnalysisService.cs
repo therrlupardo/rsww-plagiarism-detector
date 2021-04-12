@@ -11,7 +11,7 @@ namespace EventsFacade.Services
         Task SaveAnalysisStatusChanged(DocumentAnalysisStatusChangedEvent @event, Guid userId);
     }
 
-    public class DocumentAnalysisService : EventService, IDocumentAnalysisService
+    internal class DocumentAnalysisService : EventService, IDocumentAnalysisService
     {
         public DocumentAnalysisService(EventStoreClient storeClient) : base(storeClient) { }
 

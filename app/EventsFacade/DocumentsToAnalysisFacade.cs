@@ -9,20 +9,20 @@ namespace EventsFacade
 {
     public class DocumentsToAnalysisFacade
     {
-        private readonly DocumentsToAnalysisService _documentsToAnalysisService;
+        private readonly IDocumentsToAnalysisService _documentsToAnalysisService;
 
-        public DocumentsToAnalysisFacade(DocumentsToAnalysisService documentsToAnalysisService)
+        public DocumentsToAnalysisFacade(IDocumentsToAnalysisService documentsToAnalysisService)
         {
             _documentsToAnalysisService = documentsToAnalysisService;
         }
 
-        public async Task SaveDocumentToAnalysisAdded(AddDocumentToAnalysisCommand command)
+        public async Task SaveDocumentToAnalysisAddedAsync(AddDocumentToAnalysisCommand command)
         {
             var @event = new DocumentToAnalysisAddedEvent
             {
                 FileName = command.FileToVerify.FileName,
                 OccurenceDate = command.IssuedOn,
-                TaskId = command.TaskId,
+                FileId = command.TaskId,
                 UserId = command.UserId
             };
 

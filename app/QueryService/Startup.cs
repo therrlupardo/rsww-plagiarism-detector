@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Queries;
 using QueryService.Services;
+using QueryService.Services.Implementations;
 
 namespace QueryService
 {

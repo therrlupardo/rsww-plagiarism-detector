@@ -12,7 +12,7 @@ namespace EventsFacade.Services
         Task SaveDocumentAddedToSource(DocumentAddedToSourceEvent command);
     }
 
-    public class SourceDocumentsService : EventService, ISourceDocumentsService
+    internal class SourceDocumentsService : EventService, ISourceDocumentsService
     {
         public SourceDocumentsService(EventStoreClient storeClient) : base(storeClient) { }
 

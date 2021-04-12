@@ -8,14 +8,14 @@ namespace EventsFacade
 {
     public class AnalysisFacade
     {
-        private readonly DocumentAnalysisService _analysisService;
+        private readonly IDocumentAnalysisService _analysisService;
 
-        public AnalysisFacade(DocumentAnalysisService analysisService)
+        public AnalysisFacade(IDocumentAnalysisService analysisService)
         {
             _analysisService = analysisService;
         }
 
-        public async Task SaveDocumentAnalysisStatusChangedEvent(Guid fileId, DateTime occurenceDate, Guid userId, OperationStatus status)
+        public async Task SaveDocumentAnalysisStatusChangedEventAsync(Guid fileId, DateTime occurenceDate, Guid userId, OperationStatus status)
         {
             var @event = new DocumentAnalysisStatusChangedEvent
             {

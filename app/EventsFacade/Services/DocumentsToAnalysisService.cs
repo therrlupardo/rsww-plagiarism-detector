@@ -10,9 +10,10 @@ namespace EventsFacade.Services
     public interface IDocumentsToAnalysisService
     {
         Task SaveDocumentToAnalysisAddedEvent(DocumentToAnalysisAddedEvent @event);
+        Task<List<DocumentToAnalysisAddedEvent>> GetAllUserDocumentsAddedToAnalysis(Guid userId);
     }
 
-    public class DocumentsToAnalysisService : EventService, IDocumentsToAnalysisService
+    internal class DocumentsToAnalysisService : EventService, IDocumentsToAnalysisService
     {
         public DocumentsToAnalysisService(EventStoreClient storeClient) : base(storeClient) { }
 

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using Queries;
 using QueryService.Mock;
 
-namespace QueryService.Services
+namespace QueryService.Services.Implementations
 {
-    public class AnalysisService : IAnalysisService
+    internal class AnalysisService : IAnalysisService
     {
         public List<AnalysisFile> GetAllAnalysis(Guid userId)
         {

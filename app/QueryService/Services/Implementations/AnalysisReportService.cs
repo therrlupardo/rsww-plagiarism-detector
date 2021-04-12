@@ -6,9 +6,9 @@ using iTextSharp.text.pdf;
 using Queries;
 using Queries.Enums;
 
-namespace QueryService.Services
+namespace QueryService.Services.Implementations
 {
-    public class AnalysisReportService : IReportService<AnalysisFile>
+    internal class AnalysisReportService : IReportService<AnalysisFile>
     {
         public byte[] GenerateReport(AnalysisFile obj, params object[] parameters)
         {
