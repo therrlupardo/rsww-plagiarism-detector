@@ -23,7 +23,7 @@ namespace QueryService.Controllers
         /// <returns>Data about specified analysis</returns>
         /// <response code="200">List of files which are ready to undergo analysis</response>
         /// <response code="404"></response>
-        [HttpGet]
+        [HttpGet("all")]
         [Produces("application/json")]
         public IActionResult GetUsersDocumentsToAnalysis([FromHeader] string authorization)
         {
