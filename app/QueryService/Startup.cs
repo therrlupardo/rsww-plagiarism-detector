@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Queries;
 using QueryService.Services;
+using QueryService.Services.Implementations;
 
 namespace QueryService
 {
@@ -31,10 +32,13 @@ namespace QueryService
             services.AddRswwApiGatewayAuthentication(Configuration);
             services.AddRswwSwaggerGen();
             services.AddRswwSwaggerDocumentation(Assembly.GetExecutingAssembly().GetName().Name);
-            services.AddSingleton<IAnalysisService, AnalysisService>();
-            services.AddSingleton<ISourceService, SourceService>();
-            services.AddSingleton<IReportService<AnalysisFile>, AnalysisReportService>();
+
             services.RegisterEvents(Configuration.GetConnectionString("EventStore"));
+
+            services.AddTransient<IAnalysisService, AnalysisService>();
+            services.AddTransient<ISourceService, SourceService>();
+            services.AddTransient<IReportService<AnalysisFile>, AnalysisReportService>();
+            services.AddTransient<IDocumentsToAnalysisService, DocumentsToAnalysisService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

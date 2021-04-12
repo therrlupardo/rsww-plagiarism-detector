@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Commands;
 using EventsFacade.Events;
 using EventsFacade.Services;
-using Queries.Enums;
 
 [assembly: InternalsVisibleTo("EventsFacade.Tests")]
 
@@ -15,10 +14,9 @@ namespace EventsFacade
     {
         private readonly ISourceDocumentsService _sourceDocumentsService;
 
-        public SourceDocumentFacade(ISourceDocumentsService sourceDocumentsService, DocumentAnalysisService analysisService)
+        public SourceDocumentFacade(ISourceDocumentsService sourceDocumentsService)
         {
             _sourceDocumentsService = sourceDocumentsService;
-            _analysisService = analysisService;
         }
 
         public async Task<List<DocumentAddedToSourceEvent>> GetDocumentAddedToSourceEvents() =>
@@ -36,7 +34,5 @@ namespace EventsFacade
 
             await _sourceDocumentsService.SaveDocumentAddedToSource(@event);
         }
-
-
     }
 }

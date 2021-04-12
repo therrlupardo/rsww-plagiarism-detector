@@ -7,9 +7,9 @@ using Queries;
 using Queries.Enums;
 using QueryService.Mock;
 
-namespace QueryService.Services
+namespace QueryService.Services.Implementations
 {
-    public class SourceService : ISourceService
+    internal class SourceService : ISourceService
     {
         private readonly SourceDocumentFacade _sourceDocumentFacade;
 

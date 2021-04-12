@@ -2,8 +2,5 @@ using System;
 
 namespace Commands
 {
-    public record AnalyzeDocumentCommand(Guid TaskId, Guid FileId, Guid UserId, DateTime IssuedTime)
-    {
-        
-    }
+    public record AnalyzeDocumentCommand(Guid TaskId, Guid FileId, Guid UserId, DateTime IssuedTime) : BaseCommand(TaskId, UserId, IssuedTime);
 }
