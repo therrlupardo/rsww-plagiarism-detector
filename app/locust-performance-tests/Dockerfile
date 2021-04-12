@@ -2,6 +2,4 @@ FROM locustio/locust
 
 WORKDIR /opt/locust
 
-COPY ./locust .
-
-CMD ['locust']    
+COPY locust-performance-tests/locust/ ./
