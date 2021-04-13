@@ -1,11 +1,17 @@
 .start-button {
-    margin: auto 0px auto auto;
-  }
+  margin: auto 0px auto auto;
+}
   
-  .table-row {
-    cursor: pointer;
-  }
+.table-row {
+  cursor: pointer;
+}
   
-  .selected-row td {
-      background: #bbbbbb !important;
-  }
+.selected-row td {
+  background: #bbbbbb !important;
+}
+
+.loading-spinner {
+  transform: scale(0.5);
+  margin-left: auto;
+  margin-right: auto;
+}
