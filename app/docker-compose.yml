@@ -1,15 +1,15 @@
 version: "3.2"
 
 services:
-  perf-test:
-    image: rsww/perf-test:${TAG:-latest}
-    build:
-      context: .
-      dockerfile: locust-performance-tests/Dockerfile
-    networks:
-      - frontend
-    depends_on:
-      - frontend
+  # perf-test:
+  #   image: rsww/perf-test:${TAG:-latest}
+  #   build:
+  #     context: .
+  #     dockerfile: locust-performance-tests/Dockerfile
+  #   networks:
+  #     - frontend
+  #   depends_on:
+  #     - frontend
 
   frontend:
     image: rsww/frontend:${TAG:-latest}
@@ -30,6 +30,7 @@ services:
     build:
       context: .
       dockerfile: ApiGateway/Dockerfile
+      network: host
     networks:
       - frontend
       - backend

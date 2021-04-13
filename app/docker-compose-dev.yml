@@ -7,6 +7,10 @@ services:
       - 443:443
       - 8080:8080
 
+  apigateway:
+    ports:
+      - 8888:443
+
   rabbitmq:
     ports:
       - 15672:15672
