@@ -89,10 +89,8 @@ for file_name in os.listdir(directory):
         print("processed: {}".format(counter))
         print("skipped: {}".format(skipped))
         currentPercentage += 0.1
+        table = pa.Table.from_pandas(df)
+        pq.write_table(table, 'dataset.parquet')
 
-
-table = pa.Table.from_pandas(df)
-pq.write_table(table, 'dataset.parquet')
-
-if len(sys.argv) == 3 and sys.argv[2] == "true":
-    df.to_csv("dataset.csv")
+        if len(sys.argv) == 3 and sys.argv[2] == "true":
+            df.to_csv("dataset.csv")
