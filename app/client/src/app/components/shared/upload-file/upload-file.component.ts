@@ -55,7 +55,7 @@ export class UploadFileComponent implements OnInit {
   }
 
   private uploadAnalysis() {
-    this.analysisService.uploadFile(this.file!).subscribe(
+    this.analysisService.uploadAnalysisFile(this.file!).subscribe(
       data => {
         this.handleUpload(true);
       },

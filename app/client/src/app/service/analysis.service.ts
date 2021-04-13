@@ -11,6 +11,11 @@ export interface AnalysisObject {
   userId: string;
 }
 
+export interface AnalysisFile {
+  id: string;
+  name: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -32,9 +37,17 @@ export class AnalysisService {
     return this.http.get(`/api/analysis/${id}/report`, {responseType: 'blob'})
   }
 
-  uploadFile(file: File): Observable<any> {
+  getFilesToAnalysis(): Observable<AnalysisFile[]> {
+    return this.http.get<AnalysisFile[]>(`/api/documentsToAnalysis/all`)
+  }
+
+  uploadAnalysisFile(file: File): Observable<any> {
     const formData = new FormData()
     formData.append('file', file)
-    return this.http.post(`/api/analysis/perform`, formData)
+    return this.http.post(`/api/analysis/send`, formData)
+  }
+
+  startAnalysis(fileId: string): Observable<any> {
+    return this.http.post(`/api/analysis/${fileId}/start`, {})
   }
 }
