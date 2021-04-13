@@ -33,5 +33,16 @@ namespace QueryService.Controllers
 
             return new OkObjectResult(documents);
         }
+
+        [HttpGet("withLatestStatus")]
+        [Produces("application/json")]
+        public async Task<IActionResult> GetUserDocumentsWithLatestStatuses([FromHeader] string authorization)
+        {
+            var model = JwtUtil.GetUserIdFromToken(authorization);
+            var documents = await _documentsToAnalysisService.GetDocumentsWithLatestAnalysisStatuses(model.UserId);
+
+            return new OkObjectResult(documents);
+        }
+
     }
 }

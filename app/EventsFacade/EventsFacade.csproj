@@ -12,7 +12,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Commands\Commands.csproj" />
+      <ProjectReference Include="..\OperationContracts\OperationContracts.csproj" />
       <ProjectReference Include="..\Queries\Queries.csproj" />
     </ItemGroup>
 

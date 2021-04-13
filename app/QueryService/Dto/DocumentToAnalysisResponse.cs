@@ -2,5 +2,5 @@
 
 namespace QueryService.Dto
 {
-    public record DocumentToAnalysisResponse (Guid Id, string Name);
+    public record DocumentToAnalysisResponse (Guid Id, string Name, DateTime AddedDate);
 }

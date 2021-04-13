@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Commands;
 using EventsFacade;
-using Queries.Enums;
+using OperationContracts;
+using OperationContracts.Enums;
 
 namespace CommandHandler.Handlers
 {
@@ -20,8 +20,15 @@ namespace CommandHandler.Handlers
         {
             Console.WriteLine($"{nameof(AnalyzeDocumentCommandHandler)} received command {command} ");
 
-            await _analyzeEventsFacade.SaveDocumentAnalysisStatusChangedEventAsync(command.FileId, command.IssuedTime,
-                command.UserId, OperationStatus.Running);
+            await _analyzeEventsFacade.SaveDocumentAnalysisStatusChangedEventAsync(
+                command.FileId, command.TaskId, command.IssuedTime, command.UserId, OperationStatus.Running);
+
+            // TODO: Perform the analysis here
+
+
+            //TODO: Wrap it in a service and send the notification to the frontend
+            await _analyzeEventsFacade.SaveDocumentAnalysisStatusChangedEventAsync(command.FileId, command.TaskId, command.IssuedTime,
+                command.UserId, OperationStatus.Complete);
 
             return Result.Success();
         }

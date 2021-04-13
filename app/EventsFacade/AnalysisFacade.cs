@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using EventsFacade.Events;
 using EventsFacade.Services;
-using Queries.Enums;
+using OperationContracts.Enums;
 
 namespace EventsFacade
 {
@@ -15,16 +16,20 @@ namespace EventsFacade
             _analysisService = analysisService;
         }
 
-        public async Task SaveDocumentAnalysisStatusChangedEventAsync(Guid fileId, DateTime occurenceDate, Guid userId, OperationStatus status)
+        public async Task SaveDocumentAnalysisStatusChangedEventAsync(Guid documentId, Guid taskId, DateTime occurenceDate, Guid userId, OperationStatus status, string documentName = null)
         {
             var @event = new DocumentAnalysisStatusChangedEvent
             {
+                DocumentId = documentId,
+                DocumentName = documentName,
+                TaskId = taskId,
                 Status = status,
-                FileId = fileId,
                 OccurenceDate = occurenceDate
             };
 
             await _analysisService.SaveAnalysisStatusChanged(@event, userId);
         }
+
+        public async Task<List<DocumentAnalysisStatusChangedEvent>> GetAllUserDocumentAnalysesAsync(Guid userId) => await _analysisService.GetAnalysesForUser(userId);
     }
 }

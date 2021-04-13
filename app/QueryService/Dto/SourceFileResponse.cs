@@ -1,5 +1,5 @@
 using System;
-using Queries;
+using OperationContracts;
 
 namespace QueryService.Dto
 {

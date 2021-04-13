@@ -1,7 +1,7 @@
 using System;
-using Queries.Enums;
+using OperationContracts.Enums;
 
-namespace Queries
+namespace OperationContracts
 {
     public record SourceFile (
         Guid Id,

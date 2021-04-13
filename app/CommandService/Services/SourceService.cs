@@ -1,8 +1,8 @@
 using System;
 using System.Threading.Tasks;
-using Commands;
 using CommandService.Extensions;
 using Microsoft.AspNetCore.Http;
+using OperationContracts;
 using RawRabbit;
 
 namespace CommandService.Services

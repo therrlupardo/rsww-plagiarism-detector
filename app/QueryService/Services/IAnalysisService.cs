@@ -1,13 +1,14 @@
 using System;
 using System.Collections.Generic;
-using Queries;
+using System.Threading.Tasks;
+using QueryService.Services.Implementations;
 
 namespace QueryService.Services
 {
     public interface IAnalysisService
     {
-        List<AnalysisFile> GetAllAnalysis(Guid userId);
-
-        AnalysisFile GetById(Guid analysisId, Guid userId);
+        Task<List<AnalysisStatusDto>> GetUserAnalysesAsync(Guid userId);
+        Task<AnalysisStatusDto> GetByDocumentIdAsync(Guid userId, Guid documentId);
+        Task<AnalysisStatusDto> GetByIdAsync(Guid userId, Guid taskId);
     }
 }

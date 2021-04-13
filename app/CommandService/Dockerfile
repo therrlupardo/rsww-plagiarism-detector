@@ -3,7 +3,7 @@ WORKDIR /src
 
 COPY CommandService/ ./CommandService/
 COPY Common/ ./Common/
-COPY Commands/ ./Commands/
+COPY OperationContracts/ ./OperationContracts/
 
 RUN dotnet restore CommandService/CommandService.csproj &&\
     dotnet build CommandService/CommandService.csproj -c Release -o /app/build &&\
