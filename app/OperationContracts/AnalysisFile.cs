@@ -1,10 +1,10 @@
 using System;
-using Queries.Enums;
+using OperationContracts.Enums;
 
-namespace Queries
+namespace OperationContracts
 {
     public record AnalysisFile(
-        Guid Id,
+        Guid DocumentId,
         Guid UserId,
         OperationStatus Status,
         string FileName,
@@ -13,4 +13,5 @@ namespace Queries
     )
     {
     }
+
 }

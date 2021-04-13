@@ -1,13 +1,12 @@
 using System.Reflection;
 using Common.Extensions;
-using EventsFacade;
 using EventsFacade.Utilities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Queries;
+using OperationContracts;
 using QueryService.Services;
 using QueryService.Services.Implementations;
 

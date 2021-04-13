@@ -3,8 +3,8 @@ using System.Globalization;
 using System.IO;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
-using Queries;
-using Queries.Enums;
+using OperationContracts;
+using OperationContracts.Enums;
 
 namespace QueryService.Services.Implementations
 {
@@ -106,7 +106,7 @@ namespace QueryService.Services.Implementations
                 Alignment = Element.ALIGN_RIGHT
             });
             document.Add(CreateTitle());
-            document.Add(CreateSubtitle(file.Id));
+            document.Add(CreateSubtitle(file.DocumentId));
         }
 
         private IElement CreateTitle()

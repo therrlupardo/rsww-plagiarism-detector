@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using Commands;
 using EventsFacade.Events;
 using EventsFacade.Services;
+using OperationContracts;
 
 [assembly: InternalsVisibleTo("EventsFacade.Tests")]
 
@@ -22,14 +22,14 @@ namespace EventsFacade
         public async Task<List<DocumentAddedToSourceEvent>> GetDocumentAddedToSourceEvents() =>
             await _sourceDocumentsService.GetDocumentsAddedToSourceByAnyUserAsync();
 
-        public async Task SaveDocumentAddedToSource(AddDocumentToSourceStoreCommand command)
+        public async Task SaveDocumentAddedToSource(string fileName, Guid fileId, Guid userId)
         {
             var @event = new DocumentAddedToSourceEvent
             {
                 OccurenceDate = DateTime.Now,
-                FileName = command.File.FileName,
-                FileId = command.Id,
-                UserId = command.UserId
+                FileName = fileName,
+                FileId = fileId,
+                UserId = userId
             };
 
             await _sourceDocumentsService.SaveDocumentAddedToSource(@event);

@@ -9,5 +9,8 @@ namespace QueryService.Services
     public interface IDocumentsToAnalysisService
     {
         Task<IEnumerable<DocumentToAnalysisResponse>> GetDocumentsToAnalysis(Guid userId);
+
+        Task<IEnumerable<AnalysisStatusDto>> GetDocumentsWithLatestAnalysisStatuses(
+            Guid userId);
     }
 }

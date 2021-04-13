@@ -11,7 +11,7 @@ namespace EventsFacade.Utilities
             return $"{DocumentsToAnalysis}-{userId}";
         }
 
-        internal static string ToUserAnalysisStreamName(this Guid userId)
+        internal static string ToUserAnalysesStreamName(this Guid userId)
         {
             return $"{Analysis}-{userId}";
         }

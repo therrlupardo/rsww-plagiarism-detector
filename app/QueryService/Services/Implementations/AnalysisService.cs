@@ -1,20 +1,67 @@
 using System;
 using System.Collections.Generic;
-using Queries;
-using QueryService.Mock;
+using System.Linq;
+using System.Threading.Tasks;
+using EventsFacade;
+using EventsFacade.Events;
+using OperationContracts.Enums;
 
 namespace QueryService.Services.Implementations
 {
     internal class AnalysisService : IAnalysisService
     {
-        public List<AnalysisFile> GetAllAnalysis(Guid userId)
+        private readonly AnalysisFacade _facade;
+
+        public AnalysisService(AnalysisFacade facade)
         {
-            return MockReadDataSource.GetAllAnalysisByUserId(userId);
+            _facade = facade;
         }
 
-        public AnalysisFile GetById(Guid analysisId, Guid userId)
+        public async Task<List<AnalysisStatusDto>> GetUserAnalysesAsync(Guid userId)
         {
-            return MockReadDataSource.GetAnalysisById(analysisId, userId);
+            var allAnalysesEvents = await _facade.GetAllUserDocumentAnalysesAsync(userId);
+
+            DocumentAnalysisStatusChangedEvent GetInitialEvent(Guid docId) =>
+                allAnalysesEvents.First(e => e.Status == OperationStatus.NotStarted && e.DocumentId == docId);
+
+            var analysesAndRelatedEvents = allAnalysesEvents
+                .Where(a => a.Status != OperationStatus.NotStarted)
+                .GroupBy(a => a.TaskId);
+
+
+            return analysesAndRelatedEvents.Select(events =>
+                    events.OrderByDescending(e => e.OccurenceDate).First())
+                .Select(latestEvent => new AnalysisStatusDto(latestEvent))
+                .Select(a => a with { DocumentName = GetInitialEvent(a.DocumentId).DocumentName })
+                .ToList();
+        }
+
+
+        public async Task<AnalysisStatusDto> GetByIdAsync(Guid userId, Guid taskId)
+        {
+            var latestStatus =
+                await GetLatestStatusChangeByAsync((e => e.TaskId == taskId), userId);
+
+            return new(latestStatus);
+        }
+
+        public async Task<AnalysisStatusDto> GetByDocumentIdAsync(Guid userId, Guid documentId)
+        {
+            var latestStatus =
+                await GetLatestStatusChangeByAsync((e => e.DocumentId == documentId), userId);
+
+            return new(latestStatus);
+        }
+
+        private async Task<DocumentAnalysisStatusChangedEvent> GetLatestStatusChangeByAsync(
+            Predicate<DocumentAnalysisStatusChangedEvent> selector, Guid userId)
+        {
+            var analyses = await _facade.GetAllUserDocumentAnalysesAsync(userId);
+            var analysisStatusChanges = analyses.Where(ev => selector(ev));
+
+            return analysisStatusChanges
+                .OrderByDescending(s => s.OccurenceDate)
+                .First();
         }
     }
 }

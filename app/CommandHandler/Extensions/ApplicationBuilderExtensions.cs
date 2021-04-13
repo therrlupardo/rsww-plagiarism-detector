@@ -1,8 +1,8 @@
 using System;
 using System.Threading;
 using CommandHandler.Handlers;
-using Commands;
 using Microsoft.AspNetCore.Builder;
+using OperationContracts;
 using RawRabbit;
 
 namespace CommandHandler.Extensions

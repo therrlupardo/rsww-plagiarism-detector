@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Queries;
-using Queries.Enums;
+using OperationContracts;
+using OperationContracts.Enums;
 
 namespace QueryService.Mock
 {
@@ -80,7 +80,7 @@ namespace QueryService.Mock
 
         public static AnalysisFile GetAnalysisById(Guid id, Guid userId)
         {
-            return _analysisFiles.First(file => file.Id.Equals(id) && file.UserId.Equals(userId));
+            return _analysisFiles.First(file => file.DocumentId.Equals(id) && file.UserId.Equals(userId));
         }
 
         public static List<SourceFile> GetAllSources()

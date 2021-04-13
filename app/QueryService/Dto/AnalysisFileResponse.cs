@@ -1,5 +1,5 @@
 using System;
-using Queries;
+using OperationContracts;
 
 namespace QueryService.Dto
 {
@@ -12,13 +12,11 @@ namespace QueryService.Dto
         double Result)
     {
         public AnalysisFileResponse(AnalysisFile file) : this(
-            file.Id,
+            file.DocumentId,
             file.UserId,
             file.FileName,
             Enum.GetName(file.Status),
             file.Date,
-            file.Result)
-        {
-        }
+            file.Result) { }
     }
 }

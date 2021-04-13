@@ -1,12 +1,13 @@
 ﻿using System;
-using Queries.Enums;
+using OperationContracts.Enums;
 
 namespace EventsFacade.Events
 {
     public record DocumentAnalysisStatusChangedEvent : BaseEvent
     {
-        public Guid TaskId { get; set; }
-        public Guid FileId { get; set; }
-        public OperationStatus Status { get; set; }
+        public Guid TaskId { get; init; }
+        public Guid DocumentId { get; init; }
+        public OperationStatus Status { get; init; }
+        public string DocumentName { get; init; }
     }
 }

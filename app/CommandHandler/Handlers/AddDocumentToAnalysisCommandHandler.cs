@@ -1,26 +1,29 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Commands;
 using EventsFacade;
+using OperationContracts;
+using OperationContracts.Enums;
 
 namespace CommandHandler.Handlers
 {
     public class AddDocumentToAnalysisCommandHandler : IHandler<AddDocumentToAnalysisCommand>
     {
-        private readonly DocumentsToAnalysisFacade _documentsToAnalyzeFacade;
+        private readonly AnalysisFacade _analysisFacade;
 
-        public AddDocumentToAnalysisCommandHandler(DocumentsToAnalysisFacade documentsToAnalyzeFacade)
+        public AddDocumentToAnalysisCommandHandler(AnalysisFacade analysisFacade)
         {
-            _documentsToAnalyzeFacade = documentsToAnalyzeFacade;
+            _analysisFacade = analysisFacade;
         }
 
-        public async Task<Result> HandleAsync(AddDocumentToAnalysisCommand toAnalysisCommand, CancellationToken cancellationToken)
+
+        public async Task<Result> HandleAsync(AddDocumentToAnalysisCommand command, CancellationToken cancellationToken)
         {
-            Console.WriteLine($"[VerifyDocumentCommandHandler] received command {toAnalysisCommand}");
+            Console.WriteLine($"[VerifyDocumentCommandHandler] received command {command}");
 
             //INFO: The file should be persisted with key of toAnalysisCommand.TaskId
-            await _documentsToAnalyzeFacade.SaveDocumentToAnalysisAddedAsync(toAnalysisCommand);
+            await _analysisFacade.SaveDocumentAnalysisStatusChangedEventAsync(
+                command.FileId, Guid.Empty, command.IssuedOn, command.UserId, OperationStatus.NotStarted, command.FileToVerify.FileName);
 
             return Result.Success();
         }
