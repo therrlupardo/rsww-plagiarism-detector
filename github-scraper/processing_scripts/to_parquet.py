@@ -9,7 +9,7 @@ import pandas as pd  # pip install pandas
 import pyarrow as pa  # pip install pyarrow
 import pyarrow.parquet as pq
 
-if len(sys.argv) != 2:
+if len(sys.argv) < 2:
     exit()
 
 df = pd.DataFrame(columns=['UserId', 'FileId', 'Repository', 'FileName', 'FileContent'])
@@ -56,21 +56,43 @@ def process_dir(repo, dir):
         if len(file.split(".")) < 2 or file.split(".")[-1] != "py":
             continue
         with open(dir + "/" + file, 'r') as fileF:
-            data = fileF.read()
-            file_content = remove_comments_and_docstrings(data)
 
-            df = df.append({'UserId': "", 'FileId': "",
-                            'Repository': str(repo), 'FileName': str(file),
-                            'FileContent': str(file_content)},
-                           ignore_index=True)
+            try:
+                data = fileF.read()
+                file_content = remove_comments_and_docstrings(data)
+                df = df.append({'UserId': "", 'FileId': "",
+                                'Repository': str(repo), 'FileName': str(file),
+                                'FileContent': str(file_content)},
+                               ignore_index=True)
+            except: pass
 
 
+counter = 0
+skipped = 0
+currentPercentage = 0.1
 for file_name in os.listdir(directory):
-    file = tarfile.open(directory + file_name)
     # extracting file
-    file.extractall(directory + "tmp")
-    process_dir(file_name, directory + "tmp")
-    shutil.rmtree(directory + "tmp")
+    counter += 1
+    try:
+        file = tarfile.open(directory + file_name)
+        file.extractall("tmp")
+        file.close()
+        process_dir(file_name, "tmp")
+
+    except:
+        skipped += 1
+
+    shutil.rmtree("tmp")
+
+    if counter/len(os.listdir(directory)) >= currentPercentage:
+        print("{:.2f}%".format(counter/len(os.listdir(directory)) * 100))
+        print("processed: {}".format(counter))
+        print("skipped: {}".format(skipped))
+        currentPercentage += 0.1
+
 
 table = pa.Table.from_pandas(df)
 pq.write_table(table, 'dataset.parquet')
+
+if len(sys.argv) == 3 and sys.argv[2] == "true":
+    df.to_csv("dataset.csv")
