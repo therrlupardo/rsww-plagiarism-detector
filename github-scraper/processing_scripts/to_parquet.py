@@ -71,6 +71,8 @@ counter = 0
 skipped = 0
 currentPercentage = 0.1
 for file_name in os.listdir(directory):
+    if os.path.exists("tmp"):
+        shutil.rmtree("tmp")
     # extracting file
     counter += 1
     try:
@@ -81,8 +83,6 @@ for file_name in os.listdir(directory):
 
     except:
         skipped += 1
-
-    shutil.rmtree("tmp")
 
     if counter/len(os.listdir(directory)) >= currentPercentage:
         print("{:.2f}%".format(counter/len(os.listdir(directory)) * 100))
