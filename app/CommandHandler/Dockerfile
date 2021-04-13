@@ -2,8 +2,7 @@ FROM mcr.microsoft.com/dotnet/sdk:5.0-buster-slim AS build
 WORKDIR /src
 
 COPY CommandHandler/ ./CommandHandler/
-COPY Commands/ ./Commands/
-COPY Queries/ ./Queries/
+COPY OperationContracts/ ./OperationContracts/
 COPY Common/ ./Common/
 COPY Queries/ ./Queries/
 COPY EventsFacade/ ./EventsFacade/

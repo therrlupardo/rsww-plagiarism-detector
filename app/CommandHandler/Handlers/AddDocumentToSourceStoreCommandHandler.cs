@@ -1,8 +1,8 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Commands;
 using EventsFacade;
+using OperationContracts;
 
 namespace CommandHandler.Handlers
 {
@@ -19,7 +19,7 @@ namespace CommandHandler.Handlers
         {
             Console.WriteLine($"[AddDocumentToSourceStoreCommandHandler] received command {command}");
 
-            await _sourceDocumentFacade.SaveDocumentAddedToSource(command);
+            await _sourceDocumentFacade.SaveDocumentAddedToSource(command.File.FileName, command.FileId, command.UserId);
 
             return Guid.NewGuid().ToSuccessfulResult();
         }

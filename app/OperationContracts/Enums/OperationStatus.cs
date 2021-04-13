@@ -1,9 +1,10 @@
 using System.ComponentModel;
 
-namespace Queries.Enums
+namespace OperationContracts.Enums
 {
     public enum OperationStatus
     {
+        [Description("NOT STARTED")] NotStarted,
         [Description("WAITING")] Waiting,
         [Description("RUNNING")] Running,
         [Description("COMPLETE")] Complete

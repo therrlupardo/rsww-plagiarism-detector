@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using EventsFacade;
-using Queries;
-using Queries.Enums;
+using OperationContracts;
+using OperationContracts.Enums;
 using QueryService.Mock;
 
 namespace QueryService.Services.Implementations

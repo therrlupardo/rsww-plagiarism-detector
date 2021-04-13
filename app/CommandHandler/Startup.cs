@@ -1,6 +1,5 @@
 using CommandHandler.Extensions;
 using CommandHandler.Handlers;
-using Commands;
 using Common.Extensions;
 using EventsFacade;
 using EventsFacade.Utilities;
@@ -9,6 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using OperationContracts;
 
 namespace CommandHandler
 {
@@ -31,6 +31,7 @@ namespace CommandHandler
 
             services.AddTransient<IHandler<AddDocumentToSourceStoreCommand>, AddDocumentToSourceStoreCommandHandler>();
             services.AddTransient<IHandler<AddDocumentToAnalysisCommand>, AddDocumentToAnalysisCommandHandler>();
+        services.AddTransient<IHandler<AnalyzeDocumentCommand>, AnalyzeDocumentCommandHandler>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -40,6 +41,7 @@ namespace CommandHandler
                 app.UseDeveloperExceptionPage();
             app.AddRabbitMqCommandHandler<AddDocumentToSourceStoreCommand>();
             app.AddRabbitMqCommandHandler<AddDocumentToAnalysisCommand>();
+            app.AddRabbitMqCommandHandler<AnalyzeDocumentCommand>();
         }
     }
 }

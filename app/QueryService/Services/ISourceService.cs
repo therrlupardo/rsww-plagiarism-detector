@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Queries;
+using OperationContracts;
 
 namespace QueryService.Services
 {
@@ -9,6 +9,7 @@ namespace QueryService.Services
     {
         Task<IEnumerable<SourceFile>> GetAllSourceFilesAsync();
 
+        // Dunno if this will get an actual implementation
         SourceFile GetById(Guid id);
     }
 }

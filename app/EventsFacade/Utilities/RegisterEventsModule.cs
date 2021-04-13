@@ -11,11 +11,9 @@ namespace EventsFacade.Utilities
 
             services.AddTransient<IDocumentAnalysisService, DocumentAnalysisService>();
             services.AddTransient<ISourceDocumentsService, SourceDocumentsService>();
-            services.AddTransient<IDocumentsToAnalysisService, DocumentsToAnalysisService>();
 
             services.AddTransient<SourceDocumentFacade>();
             services.AddTransient<AnalysisFacade>();
-            services.AddTransient<DocumentsToAnalysisFacade>();
 
             return services;
         }

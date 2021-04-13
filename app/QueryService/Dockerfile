@@ -3,8 +3,7 @@ WORKDIR /src
 
 COPY QueryService/ ./QueryService/
 COPY Common/ ./Common/
-COPY Queries/ ./Queries/
-COPY Commands/ ./Commands/
+COPY OperationContracts/ ./OperationContracts/
 COPY EventsFacade/ ./EventsFacade
 
 
