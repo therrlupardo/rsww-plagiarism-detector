@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using EventStore.Client;
@@ -36,7 +37,7 @@ namespace QueryService.Controllers
             }
             catch (StreamNotFoundException e)
             {
-                return new NotFoundResult();
+                return new OkObjectResult(new List<SourceFileResponse>());
             }
         }
 
