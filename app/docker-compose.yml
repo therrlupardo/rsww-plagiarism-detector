@@ -1,6 +1,16 @@
 version: "3.2"
 
 services:
+  # perf-test:
+  #   image: rsww/perf-test:${TAG:-latest}
+  #   build:
+  #     context: .
+  #     dockerfile: locust-performance-tests/Dockerfile
+  #   networks:
+  #     - frontend
+  #   depends_on:
+  #     - frontend
+
   frontend:
     image: rsww/frontend:${TAG:-latest}
     build:
@@ -20,6 +30,7 @@ services:
     build:
       context: .
       dockerfile: ApiGateway/Dockerfile
+      network: host
     networks:
       - frontend
       - backend
@@ -62,11 +73,8 @@ services:
       network: host
     networks:
       - backend
-    expose:
-      - "1113"
-      - "2113"
     depends_on:
-      - eventstore.db
+      - eventstore
 
   command-handler:
     image: rsww/command-handler:${TAG:-latest}
@@ -76,12 +84,9 @@ services:
       network: host
     networks:
       - backend
-    expose:
-      - "1113"
-      - "2113"
     depends_on:
       - rabbitmq
-      - eventstore.db
+      - eventstore
 
   rabbitmq:
     image: rabbitmq:3-management
@@ -101,14 +106,16 @@ services:
       retries: 3
 
   postgres:
-    image: postgres:13-alpine
+    image: rsww/postgres:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: db-scripts/Dockerfile
     environment:
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     volumes:
       - local_postgres_data:/var/lib/postgresql/data
-      - ./db-scripts:/docker-entrypoint-initdb.d
     networks:
       - auth_db
     healthcheck:
@@ -116,7 +123,7 @@ services:
       interval: 10s
       timeout: 5s
 
-  eventstore.db:
+  eventstore:
     image: eventstore/eventstore:21.2.0-buster-slim
     environment:
       - EVENTSTORE_CLUSTER_SIZE=1
