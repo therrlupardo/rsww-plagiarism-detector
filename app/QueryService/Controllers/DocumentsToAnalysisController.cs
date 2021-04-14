@@ -1,5 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Common.Utils;
+using EventStore.Client;
 using Microsoft.AspNetCore.Mvc;
 using QueryService.Services;
 
@@ -29,9 +31,16 @@ namespace QueryService.Controllers
         public async Task<IActionResult> GetUsersDocumentsToAnalysis([FromHeader] string authorization)
         {
             var model = JwtUtil.GetUserIdFromToken(authorization);
-            var documents = await _documentsToAnalysisService.GetDocumentsToAnalysis(model.UserId);
+            try
+            {
+                var documents = await _documentsToAnalysisService.GetDocumentsToAnalysis(model.UserId);
+                return new OkObjectResult(documents);
+            }
+            catch (StreamNotFoundException e)
+            {
+                return new NotFoundResult();
+            }
 
-            return new OkObjectResult(documents);
         }
 
         [HttpGet("withLatestStatus")]
@@ -39,9 +48,15 @@ namespace QueryService.Controllers
         public async Task<IActionResult> GetUserDocumentsWithLatestStatuses([FromHeader] string authorization)
         {
             var model = JwtUtil.GetUserIdFromToken(authorization);
-            var documents = await _documentsToAnalysisService.GetDocumentsWithLatestAnalysisStatuses(model.UserId);
-
-            return new OkObjectResult(documents);
+            try
+            {
+                var documents = await _documentsToAnalysisService.GetDocumentsWithLatestAnalysisStatuses(model.UserId);
+                return new OkObjectResult(documents);
+            }
+            catch (StreamNotFoundException ex)
+            {
+                return new NotFoundResult();
+            }
         }
 
     }

@@ -1,13 +1,16 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Common.Utils;
+using EventStore.Client;
 using Microsoft.AspNetCore.Mvc;
 using OperationContracts;
 using OperationContracts.Enums;
 using QueryService.Dto;
 using QueryService.Dto.Utilities;
 using QueryService.Services;
+using QueryService.Services.Implementations;
 
 namespace QueryService.Controllers
 {
@@ -46,6 +49,10 @@ namespace QueryService.Controllers
             {
                 return new NotFoundResult();
             }
+            catch (StreamNotFoundException exception)
+            {
+                return new NotFoundResult();
+            }
         }
 
         [HttpGet("{id:guid}/report")]
@@ -66,6 +73,10 @@ namespace QueryService.Controllers
             {
                 return new NotFoundResult();
             }
+            catch (StreamNotFoundException exception)
+            {
+                return new NotFoundResult();
+            }
         }
 
         /// <summary>
@@ -79,13 +90,20 @@ namespace QueryService.Controllers
         public async Task<IActionResult> GetUserAnalyses([FromHeader] string authorization)
         {
             var model = JwtUtil.GetUserIdFromToken(authorization);
-            var allAnalysis = await _analysisService.GetUserAnalysesAsync(model.UserId);
+            try
+            {
+                var allAnalysis = await _analysisService.GetUserAnalysesAsync(model.UserId);
+                var dtos = allAnalysis.Select(analysis => new AnalysisDto(analysis.DocumentName, analysis.DocumentId,
+                    analysis.TaskId, Enum.GetName(typeof(OperationStatus), analysis.Status),
+                    analysis.LatestChangeDate));
 
-            var dtos = allAnalysis.Select(analysis => new AnalysisDto(analysis.DocumentName, analysis.DocumentId, analysis.TaskId, Enum.GetName(typeof(OperationStatus), analysis.Status), analysis.LatestChangeDate));
-
-            return new OkObjectResult(dtos);
+                return new OkObjectResult(dtos);
+            }
+            catch (StreamNotFoundException ex)
+            {
+                return new OkObjectResult(new List<AnalysisDto>());
+            }
         }
-
     }
 
     public record AnalysisDto(string DocumentName, Guid DocumentId, Guid TaskId, string OperationStatus,
