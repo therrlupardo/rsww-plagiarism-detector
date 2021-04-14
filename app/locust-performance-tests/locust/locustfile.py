@@ -178,19 +178,19 @@ class LoggedInUserSteps(TaskSet):
             logging.info(f'{json.loads(response.text)}')
             # logging.info(f'Request - get test file analysis status with task_id ({task_id})')
 
-    @task
-    def stop(self):
-        uploaded_test_files = len(COUNTER_UPLOAD_TEST_FILES) > 50
-        requested_test_files_list = len(COUNTER_REQUEST_TEST_FILES_LIST) > 1000
-        uploaded_model_files = len(COUNTER_UPLOAD_MODEL_FILES) > 100
-        requested_model_files = len(COUNTER_REQUEST_MODEL_FILES) > 1000
-        requested_test_file_analysis = len(COUNTER_REQUEST_TEST_FILE_ANALYSIS) > 1000
-        requested_test_file_analysis_status = len(COUNTER_REQUEST_TEST_FILE_ANALYSIS_STATUS) > 2000
+    # @task
+    # def stop(self):
+    #     uploaded_test_files = len(COUNTER_UPLOAD_TEST_FILES) > 50
+    #     requested_test_files_list = len(COUNTER_REQUEST_TEST_FILES_LIST) > 1000
+    #     uploaded_model_files = len(COUNTER_UPLOAD_MODEL_FILES) > 100
+    #     requested_model_files = len(COUNTER_REQUEST_MODEL_FILES) > 1000
+    #     requested_test_file_analysis = len(COUNTER_REQUEST_TEST_FILE_ANALYSIS) > 1000
+    #     requested_test_file_analysis_status = len(COUNTER_REQUEST_TEST_FILE_ANALYSIS_STATUS) > 2000
 
-        if uploaded_test_files and requested_test_files_list and uploaded_model_files and requested_model_files and requested_test_file_analysis and requested_test_file_analysis_status:
-            logging.info(f'################## TEST FINISHED ##################')
-            self.user.environment.reached_end = True
-            self.user.environment.runner.quit()
+    #     if uploaded_test_files and requested_test_files_list and uploaded_model_files and requested_model_files and requested_test_file_analysis and requested_test_file_analysis_status:
+    #         logging.info(f'################## TEST FINISHED ##################')
+    #         self.user.environment.reached_end = True
+    #         self.user.environment.runner.quit()
 
 
 class User(HttpUser):
