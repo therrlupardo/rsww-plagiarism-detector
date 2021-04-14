@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using EventStore.Client;
 using Microsoft.AspNetCore.Mvc;
 using QueryService.Dto;
 using QueryService.Services;
@@ -27,9 +28,16 @@ namespace QueryService.Controllers
         [Produces("application/json")]
         public async Task<IActionResult> GetAllSources()
         {
-            var sourceFiles = await _sourceService.GetAllSourceFilesAsync();
-            var dtos = sourceFiles.Select(f => new SourceFileResponse(f));
-            return new OkObjectResult(dtos);
+            try
+            {
+                var sourceFiles = await _sourceService.GetAllSourceFilesAsync();
+                var dtos = sourceFiles.Select(f => new SourceFileResponse(f));
+                return new OkObjectResult(dtos);
+            }
+            catch (StreamNotFoundException e)
+            {
+                return new NotFoundResult();
+            }
         }
 
         /// <summary>
@@ -49,6 +57,10 @@ namespace QueryService.Controllers
                 return new OkObjectResult(new SourceFileResponse(sourceFile));
             }
             catch (InvalidOperationException e)
+            {
+                return new NotFoundResult();
+            }
+            catch (StreamNotFoundException e)
             {
                 return new NotFoundResult();
             }
