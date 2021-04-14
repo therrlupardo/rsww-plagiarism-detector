@@ -29,7 +29,7 @@ COUNTER_REQUEST_MODEL_FILES = []
 COUNTER_REQUEST_TEST_FILE_ANALYSIS = []
 COUNTER_REQUEST_TEST_FILE_ANALYSIS_STATUS = []
 
-START_TEST = [True]
+START_TEST = [False]
 
 
 def _get_image_part(path, file_content_type='text/x-python'):
@@ -195,7 +195,7 @@ class LoggedInUserSteps(TaskSet):
 
 class User(HttpUser):
     tasks = [LoggedInUserSteps]
-    wait_time = between(20, 80)
+    wait_time = between(10, 20)
     sock = None
 
     def on_start(self):
