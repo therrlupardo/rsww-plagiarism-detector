@@ -29,7 +29,7 @@ COUNTER_REQUEST_MODEL_FILES = []
 COUNTER_REQUEST_TEST_FILE_ANALYSIS = []
 COUNTER_REQUEST_TEST_FILE_ANALYSIS_STATUS = []
 
-START_TEST = [False]
+START_TEST = [True]
 
 
 def _get_image_part(path, file_content_type='text/x-python'):
@@ -73,8 +73,8 @@ class LoggedInUserSteps(TaskSet):
     def _users_created(self):
         response = self.client.request('GET', '/api/identity/all', headers=self.headers)
         users_list = json.loads(response.text)
-        return len(users_list) != 1
-        # return len(users_list) == 1
+        # return len(users_list) != 1
+        return len(users_list) == 1
 
     def _register(self):
         headers = copy.deepcopy(self.headers)
@@ -174,27 +174,28 @@ class LoggedInUserSteps(TaskSet):
             headers = copy.deepcopy(self.headers)
             headers['Content-Type'] = 'application/json'
 
-            self.client.request('GET', f'/api/analysis/{task_id}', headers=headers)
+            response = self.client.request('GET', f'/api/analysis/{task_id}', headers=headers)
+            logging.info(f'{json.loads(response.text)}')
             # logging.info(f'Request - get test file analysis status with task_id ({task_id})')
 
-    # @task
-    # def stop(self):
-    #     uploaded_test_files = len(COUNTER_UPLOAD_TEST_FILES) > 50
-    #     requested_test_files_list = len(COUNTER_REQUEST_TEST_FILES_LIST) > 1000
-    #     uploaded_model_files = len(COUNTER_UPLOAD_MODEL_FILES) > 100
-    #     requested_model_files = len(COUNTER_REQUEST_MODEL_FILES) > 1000
-    #     requested_test_file_analysis = len(COUNTER_REQUEST_TEST_FILE_ANALYSIS) > 1000
-    #     requested_test_file_analysis_status = len(COUNTER_REQUEST_TEST_FILE_ANALYSIS_STATUS) > 2000
-    #
-    #     if uploaded_test_files and requested_test_files_list and uploaded_model_files and requested_model_files and requested_test_file_analysis and requested_test_file_analysis_status:
-    #         logging.info(f'################## TEST FINISHED ##################')
-    #         self.user.environment.reached_end = True
-    #         self.user.environment.runner.quit()
+    @task
+    def stop(self):
+        uploaded_test_files = len(COUNTER_UPLOAD_TEST_FILES) > 50
+        requested_test_files_list = len(COUNTER_REQUEST_TEST_FILES_LIST) > 1000
+        uploaded_model_files = len(COUNTER_UPLOAD_MODEL_FILES) > 100
+        requested_model_files = len(COUNTER_REQUEST_MODEL_FILES) > 1000
+        requested_test_file_analysis = len(COUNTER_REQUEST_TEST_FILE_ANALYSIS) > 1000
+        requested_test_file_analysis_status = len(COUNTER_REQUEST_TEST_FILE_ANALYSIS_STATUS) > 2000
+
+        if uploaded_test_files and requested_test_files_list and uploaded_model_files and requested_model_files and requested_test_file_analysis and requested_test_file_analysis_status:
+            logging.info(f'################## TEST FINISHED ##################')
+            self.user.environment.reached_end = True
+            self.user.environment.runner.quit()
 
 
 class User(HttpUser):
     tasks = [LoggedInUserSteps]
-    wait_time = between(10, 20)
+    wait_time = between(20, 80)
     sock = None
 
     def on_start(self):

@@ -4,7 +4,6 @@ WORKDIR /src
 COPY CommandHandler/ ./CommandHandler/
 COPY OperationContracts/ ./OperationContracts/
 COPY Common/ ./Common/
-COPY Queries/ ./Queries/
 COPY EventsFacade/ ./EventsFacade/
 
 RUN dotnet restore CommandHandler/CommandHandler.csproj &&\
