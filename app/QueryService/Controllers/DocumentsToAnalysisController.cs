@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Common.Utils;
 using EventStore.Client;
 using Microsoft.AspNetCore.Mvc;
+using QueryService.Dto;
 using QueryService.Services;
+using QueryService.Services.Implementations;
 
 namespace QueryService.Controllers
 {
@@ -38,7 +41,7 @@ namespace QueryService.Controllers
             }
             catch (StreamNotFoundException e)
             {
-                return new NotFoundResult();
+                return new OkObjectResult(new List<DocumentToAnalysisResponse>());
             }
 
         }
@@ -55,7 +58,7 @@ namespace QueryService.Controllers
             }
             catch (StreamNotFoundException ex)
             {
-                return new NotFoundResult();
+                return new OkObjectResult(new List<AnalysisStatusDto>());
             }
         }
 
