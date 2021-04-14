@@ -2,7 +2,7 @@
 
 ## Architecture scheme
 
-![Architecture scheme][docs/images/architecture-scheme.png]
+![Architecture scheme](docs/images/architecture-scheme.png)
 
 ## Running using docker-compose
 
