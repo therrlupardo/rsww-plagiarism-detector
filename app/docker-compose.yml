@@ -106,16 +106,18 @@ services:
       retries: 3
 
   postgres:
-    image: rsww/postgres:${TAG:-latest}
-    build:
-      context: .
-      dockerfile: db-scripts/Dockerfile
+    # image: rsww/postgres:${TAG:-latest}
+    image: postgres:13-alpine
+    # build:
+    #   context: .
+    #   dockerfile: db-scripts/Dockerfile
     environment:
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     volumes:
       - local_postgres_data:/var/lib/postgresql/data
+      - ./db-scripts:/docker-entrypoint-initdb.d
     networks:
       - auth_db
     healthcheck:
