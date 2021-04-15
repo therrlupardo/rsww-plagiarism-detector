@@ -6,7 +6,7 @@ CREATE TABLE Users (
     Password VARCHAR(100) NOT NULL
 );
 INSERT INTO Users(Id,Login,Password) VALUES ('a81bc81b-dead-4e5d-abff-90865d1e13b1','admin','8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918');
-INSERT INTO Users(Id,Login,Password) VALUES ('7faa4dad-afe9-4982-ab37-045aeb1a84b0','user0','8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918');
+INSERT INTO Users(Id,Login,Password) VALUES ('7faa4dad-afe9-4982-ab37-045aeb1a84b0','user1000','8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918');
 INSERT INTO Users(Id,Login,Password) VALUES ('c209c580-7b33-42ab-b643-dcc119d7b09a','user1','8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918');
 INSERT INTO Users(Id,Login,Password) VALUES ('05126c4f-9d16-46fc-9858-d4b349abe42a','user2','8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918');
 INSERT INTO Users(Id,Login,Password) VALUES ('9881bdbe-2f14-4130-ac9e-883f86f2d752','user3','8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918');
