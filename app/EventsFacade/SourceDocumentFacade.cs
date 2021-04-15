@@ -13,7 +13,7 @@ namespace EventsFacade
     public class SourceDocumentFacade
     {
         private readonly ISourceDocumentsService _sourceDocumentsService;
-        private readonly DocumentAnalysisService _analysisService;
+
 
         public SourceDocumentFacade(ISourceDocumentsService sourceDocumentsService)
         {

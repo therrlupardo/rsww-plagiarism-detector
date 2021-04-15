@@ -73,7 +73,7 @@ class LoggedInUserSteps(TaskSet):
     def _users_created(self):
         response = self.client.request('GET', '/api/identity/all', headers=self.headers)
         users_list = json.loads(response.text)
-        # return len(users_list) != 1
+        #return len(users_list) != 1
         return len(users_list) == 1
 
     def _register(self):

@@ -14,6 +14,7 @@ namespace EventsFacade.Services
     {
         private readonly EventStoreClient _storeClient;
 
+
         protected EventService(EventStoreClient storeClient)
         {
             _storeClient = storeClient;
@@ -27,7 +28,6 @@ namespace EventsFacade.Services
             var textEvents = await events
                 .Select(ent => Encoding.UTF8.GetString(ent.Event.Data.ToArray()))
                 .ToListAsync();
-
 
             var deserialized = textEvents.Select(decoded => JsonSerializer.Deserialize<TEvent>(decoded, new JsonSerializerOptions{ReferenceHandler = ReferenceHandler.Preserve}))
                 .ToList();
@@ -44,6 +44,13 @@ namespace EventsFacade.Services
                 JsonSerializer.SerializeToUtf8Bytes(@event));
 
             await _storeClient.AppendToStreamAsync(stream, StreamState.Any, new []{eventData});
+        }
+
+        protected async Task<ulong> GetStreamRevision(string stream)
+        {
+            var meta =  await _storeClient.GetStreamMetadataAsync(stream);
+            var rev = meta.MetastreamRevision?.ToUInt64();
+            return rev ?? 0;
         }
     }
 }
