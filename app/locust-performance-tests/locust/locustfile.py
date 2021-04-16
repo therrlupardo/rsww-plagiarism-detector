@@ -61,8 +61,8 @@ class LoggedInUserSteps(TaskSet):
 
             self.login, self.password = USERS_CREDENTIALS_LIST.pop()
 
-            if not self._users_created():
-                self._register()
+            #if not self._users_created():
+            #   self._register()
 
             self._login()
 
@@ -73,7 +73,7 @@ class LoggedInUserSteps(TaskSet):
     def _users_created(self):
         response = self.client.request('GET', '/api/identity/all', headers=self.headers)
         users_list = json.loads(response.text)
-        # return len(users_list) != 1
+        return len(users_list) != 1
         return len(users_list) == 1
 
     def _register(self):
@@ -195,7 +195,7 @@ class LoggedInUserSteps(TaskSet):
 
 class User(HttpUser):
     tasks = [LoggedInUserSteps]
-    wait_time = between(10, 20)
+    wait_time = between(2,5)
     sock = None
 
     def on_start(self):

@@ -4,7 +4,6 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using EventsFacade.Events;
 using EventsFacade.Services;
-using OperationContracts;
 
 [assembly: InternalsVisibleTo("EventsFacade.Tests")]
 
@@ -13,7 +12,7 @@ namespace EventsFacade
     public class SourceDocumentFacade
     {
         private readonly ISourceDocumentsService _sourceDocumentsService;
-        private readonly DocumentAnalysisService _analysisService;
+
 
         public SourceDocumentFacade(ISourceDocumentsService sourceDocumentsService)
         {

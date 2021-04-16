@@ -21,8 +21,9 @@ namespace QueryService.Services.Implementations
         {
             var allAnalysesEvents = await _facade.GetAllUserDocumentAnalysesAsync(userId);
 
+
             DocumentAnalysisStatusChangedEvent GetInitialEvent(Guid docId) =>
-                allAnalysesEvents.First(e => e.Status == OperationStatus.NotStarted && e.DocumentId == docId);
+                allAnalysesEvents.FirstOrDefault(e => e.Status == OperationStatus.NotStarted && e.DocumentId == docId);
 
             var analysesAndRelatedEvents = allAnalysesEvents
                 .Where(a => a.Status != OperationStatus.NotStarted)
@@ -32,7 +33,7 @@ namespace QueryService.Services.Implementations
             return analysesAndRelatedEvents.Select(events =>
                     events.OrderByDescending(e => e.OccurenceDate).First())
                 .Select(latestEvent => new AnalysisStatusDto(latestEvent))
-                .Select(a => a with { DocumentName = GetInitialEvent(a.DocumentId).DocumentName })
+                .Select(a => a with { DocumentName = GetInitialEvent(a.DocumentId)?.DocumentName ?? "No info"})
                 .ToList();
         }
 

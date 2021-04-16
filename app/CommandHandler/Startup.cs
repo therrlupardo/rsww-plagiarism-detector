@@ -1,7 +1,6 @@
 using CommandHandler.Extensions;
 using CommandHandler.Handlers;
 using Common.Extensions;
-using EventsFacade;
 using EventsFacade.Utilities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;

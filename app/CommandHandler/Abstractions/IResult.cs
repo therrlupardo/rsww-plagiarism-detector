@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace CommandHandler.Handlers
+﻿namespace CommandHandler.Handlers
 {
     public record Result
     {

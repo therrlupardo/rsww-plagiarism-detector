@@ -13,6 +13,7 @@ namespace QueryService.Services.Implementations
     {
         private readonly SourceDocumentFacade _sourceDocumentFacade;
 
+
         public SourceService(SourceDocumentFacade sourceDocumentFacade)
         {
             _sourceDocumentFacade = sourceDocumentFacade;
