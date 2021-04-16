@@ -18,8 +18,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommandHandler", "CommandHa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventsFacade", "EventsFacade\EventsFacade.csproj", "{1E657147-C3CC-4289-A9AE-EAD4662B291B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventStoreMurderer", "EventStoreMurderer\EventStoreMurderer.csproj", "{D9310EF4-92A5-4AFD-BC1B-5165EFF999B4}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -54,10 +52,6 @@ Global
 		{1E657147-C3CC-4289-A9AE-EAD4662B291B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1E657147-C3CC-4289-A9AE-EAD4662B291B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1E657147-C3CC-4289-A9AE-EAD4662B291B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D9310EF4-92A5-4AFD-BC1B-5165EFF999B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D9310EF4-92A5-4AFD-BC1B-5165EFF999B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D9310EF4-92A5-4AFD-BC1B-5165EFF999B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D9310EF4-92A5-4AFD-BC1B-5165EFF999B4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{DE26DC8E-06D1-4FCB-9397-3EE26B9976F6} = {95CB2EAC-5AA2-46BB-81D0-B32EB59E32CE}
