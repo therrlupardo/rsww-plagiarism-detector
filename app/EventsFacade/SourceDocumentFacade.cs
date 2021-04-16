@@ -4,7 +4,6 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using EventsFacade.Events;
 using EventsFacade.Services;
-using OperationContracts;
 
 [assembly: InternalsVisibleTo("EventsFacade.Tests")]
 

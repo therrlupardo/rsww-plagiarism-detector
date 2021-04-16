@@ -12,24 +12,26 @@ namespace EventsFacade.Services
 {
     public abstract class EventService
     {
-        private readonly EventStoreClient _storeClient;
-
+        protected readonly EventStoreClient _storeClient;
 
         protected EventService(EventStoreClient storeClient)
         {
             _storeClient = storeClient;
         }
 
-        protected async Task<List<TEvent>> GetAllEventsFromStream<TEvent>(string stream) where TEvent : BaseEvent
+        protected async Task<List<TEvent>> GetAllEventsFromStream<TEvent>(string stream, ulong? fromRevision = null)
+            where TEvent : BaseEvent
         {
-             var events = _storeClient.ReadStreamAsync(
-                Direction.Forwards, stream, StreamPosition.Start);
+            var events = _storeClient.ReadStreamAsync(
+                Direction.Forwards, stream,
+                fromRevision.HasValue ? new StreamPosition(fromRevision.Value) : StreamPosition.Start);
 
             var textEvents = await events
                 .Select(ent => Encoding.UTF8.GetString(ent.Event.Data.ToArray()))
                 .ToListAsync();
 
-            var deserialized = textEvents.Select(decoded => JsonSerializer.Deserialize<TEvent>(decoded, new JsonSerializerOptions{ReferenceHandler = ReferenceHandler.Preserve}))
+            var deserialized = textEvents.Select(decoded => JsonSerializer.Deserialize<TEvent>(decoded,
+                    new JsonSerializerOptions { ReferenceHandler = ReferenceHandler.Preserve }))
                 .ToList();
 
             return deserialized;
@@ -39,18 +41,13 @@ namespace EventsFacade.Services
         {
             Debug.WriteLine($"Appending data to {stream}");
 
-            var eventData = new EventData(Uuid.NewUuid(),
+            var eventData = new EventData(
+                Uuid.NewUuid(),
                 @event.GetType().Name,
                 JsonSerializer.SerializeToUtf8Bytes(@event));
 
-            await _storeClient.AppendToStreamAsync(stream, StreamState.Any, new []{eventData});
-        }
 
-        protected async Task<ulong> GetStreamRevision(string stream)
-        {
-            var meta =  await _storeClient.GetStreamMetadataAsync(stream);
-            var rev = meta.MetastreamRevision?.ToUInt64();
-            return rev ?? 0;
+            await _storeClient.AppendToStreamAsync(stream, StreamState.Any, new[] { eventData });
         }
     }
 }

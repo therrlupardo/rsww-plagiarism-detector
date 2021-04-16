@@ -27,9 +27,9 @@ namespace EventStoreMurderer
             for (int i = 0; i < count; i++)
             {
                 var eventData = new EventData(Uuid.NewUuid(), nameof(PizzaOrder),
-                    JsonSerializer.SerializeToUtf8Bytes(order));
+                    JsonSerializer.SerializeToUtf8Bytes(order) );
 
-                await _client.AppendToStreamAsync(stream, StreamState.Any, new[] { eventData });
+                var result = await _client.AppendToStreamAsync(stream, StreamState.Any, new[] { eventData });
             }
 
             watch.Stop();
