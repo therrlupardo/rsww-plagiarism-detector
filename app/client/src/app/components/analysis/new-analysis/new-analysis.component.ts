@@ -36,7 +36,7 @@ export class NewAnalysisComponent implements OnInit {
         this.isLoading = false;
       },
       (error) => {
-        console.log(error)
+        this.isLoading = false;
         if(error.status !== 500) {
           this.toastr.error('Database connection error', 'Error');
           this.isLoading = true;

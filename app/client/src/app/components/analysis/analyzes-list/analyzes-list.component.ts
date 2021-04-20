@@ -32,6 +32,7 @@ export class AnalyzesListComponent implements OnInit {
         this.isLoading = false;
       },
       (error) => {
+        this.isLoading = false;
         if(error.status !== 500) {
           this.toastr.error(DB_ERROR, 'Error');
           this.isLoading = true;
