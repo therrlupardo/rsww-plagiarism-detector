@@ -142,6 +142,15 @@ services:
       - eventstore-volume-data:/var/lib/eventstore
       - eventstore-volume-logs:/var/log/eventstore
 
+  jaeger:
+    image: jaegertracing/all-in-one
+    environment:
+      - COLLECTOR_ZIPKIN_HTTP_PORT=19411
+    ports:
+      - 16686:16686
+    networks:
+      - backend
+
 volumes:
   local_postgres_data:
   eventstore-volume-data:

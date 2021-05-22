@@ -1,3 +1,4 @@
+using Common.Extensions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -19,7 +20,11 @@ namespace ApiGateway
                     config.AddJsonFile("appsettings.json");
                     config.AddJsonFile($"configuration.{host.HostingEnvironment.EnvironmentName}.json");
                 })
-                .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    webBuilder.UseStartup<Startup>();
+                    webBuilder.UseCommonSentry();
+                });
         }
     }
 }

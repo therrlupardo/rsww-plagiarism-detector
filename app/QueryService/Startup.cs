@@ -38,6 +38,8 @@ namespace QueryService
             services.AddTransient<ISourceService, SourceService>();
             services.AddTransient<IReportService<AnalysisFile>, AnalysisReportService>();
             services.AddTransient<IDocumentsToAnalysisService, DocumentsToAnalysisService>();
+            
+            services.AddJaeger();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

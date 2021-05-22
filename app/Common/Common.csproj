@@ -11,4 +11,11 @@
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.4" />
     </ItemGroup>
 
+
+    <ItemGroup>
+        <PackageReference Include="Sentry.AspNetCore" Version="3.3.4" />
+        <PackageReference Include="Convey" Version="0.4.*" />
+        <PackageReference Include="Convey.Tracing.Jaeger" Version="0.4.*" />
+    </ItemGroup>
+
 </Project>

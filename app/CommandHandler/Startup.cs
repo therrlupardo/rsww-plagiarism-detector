@@ -30,7 +30,8 @@ namespace CommandHandler
 
             services.AddTransient<IHandler<AddDocumentToSourceStoreCommand>, AddDocumentToSourceStoreCommandHandler>();
             services.AddTransient<IHandler<AddDocumentToAnalysisCommand>, AddDocumentToAnalysisCommandHandler>();
-        services.AddTransient<IHandler<AnalyzeDocumentCommand>, AnalyzeDocumentCommandHandler>();
+            services.AddTransient<IHandler<AnalyzeDocumentCommand>, AnalyzeDocumentCommandHandler>();
+            services.AddJaeger();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
