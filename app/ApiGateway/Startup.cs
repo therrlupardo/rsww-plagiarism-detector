@@ -27,6 +27,7 @@ namespace ApiGateway
             services.AddMvc();
             services.AddOcelot();
             services.AddSwaggerForOcelot(Configuration);
+            services.AddJaeger();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
