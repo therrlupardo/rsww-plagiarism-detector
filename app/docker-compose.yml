@@ -2,7 +2,7 @@ version: "3.2"
 
 services:
   # perf-test:
-  #   image: rsww/perf-test:${TAG:-latest}
+  #   image: rsww_pr_3_perf-test:${TAG:-stable}
   #   build:
   #     context: .
   #     dockerfile: locust-performance-tests/Dockerfile
@@ -12,7 +12,7 @@ services:
   #     - frontend
 
   frontend:
-    image: rsww/frontend:${TAG:-latest}
+    image: rsww_pr_3_frontend:${TAG:-stable}
     build:
       context: .
       dockerfile: client/Dockerfile
@@ -26,7 +26,7 @@ services:
       - 8080:8080
 
   apigateway:
-    image: rsww/apigateway:${TAG:-latest}
+    image: rsww_pr_3_apigateway:${TAG:-stable}
     build:
       context: .
       dockerfile: ApiGateway/Dockerfile
@@ -34,6 +34,7 @@ services:
     networks:
       - frontend
       - backend
+      - monitoring
     environment:
       - ASPNETCORE_URLS=https://+:443;http://+:80
       - ASPNETCORE_Kestrel__Certificates__Default__Password=${CERT_PASS}
@@ -43,18 +44,19 @@ services:
       - query-service
 
   command-service:
-    image: rsww/command-service:${TAG:-latest}
+    image: rsww_pr_3_command-service:${TAG:-stable}
     build:
       context: .
       dockerfile: CommandService/Dockerfile
       network: host
     networks:
       - backend
+      - monitoring
     depends_on:
       - rabbitmq
 
   identity-service:
-    image: rsww/indentity-service:${TAG:-latest}
+    image: rsww_pr_3_indentity-service:${TAG:-stable}
     build:
       context: .
       dockerfile: IdentityService/Dockerfile
@@ -62,28 +64,31 @@ services:
     networks:
       - auth_db
       - backend
+      - monitoring
     depends_on:
       - postgres
 
   query-service:
-    image: rsww/query-service:${TAG:-latest}
+    image: rsww_pr_3_query-service:${TAG:-stable}
     build:
       context: .
       dockerfile: QueryService/Dockerfile
       network: host
     networks:
       - backend
+      - monitoring
     depends_on:
       - eventstore
 
   command-handler:
-    image: rsww/command-handler:${TAG:-latest}
+    image: rsww_pr_3_command-handler:${TAG:-stable}
     build:
       context: .
       dockerfile: CommandHandler/Dockerfile
       network: host
     networks:
       - backend
+      - monitoring
     depends_on:
       - rabbitmq
       - eventstore
@@ -106,7 +111,7 @@ services:
       retries: 3
 
   postgres:
-    # image: rsww/postgres:${TAG:-latest}
+    # image: rsww_pr_3_postgres:${TAG:-stable}
     image: postgres:13-alpine
     # build:
     #   context: .
@@ -149,7 +154,7 @@ services:
     ports:
       - 16686:16686
     networks:
-      - backend
+      - monitoring
 
 volumes:
   local_postgres_data:
@@ -160,4 +165,5 @@ networks:
   auth_db:
   backend:
   frontend:
+  monitoring:
     
