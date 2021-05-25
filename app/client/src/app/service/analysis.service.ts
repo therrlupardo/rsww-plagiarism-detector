@@ -3,12 +3,10 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 export interface AnalysisObject {
-  id: string;
-  date: Date;
-  fileName:string;
-  result: number;
-  status: string;
-  userId: string;
+  documentId: string;
+  lastChangeDate: Date;
+  documentName:string;
+  operationStatus: string;
 }
 
 export interface AnalysisFile {

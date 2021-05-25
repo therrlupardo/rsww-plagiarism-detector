@@ -18,6 +18,13 @@ namespace IdentityService.Controllers
             _identityService = identityService;
         }
 
+        [HttpGet]
+        [Route("exception")]
+        public IActionResult ThrowException()
+        {
+            throw new NotImplementedException();
+        }
+        
         /// <summary>
         ///     Checks if given credentials are valid and returns token
         /// </summary>

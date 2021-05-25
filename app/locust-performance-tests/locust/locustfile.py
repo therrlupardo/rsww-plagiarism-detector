@@ -163,7 +163,7 @@ class LoggedInUserSteps(TaskSet):
 
 class User(HttpUser):
     tasks = [LoggedInUserSteps]
-    wait_time = between(10, 20)
+    wait_time = between(2,5)
     sock = None
 
     def on_start(self):

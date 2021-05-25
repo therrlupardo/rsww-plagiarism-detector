@@ -1,13 +1,23 @@
+using System;
 using System.Reflection;
 using Common.Extensions;
+using Convey;
+using Convey.Tracing.Jaeger;
 using IdentityService.Models;
 using IdentityService.Services;
+using Jaeger;
+using Jaeger.Samplers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using OpenTracing;
+using OpenTracing.Util;
+
+using Convey.Tracing.Jaeger;
 
 namespace IdentityService
 {
@@ -44,6 +54,7 @@ namespace IdentityService
                                  .AllowAnyMethod();
                       });
             });
+            services.AddJaeger();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

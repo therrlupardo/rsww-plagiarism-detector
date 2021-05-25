@@ -10,7 +10,6 @@ using OperationContracts.Enums;
 using QueryService.Dto;
 using QueryService.Dto.Utilities;
 using QueryService.Services;
-using QueryService.Services.Implementations;
 
 namespace QueryService.Controllers
 {

@@ -14,12 +14,12 @@
         </thead>
         <tbody>
           <tr *ngFor="let item of analysisData">
-            <td>{{item.date|  date:'dd-MM-yyyy'}}</td>
-            <td>{{item.fileName}}</td>
-            <td>{{item.status}}</td>
+            <td>{{item.lastChangeDate|  date:'dd-MM-yyyy'}}</td>
+            <td>{{item.documentName}}</td>
+            <td>{{item.operationStatus}}</td>
             <td>
               <button class="btn btn-primary"
-              (click)="downloadReport(item.id)">
+              (click)="downloadReport(item.documentId)">
                 Download
               </button>
             </td>

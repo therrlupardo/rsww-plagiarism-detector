@@ -4,6 +4,19 @@
 
 ![Architecture scheme](docs/images/architecture-scheme.png)
 
+## Running using docker swarm
+
+1. Go to directory `app`
+2. Deploy stack to docker swarm: `docker stack deploy ---compose-file docker-compose-swarm.yml --compose-file docker-compose-prod.yml <stack-name>`
+3. List stack services: `docker stack services <stack-name>`
+4. Remove stack from swarm: `docker stack rm <stack-name>`
+
+Additional docker swarm commands:
+* List nodes in swarm cluster: `docker node ls`
+* List deployed stacks: `docker stack ls`
+* Get tasks of a service: `docker service ps <service>`
+* Get service logs: `docker service logs <service>`
+
 ## Running using docker-compose
 
 1. Go to directory `app`

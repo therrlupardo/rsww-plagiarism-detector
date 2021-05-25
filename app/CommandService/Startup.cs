@@ -30,6 +30,7 @@ namespace CommandService
             services.AddRabbitMqConnection(Configuration.GetSection("rabbitmq"));
             services.AddSingleton<ISourceService, SourceService>();
             services.AddSingleton<IAnalysisService, AnalysisService>();
+            services.AddJaeger();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,6 +1,8 @@
 using System;
 using System.IO;
 using System.Text;
+using Convey;
+using Convey.Tracing.Jaeger;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
@@ -87,6 +89,13 @@ namespace Common.Extensions
             var client = BusClientFactory.CreateDefault(options);
 
             services.AddSingleton<IBusClient>(_ => client);
+        }
+
+        public static void AddJaeger(this IServiceCollection services)
+        {
+            services.AddConvey()
+                .AddJaeger()
+                .Build();
         }
     }
 }

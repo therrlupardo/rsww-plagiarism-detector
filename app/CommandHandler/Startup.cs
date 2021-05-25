@@ -1,7 +1,6 @@
 using CommandHandler.Extensions;
 using CommandHandler.Handlers;
 using Common.Extensions;
-using EventsFacade;
 using EventsFacade.Utilities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -31,7 +30,8 @@ namespace CommandHandler
 
             services.AddTransient<IHandler<AddDocumentToSourceStoreCommand>, AddDocumentToSourceStoreCommandHandler>();
             services.AddTransient<IHandler<AddDocumentToAnalysisCommand>, AddDocumentToAnalysisCommandHandler>();
-        services.AddTransient<IHandler<AnalyzeDocumentCommand>, AnalyzeDocumentCommandHandler>();
+            services.AddTransient<IHandler<AnalyzeDocumentCommand>, AnalyzeDocumentCommandHandler>();
+            services.AddJaeger();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
