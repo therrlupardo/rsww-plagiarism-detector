@@ -22,14 +22,13 @@ USERS_TOKENS['NOT_FOUND'] = None
 FILES_IDS['NOT_FOUND'] = []
 TASKS_IDS['NOT_FOUND'] = []
 
-COUNTER_UPLOAD_TEST_FILES = []
-COUNTER_REQUEST_TEST_FILES_LIST = []
-COUNTER_UPLOAD_MODEL_FILES = []
-COUNTER_REQUEST_MODEL_FILES = []
-COUNTER_REQUEST_TEST_FILE_ANALYSIS = []
-COUNTER_REQUEST_TEST_FILE_ANALYSIS_STATUS = []
-
 START_TEST = [False]
+
+DEBUG = False
+
+# with client.get("/does_not_exist/", catch_response=True) as response:
+#     if response.status_code == 404:
+#         response.success()
 
 
 def _get_image_part(path, file_content_type='text/x-python'):
@@ -60,31 +59,11 @@ class LoggedInUserSteps(TaskSet):
         if len(USERS_CREDENTIALS_LIST) > 0:
 
             self.login, self.password = USERS_CREDENTIALS_LIST.pop()
-
-            #if not self._users_created():
-            #   self._register()
-
             self._login()
 
         if len(USERS_CREDENTIALS_LIST) == 0:
             START_TEST[0] = True
             logging.info(f'################## TEST STARTED ##################')
-
-    def _users_created(self):
-        response = self.client.request('GET', '/api/identity/all', headers=self.headers)
-        users_list = json.loads(response.text)
-        return len(users_list) != 1
-        return len(users_list) == 1
-
-    def _register(self):
-        headers = copy.deepcopy(self.headers)
-        headers['Content-Type'] = 'application/json'
-        body = {
-            'login': self.login,
-            'password': self.password,
-        }
-        self.client.request('POST', '/api/identity/create', data=json.dumps(body), headers=headers)
-        logging.info(f'Register with ({self.login}) login and ({self.password}) password')
 
     def _login(self):
         headers = copy.deepcopy(self.headers)
@@ -114,8 +93,8 @@ class LoggedInUserSteps(TaskSet):
             file_id = response['fileId']
             FILES_IDS[self.login].append(file_id)
 
-            # logging.info(f'Upload test file ({filename})')
-            COUNTER_UPLOAD_TEST_FILES.append(True)
+            if DEBUG:
+              logging.info(f'Upload test file ({filename})')
 
     @task(1000)
     def request_test_files_list(self):
@@ -124,8 +103,9 @@ class LoggedInUserSteps(TaskSet):
             headers['Content-Type'] = 'application/json'
 
             self.client.request('GET', '/api/analysis/all', headers=headers)
-            # logging.info('Request - get test files list')
-            COUNTER_REQUEST_TEST_FILES_LIST.append(True)
+
+            if DEBUG:
+              logging.info('Request - get test files list')
 
     @task(100)
     def upload_model_file(self):
@@ -136,8 +116,8 @@ class LoggedInUserSteps(TaskSet):
 
             self.client.request('POST', '/api/sources/create', files=file, headers=headers)
 
-            # logging.info(f'Upload model file ({filename})')
-            COUNTER_UPLOAD_MODEL_FILES.append(True)
+            if DEBUG:
+              logging.info(f'Upload model file ({filename})')
 
     @task(1000)
     def request_model_files_list(self):
@@ -146,8 +126,9 @@ class LoggedInUserSteps(TaskSet):
             headers['Content-Type'] = 'application/json'
 
             self.client.request('GET', '/api/sources/all', headers=headers)
-            # logging.info('Request - get model files list')
-            COUNTER_REQUEST_MODEL_FILES.append(True)
+
+            if DEBUG:
+              logging.info('Request - get model files list')
 
     @task(2000)
     def request_test_file_analysis(self):
@@ -163,8 +144,8 @@ class LoggedInUserSteps(TaskSet):
             task_id = response['taskId']
             TASKS_IDS[self.login].append(task_id)
 
-            # logging.info(f'Request - analyze file with file_id ({file_id})')
-            COUNTER_REQUEST_TEST_FILE_ANALYSIS.append(True)
+            if DEBUG:
+              logging.info(f'Request - analyze file with file_id ({file_id})')
 
     @task(2000)
     def request_test_file_analysis_status(self):
@@ -175,22 +156,9 @@ class LoggedInUserSteps(TaskSet):
             headers['Content-Type'] = 'application/json'
 
             response = self.client.request('GET', f'/api/analysis/{task_id}', headers=headers)
-            logging.info(f'{json.loads(response.text)}')
-            # logging.info(f'Request - get test file analysis status with task_id ({task_id})')
 
-    # @task
-    # def stop(self):
-    #     uploaded_test_files = len(COUNTER_UPLOAD_TEST_FILES) > 50
-    #     requested_test_files_list = len(COUNTER_REQUEST_TEST_FILES_LIST) > 1000
-    #     uploaded_model_files = len(COUNTER_UPLOAD_MODEL_FILES) > 100
-    #     requested_model_files = len(COUNTER_REQUEST_MODEL_FILES) > 1000
-    #     requested_test_file_analysis = len(COUNTER_REQUEST_TEST_FILE_ANALYSIS) > 1000
-    #     requested_test_file_analysis_status = len(COUNTER_REQUEST_TEST_FILE_ANALYSIS_STATUS) > 2000
-
-    #     if uploaded_test_files and requested_test_files_list and uploaded_model_files and requested_model_files and requested_test_file_analysis and requested_test_file_analysis_status:
-    #         logging.info(f'################## TEST FINISHED ##################')
-    #         self.user.environment.reached_end = True
-    #         self.user.environment.runner.quit()
+            if DEBUG:
+              logging.info(f'Request - get test file analysis status with task_id ({task_id})')
 
 
 class User(HttpUser):
