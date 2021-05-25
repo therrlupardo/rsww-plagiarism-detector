@@ -1,4 +1,4 @@
-version: "3.2"
+version: "3.9"
 
 services:
   frontend:
@@ -6,147 +6,147 @@ services:
       mode: replicated
       replicas: 1
       restart_policy:
-        condition: on-failure
+        condition: any
         delay: 5s
-    resources:
-      limits:
-        cpus: '0.5'
-        memory: 350M
-      reservations:
-        cpus: '0.1'
-        memory: 100M 
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 700M
+        reservations:
+          cpus: '0.3'
+          memory: 400M 
 
   apigateway:
     deploy:
       mode: replicated
-      replicas: 3
+      replicas: 1
       restart_policy:
-        condition: on-failure
+        condition: any
         delay: 5s
-    resources:
-      limits:
-        cpus: '0.5'
-        memory: 350M
-      reservations:
-        cpus: '0.1'
-        memory: 100M 
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 700M
+        reservations:
+          cpus: '0.3'
+          memory: 400M 
 
   command-service:
     deploy:
       mode: replicated
-      replicas: 3
+      replicas: 2
       restart_policy:
-        condition: on-failure
+        condition: any
         delay: 5s
-    resources:
-      limits:
-        cpus: '0.5'
-        memory: 350M
-      reservations:
-        cpus: '0.1'
-        memory: 100M 
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 700M
+        reservations:
+          cpus: '0.3'
+          memory: 400M 
 
   identity-service:
     deploy:
       mode: replicated
-      replicas: 3
+      replicas: 2
       restart_policy:
         condition: on-failure
         delay: 5s
-    resources:
-      limits:
-        cpus: '0.5'
-        memory: 350M
-      reservations:
-        cpus: '0.1'
-        memory: 100M 
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 700M
+        reservations:
+          cpus: '0.3'
+          memory: 400M 
 
   query-service:
     deploy:
       mode: replicated
-      replicas: 3
+      replicas: 2
       restart_policy:
-        condition: on-failure
+        condition: any
         delay: 5s
-    resources:
-      limits:
-        cpus: '0.5'
-        memory: 350M
-      reservations:
-        cpus: '0.1'
-        memory: 100M 
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 700M
+        reservations:
+          cpus: '0.3'
+          memory: 400M 
 
   command-handler:
     deploy:
       mode: replicated
-      replicas: 3
+      replicas: 2
       restart_policy:
-        condition: on-failure
+        condition: any
         delay: 5s
-    resources:
-      limits:
-        cpus: '0.5'
-        memory: 350M
-      reservations:
-        cpus: '0.1'
-        memory: 100M 
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 700M
+        reservations:
+          cpus: '0.3'
+          memory: 400M 
 
   rabbitmq:
     deploy:
       mode: replicated
       replicas: 1
       restart_policy:
-        condition: on-failure
+        condition: any
         delay: 3s
-    resources:
-      limits:
-        cpus: '0.5'
-        memory: 350M
-      reservations:
-        cpus: '0.1'
-        memory: 100M 
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 700M
+        reservations:
+          cpus: '0.3'
+          memory: 400M 
 
   postgres:
     deploy:
       mode: replicated
       replicas: 1
       restart_policy:
-        condition: on-failure
+        condition: any
         delay: 3s
-    resources:
-      limits:
-        cpus: '0.5'
-        memory: 350M
-      reservations:
-        cpus: '0.1'
-        memory: 100M 
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 700M
+        reservations:
+          cpus: '0.3'
+          memory: 400M 
 
   eventstore:
     deploy:
       mode: replicated
       replicas: 1
       restart_policy:
-        condition: on-failure
+        condition: any
         delay: 3s
-    resources:
-      limits:
-        cpus: '0.5'
-        memory: 350M
-      reservations:
-        cpus: '0.1'
-        memory: 100M 
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 700M
+        reservations:
+          cpus: '0.3'
+          memory: 400M 
 
   jaeger:
     deploy:
       mode: replicated
       replicas: 1
       restart_policy:
-        condition: on-failure
+        condition: any
         delay: 5s
-    resources:
-      limits:
-        cpus: '0.5'
-        memory: 350M
-      reservations:
-        cpus: '0.1'
-        memory: 100M 
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 700M
+        reservations:
+          cpus: '0.3'
+          memory: 400M 
