@@ -8,6 +8,13 @@ services:
       restart_policy:
         condition: on-failure
         delay: 5s
+    resources:
+      limits:
+        cpus: '0.5'
+        memory: 350M
+      reservations:
+        cpus: '0.1'
+        memory: 100M 
 
   apigateway:
     deploy:
@@ -16,6 +23,13 @@ services:
       restart_policy:
         condition: on-failure
         delay: 5s
+    resources:
+      limits:
+        cpus: '0.5'
+        memory: 350M
+      reservations:
+        cpus: '0.1'
+        memory: 100M 
 
   command-service:
     deploy:
@@ -24,6 +38,13 @@ services:
       restart_policy:
         condition: on-failure
         delay: 5s
+    resources:
+      limits:
+        cpus: '0.5'
+        memory: 350M
+      reservations:
+        cpus: '0.1'
+        memory: 100M 
 
   identity-service:
     deploy:
@@ -32,6 +53,13 @@ services:
       restart_policy:
         condition: on-failure
         delay: 5s
+    resources:
+      limits:
+        cpus: '0.5'
+        memory: 350M
+      reservations:
+        cpus: '0.1'
+        memory: 100M 
 
   query-service:
     deploy:
@@ -40,6 +68,13 @@ services:
       restart_policy:
         condition: on-failure
         delay: 5s
+    resources:
+      limits:
+        cpus: '0.5'
+        memory: 350M
+      reservations:
+        cpus: '0.1'
+        memory: 100M 
 
   command-handler:
     deploy:
@@ -48,6 +83,13 @@ services:
       restart_policy:
         condition: on-failure
         delay: 5s
+    resources:
+      limits:
+        cpus: '0.5'
+        memory: 350M
+      reservations:
+        cpus: '0.1'
+        memory: 100M 
 
   rabbitmq:
     deploy:
@@ -56,6 +98,13 @@ services:
       restart_policy:
         condition: on-failure
         delay: 3s
+    resources:
+      limits:
+        cpus: '0.5'
+        memory: 350M
+      reservations:
+        cpus: '0.1'
+        memory: 100M 
 
   postgres:
     deploy:
@@ -64,6 +113,13 @@ services:
       restart_policy:
         condition: on-failure
         delay: 3s
+    resources:
+      limits:
+        cpus: '0.5'
+        memory: 350M
+      reservations:
+        cpus: '0.1'
+        memory: 100M 
 
   eventstore:
     deploy:
@@ -72,3 +128,25 @@ services:
       restart_policy:
         condition: on-failure
         delay: 3s
+    resources:
+      limits:
+        cpus: '0.5'
+        memory: 350M
+      reservations:
+        cpus: '0.1'
+        memory: 100M 
+
+  jaeger:
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+    resources:
+      limits:
+        cpus: '0.5'
+        memory: 350M
+      reservations:
+        cpus: '0.1'
+        memory: 100M 

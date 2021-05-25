@@ -111,18 +111,14 @@ services:
       retries: 3
 
   postgres:
-    # image: rsww_pr_3_postgres:${TAG:-stable}
-    image: postgres:13-alpine
-    # build:
-    #   context: .
-    #   dockerfile: db-scripts/Dockerfile
+    image: ghcr.io/therrlupardo/rsww_pr_3_postgres:${TAG:-stable}
+    build:
+      context: .
+      dockerfile: db-scripts/Dockerfile
     environment:
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-    volumes:
-      - local_postgres_data:/var/lib/postgresql/data
-      - ./db-scripts:/docker-entrypoint-initdb.d
     networks:
       - auth_db
     healthcheck:
@@ -143,9 +139,6 @@ services:
       - EVENTSTORE_ENABLE_ATOM_PUB_OVER_HTTP=true
     networks:
       - backend
-    volumes:
-      - eventstore-volume-data:/var/lib/eventstore
-      - eventstore-volume-logs:/var/log/eventstore
 
   jaeger:
     image: jaegertracing/all-in-one
@@ -155,11 +148,6 @@ services:
       - 16686:16686
     networks:
       - monitoring
-
-volumes:
-  local_postgres_data:
-  eventstore-volume-data:
-  eventstore-volume-logs:
 
 networks:
   auth_db:
