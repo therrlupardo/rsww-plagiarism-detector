@@ -12,7 +12,7 @@ services:
   #     - frontend
 
   frontend:
-    image: rsww_pr_3_frontend:${TAG:-stable}
+    image: ghcr.io/therrlupardo/rsww_pr_3_frontend:${TAG:-stable}
     build:
       context: .
       dockerfile: client/Dockerfile
@@ -26,7 +26,7 @@ services:
       - 8080:8080
 
   apigateway:
-    image: rsww_pr_3_apigateway:${TAG:-stable}
+    image: ghcr.io/therrlupardo/rsww_pr_3_apigateway:${TAG:-stable}
     build:
       context: .
       dockerfile: ApiGateway/Dockerfile
@@ -44,7 +44,7 @@ services:
       - query-service
 
   command-service:
-    image: rsww_pr_3_command-service:${TAG:-stable}
+    image: ghcr.io/therrlupardo/rsww_pr_3_command-service:${TAG:-stable}
     build:
       context: .
       dockerfile: CommandService/Dockerfile
@@ -56,7 +56,7 @@ services:
       - rabbitmq
 
   identity-service:
-    image: rsww_pr_3_indentity-service:${TAG:-stable}
+    image: ghcr.io/therrlupardo/rsww_pr_3_indentity-service:${TAG:-stable}
     build:
       context: .
       dockerfile: IdentityService/Dockerfile
@@ -69,7 +69,7 @@ services:
       - postgres
 
   query-service:
-    image: rsww_pr_3_query-service:${TAG:-stable}
+    image: ghcr.io/therrlupardo/rsww_pr_3_query-service:${TAG:-stable}
     build:
       context: .
       dockerfile: QueryService/Dockerfile
@@ -81,7 +81,7 @@ services:
       - eventstore
 
   command-handler:
-    image: rsww_pr_3_command-handler:${TAG:-stable}
+    image: ghcr.io/therrlupardo/rsww_pr_3_command-handler:${TAG:-stable}
     build:
       context: .
       dockerfile: CommandHandler/Dockerfile
