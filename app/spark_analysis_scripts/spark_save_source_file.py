@@ -26,3 +26,5 @@ row = (user_id, file_id, repository_name, file_name, file_content)
 source_file_df = spark.createDataFrame([row], columns)
 file_repository_df = analysis_repository_df.union(source_file_df)
 file_repository_df.write.format("parquet").mode("overwrite").save(analysis_repository_path)
+
+spark.stop()

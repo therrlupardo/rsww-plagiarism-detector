@@ -59,3 +59,5 @@ for row in df.collect():
             print("Sequence in {} from byte {} = sequence from {} in source file, length = {}".format(file_repo, match.a, match.b, match.size))
             if verbose:
                 print("\x1b[31m\"{}\"\x1b[0m".format(source[match.a:match.a + match.size]))
+
+spark.stop()
