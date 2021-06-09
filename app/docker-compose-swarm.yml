@@ -84,6 +84,7 @@ services:
     networks:
       - backend
       - monitoring
+      - outside
     depends_on:
       - rabbitmq
       - eventstore
@@ -156,4 +157,7 @@ networks:
   backend:
   frontend:
   monitoring:
+  outside:
+    external:
+      name: host
     
