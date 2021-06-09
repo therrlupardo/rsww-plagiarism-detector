@@ -15,10 +15,14 @@ file_content = sys.argv[5]
 spark = SparkSession.builder.master("spark://localhost:7077").appName("rsww3_save_source_file").getOrCreate()
 
 analysis_repository_path = '/group3/data.parquet'
+tmp_path = "/group3/tmp.parquet"
 
 analysis_repository_df = spark.read.parquet(analysis_repository_path)
+analysis_repository_df.write.format("parquet").mode("overwrite").save(tmp_path)
+analysis_repository_df = spark.read.parquet(tmp_path)
+
 columns = ["UserId", "FileId", "Repository", "FileName", "FileContent"]
 row = (user_id, file_id, repository_name, file_name, file_content)
 source_file_df = spark.createDataFrame([row], columns)
 file_repository_df = analysis_repository_df.union(source_file_df)
-file_repository_df.write.parquet(analysis_repository_path)
+file_repository_df.write.format("parquet").mode("overwrite").save(analysis_repository_path)
