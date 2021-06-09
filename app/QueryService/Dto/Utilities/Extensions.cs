@@ -13,7 +13,8 @@ namespace QueryService.Dto.Utilities
                 DocumentId: dto.DocumentId,
                 FileName: dto.DocumentName,
                 Status: dto.Status,
-                UserId: userId
+                UserId: userId,
+                Result: dto.Result
             );
         }
     }

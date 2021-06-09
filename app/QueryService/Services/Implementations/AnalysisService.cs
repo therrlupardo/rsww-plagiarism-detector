@@ -31,7 +31,7 @@ namespace QueryService.Services.Implementations
 
 
             return analysesAndRelatedEvents.Select(events =>
-                    events.OrderByDescending(e => e.OccurenceDate).First())
+                    events.OrderByDescending(e => e.Status).First())
                 .Select(latestEvent => new AnalysisStatusDto(latestEvent))
                 .Select(a => a with { DocumentName = GetInitialEvent(a.DocumentId)?.DocumentName ?? "No info"})
                 .ToList();
@@ -58,11 +58,15 @@ namespace QueryService.Services.Implementations
             Predicate<DocumentAnalysisStatusChangedEvent> selector, Guid userId)
         {
             var analyses = await _facade.GetAllUserDocumentAnalysesAsync(userId);
+            DocumentAnalysisStatusChangedEvent GetInitialEvent(Guid docId) =>
+                analyses.FirstOrDefault(e => e.Status == OperationStatus.NotStarted && e.DocumentId == docId);
             var analysisStatusChanges = analyses.Where(ev => selector(ev));
 
             return analysisStatusChanges
-                .OrderByDescending(s => s.OccurenceDate)
-                .First();
+                .OrderByDescending(s => s.Status)
+                .Select(a => a with { DocumentName = GetInitialEvent(a.DocumentId)?.DocumentName ?? "No info"})
+                .First()
+                ;
         }
     }
 }

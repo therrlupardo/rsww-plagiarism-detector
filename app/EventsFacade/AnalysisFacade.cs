@@ -16,7 +16,7 @@ namespace EventsFacade
             _analysisService = analysisService;
         }
 
-        public async Task SaveDocumentAnalysisStatusChangedEventAsync(Guid documentId, Guid taskId, DateTime occurenceDate, Guid userId, OperationStatus status, string documentName = null)
+        public async Task SaveDocumentAnalysisStatusChangedEventAsync(Guid documentId, Guid taskId, DateTime occurenceDate, Guid userId, OperationStatus status,  string result = "0.0", string documentName = null)
         {
             var @event = new DocumentAnalysisStatusChangedEvent
             {
@@ -24,7 +24,8 @@ namespace EventsFacade
                 DocumentName = documentName,
                 TaskId = taskId,
                 Status = status,
-                OccurenceDate = occurenceDate
+                OccurenceDate = occurenceDate,
+                Result = result
             };
 
             await _analysisService.SaveAnalysisStatusChanged(@event, userId);

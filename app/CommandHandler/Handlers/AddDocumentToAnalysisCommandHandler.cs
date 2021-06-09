@@ -23,7 +23,7 @@ namespace CommandHandler.Handlers
 
             //INFO: The file should be persisted with key of toAnalysisCommand.TaskId
             await _analysisFacade.SaveDocumentAnalysisStatusChangedEventAsync(
-                command.FileId, Guid.Empty, command.IssuedOn, command.UserId, OperationStatus.NotStarted, command.FileToVerify.FileName);
+                command.FileId, Guid.Empty, command.IssuedOn, command.UserId, OperationStatus.NotStarted, null, command.FileToVerify.FileName);
 
             return Result.Success();
         }

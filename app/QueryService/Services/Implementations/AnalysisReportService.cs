@@ -56,7 +56,7 @@ namespace QueryService.Services.Implementations
             document.Add(table);
         }
 
-        private void AddHighlightedResultRow(PdfPTable table, double result)
+        private void AddHighlightedResultRow(PdfPTable table, string result)
         {
             table.AddCell(new PdfPCell(new Phrase("Analysis result"))
             {
@@ -71,12 +71,12 @@ namespace QueryService.Services.Implementations
                 MinimumHeight = 25,
                 VerticalAlignment = Element.ALIGN_CENTER,
                 PaddingLeft = 10,
-                BackgroundColor = result switch
-                {
-                    <= 30 => BaseColor.GREEN,
-                    <= 50 => BaseColor.YELLOW,
-                    _ => BaseColor.RED
-                }
+                // BackgroundColor = result switch
+                // {
+                //     <= 30 => BaseColor.GREEN,
+                //     <= 50 => BaseColor.YELLOW,
+                //     _ => BaseColor.RED
+                // }
             });
         }
 

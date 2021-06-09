@@ -94,7 +94,7 @@ namespace QueryService.Controllers
                 var allAnalysis = await _analysisService.GetUserAnalysesAsync(model.UserId);
                 var dtos = allAnalysis.Select(analysis => new AnalysisDto(analysis.DocumentName, analysis.DocumentId,
                     analysis.TaskId, Enum.GetName(typeof(OperationStatus), analysis.Status),
-                    analysis.LatestChangeDate));
+                    analysis.LatestChangeDate, analysis.Result));
 
                 return new OkObjectResult(dtos);
             }
@@ -106,5 +106,5 @@ namespace QueryService.Controllers
     }
 
     public record AnalysisDto(string DocumentName, Guid DocumentId, Guid TaskId, string OperationStatus,
-        DateTime LastChangeDate);
+        DateTime LastChangeDate, string Result);
 }

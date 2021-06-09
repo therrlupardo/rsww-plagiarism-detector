@@ -9,7 +9,7 @@ namespace QueryService.Dto
         string FileName,
         string Status,
         DateTime Date,
-        double Result)
+        string Result)
     {
         public AnalysisFileResponse(AnalysisFile file) : this(
             file.DocumentId,
