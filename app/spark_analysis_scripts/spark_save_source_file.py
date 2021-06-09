@@ -14,7 +14,7 @@ file_content = sys.argv[5]
 
 spark = SparkSession.builder.master("spark://localhost:7077").appName("rsww3_save_source_file").getOrCreate()
 
-analysis_repository_path = '/group3/dataset.parquet'
+analysis_repository_path = '/group3/data.parquet'
 
 analysis_repository_df = spark.read.parquet(analysis_repository_path)
 columns = ["UserId", "FileId", "Repository", "FileName", "FileContent"]

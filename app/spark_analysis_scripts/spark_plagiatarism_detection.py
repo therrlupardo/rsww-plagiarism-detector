@@ -25,7 +25,7 @@ findspark.init()
 spark = SparkSession.builder.master("spark://localhost:7077").appName("rsww3_analysis").getOrCreate()
 
 source_id = sys.argv[1]
-analysis_repository_path = '/group3/dataset.parquet'
+analysis_repository_path = '/group3/data.parquet'
 
 # defining udfs
 precise_analysis_udf = udf(precise_analysis)
