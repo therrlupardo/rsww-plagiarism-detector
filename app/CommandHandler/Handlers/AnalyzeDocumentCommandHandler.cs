@@ -1,9 +1,11 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
+using CommandHandler.Configuration;
+using Common.Utils;
 using EventsFacade;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using OperationContracts;
 using OperationContracts.Enums;
 
@@ -12,12 +14,12 @@ namespace CommandHandler.Handlers
     public class AnalyzeDocumentCommandHandler : IHandler<AnalyzeDocumentCommand>
     {
         private readonly AnalysisFacade _analyzeEventsFacade;
-        private readonly IConfiguration _configuration;
+        private readonly Scripts _scriptsConfiguration;
 
-        public AnalyzeDocumentCommandHandler(AnalysisFacade analyzeEventsFacade, IConfiguration configuration)
+        public AnalyzeDocumentCommandHandler(AnalysisFacade analyzeEventsFacade, IOptions<Scripts> scriptsConfiguration)
         {
             _analyzeEventsFacade = analyzeEventsFacade;
-            _configuration = configuration;
+            _scriptsConfiguration = scriptsConfiguration.Value;
         }
 
         public async Task<Result> HandleAsync(AnalyzeDocumentCommand command, CancellationToken cancellationToken)
@@ -28,32 +30,17 @@ namespace CommandHandler.Handlers
                 command.FileId, command.TaskId, command.IssuedTime, command.UserId, OperationStatus.Running, null);
 
             // TODO: Perform the analysis here
-            var result = PerformAnalysis();
+            var result = PythonRunner.Run(
+                _scriptsConfiguration.PerformAnalysis,
+                ""
+                );
+            Console.WriteLine($"[{nameof(AnalyzeDocumentCommandHandler)}] analysis result {result}");
+            
             //TODO: Wrap it in a service and send the notification to the frontend
             await _analyzeEventsFacade.SaveDocumentAnalysisStatusChangedEventAsync(command.FileId, command.TaskId, command.IssuedTime,
                 command.UserId, OperationStatus.Complete, result);
 
             return Result.Success();
-        }
-
-        private string PerformAnalysis()
-        {
-            var process = new Process()
-            {
-                StartInfo = new ProcessStartInfo
-                {
-                    FileName = "python3",
-                    Arguments = _configuration.GetSection("analysisScript").Value,
-                    RedirectStandardOutput = true,
-                    UseShellExecute = false,
-                    CreateNoWindow = true,
-                }
-            };
-
-            process.Start();
-            var result = process.StandardOutput.ReadToEnd();
-            process.WaitForExit();
-            return result;
         }
     }
 }
