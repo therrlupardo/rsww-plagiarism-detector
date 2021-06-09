@@ -19,8 +19,8 @@ COPY --from=build /app/publish .
 COPY spark_analysis_scripts/ ./spark_analysis_scripts
 
 RUN apt-get update -y &&\ 
-    apt-get install -y python3
-RUN python3 -m pip install pyspark findspark
+    apt-get install -y python3 python3-pip
+RUN pip3 install pyspark findspark
 
 HEALTHCHECK --interval=10s --timeout=10s --retries=3 CMD curl --fail http://localhost:80/healthcheck || exit 1
 ENTRYPOINT ["dotnet", "CommandHandler.dll"]
