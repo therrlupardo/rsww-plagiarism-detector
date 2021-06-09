@@ -32,7 +32,7 @@ namespace CommandHandler.Handlers
             // TODO: Perform the analysis here
             var result = PythonRunner.Run(
                 _scriptsConfiguration.PerformAnalysis,
-                ""
+                command.FileId.ToString()
                 );
             Console.WriteLine($"[{nameof(AnalyzeDocumentCommandHandler)}] analysis result {result}");
             

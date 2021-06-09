@@ -28,7 +28,7 @@ namespace CommandHandler.Handlers
 
             var result = PythonRunner.Run(
                 _scriptsConfiguration.UploadAnalysis,
-                ""
+                $"{command.UserId} {command.FileId} Repository  {command.FileToVerify.FileName} {command.FileToVerify.Content}"
             );
             Console.WriteLine($"[AddDocumentToAnalysisCommandHandler] upload result {result}");
             //INFO: The file should be persisted with key of toAnalysisCommand.TaskId

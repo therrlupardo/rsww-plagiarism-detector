@@ -23,10 +23,10 @@ namespace CommandHandler.Handlers
         public async Task<Result> HandleAsync(AddDocumentToSourceStoreCommand command, CancellationToken cancellationToken)
         {
             Console.WriteLine($"[AddDocumentToSourceStoreCommandHandler] received command {command}");
-
+            
             var result = PythonRunner.Run(
                 _scriptsConfiguration.UploadSource,
-                ""
+                $"{command.UserId} {command.FileId} Repository  {command.File.FileName} {command.File.Content}"
                 );
             Console.WriteLine($"[AddDocumentToSourceStoreCommandHandler] upload result {result}");
             
