@@ -22,8 +22,8 @@ spark_context = pyspark.SparkContext.getOrCreate(
 )
 spark = SparkSession.builder.config(conf=spark_context.getConf()).getOrCreate()
 
-analysis_repository_path = "/group3/data.parquet"
-tmp_path = "/group3/tmp.parquet"
+analysis_repository_path = "hdfs://10.40.71.55:9000/group3/data.parquet"
+tmp_path = "hdfs://10.40.71.55:9000/group3/tmp.parquet"
 
 analysis_repository_df = spark.read.parquet(analysis_repository_path)
 analysis_repository_df.write.format("parquet").mode("overwrite").save(tmp_path)

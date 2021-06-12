@@ -33,7 +33,7 @@ spark_context = pyspark.SparkContext.getOrCreate(
 spark = SparkSession.builder.config(conf=spark_context.getConf()).getOrCreate()
 
 source_id = sys.argv[1]
-analysis_repository_path = "/group3/data.parquet"
+analysis_repository_path = "hdfs://10.40.71.55:9000/group3/data.parquet"
 
 # defining udfs
 precise_analysis_udf = udf(precise_analysis)
@@ -41,7 +41,7 @@ quick_analysis_udf = udf(quick_analysis)
 get_diff_udf = udf(get_diff)
 
 # extracting file content
-source_df = spark.read.parquet("/group3/sources.parquet")
+source_df = spark.read.parquet("hdfs://10.40.71.55:9000/group3/sources.parquet")
 source = source_df.filter(source_df["FileId"] == source_id).collect()[0]["FileContent"]
 
 # performing analysis
