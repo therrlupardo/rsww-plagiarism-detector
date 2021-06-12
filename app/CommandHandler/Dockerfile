@@ -19,8 +19,16 @@ COPY --from=build /app/publish .
 COPY spark_analysis_scripts/ ./spark_analysis_scripts
 
 RUN apt-get update -y &&\ 
-    apt-get install -y python3 python3-pip
+    apt-get install -y python3 python3-pip &&\
+    mkdir -p /usr/share/man/man1 &&\
+    apt-get install --no-install-recommends -y openjdk-11-jre-headless 
+
 RUN pip3 install pyspark findspark
+
+ENV SPARK_DRIVER_PORT=5001 \
+    SPARK_UI_PORT=5002 \
+    SPARK_BLOCKMANAGER_PORT=5003
+EXPOSE $SPARK_DRIVER_PORT $SPARK_UI_PORT $SPARK_BLOCKMANAGER_PORT
 
 HEALTHCHECK --interval=10s --timeout=10s --retries=3 CMD curl --fail http://localhost:80/healthcheck || exit 1
 ENTRYPOINT ["dotnet", "CommandHandler.dll"]

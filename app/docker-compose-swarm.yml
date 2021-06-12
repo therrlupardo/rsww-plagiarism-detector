@@ -84,15 +84,18 @@ services:
     networks:
       - backend
       - monitoring
-      - outside
     depends_on:
       - rabbitmq
       - eventstore
     healthcheck:
       disable: true
+    ports:
+      - 5001:5001
+      - 5002:5002
+      - 5003:5003
 
   rabbitmq:
-    image: rabbitmq:3-management
+    image: ghcr.io/therrlupardo/rsww_pr_3_rabbitmq:${TAG:-stable}
     environment:
       - RABBITMQ_DEFAULT_USER=admin
       - RABBITMQ_DEFAULT_PASS=admin
@@ -157,7 +160,4 @@ networks:
   backend:
   frontend:
   monitoring:
-  outside:
-    external:
-      name: host
     
