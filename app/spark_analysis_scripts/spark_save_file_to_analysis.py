@@ -3,6 +3,7 @@ import sys
 import pyspark
 
 from pyspark.sql import SparkSession
+from pyspark.sql.types import StructType, StructField, StringType
 
 user_id = sys.argv[1]
 file_id = sys.argv[2]
@@ -25,7 +26,15 @@ spark = SparkSession.builder.config(conf=spark_context.getConf()).getOrCreate()
 source_repository_path = "hdfs://10.40.71.55:9000/group3/sources.parquet"
 tmp_path = "hdfs://10.40.71.55:9000/group3/tmp.parquet"
 
-source_repository_df = spark.read.parquet(source_repository_path)
+schema = StructType([
+    StructField("UserId", StringType(), True),
+    StructField("FileId", StringType(), True),
+    StructField("Repository", StringType(), True),
+    StructField("FileName", StringType(), True),
+    StructField("FileContent", StringType(), True)
+  ])
+
+source_repository_df = spark.read.schema(schema).parquet(source_repository_path)
 source_repository_df.write.format("parquet").mode("overwrite").save(tmp_path)
 source_repository_df = spark.read.parquet(tmp_path)
 
