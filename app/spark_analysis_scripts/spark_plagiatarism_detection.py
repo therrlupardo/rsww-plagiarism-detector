@@ -22,6 +22,9 @@ def get_diff(file):
     return str(difflib.SequenceMatcher(None, source, file).get_matching_blocks())
 
 
+console_stdout = sys.stdout # backup current stdout
+sys.stdout = open(os.devnull, "w")
+
 spark_context = pyspark.SparkContext.getOrCreate(
     pyspark.SparkConf() \
         .setMaster("spark://10.40.71.55:7077") \
@@ -61,24 +64,14 @@ df = df.withColumn("diff_quick", quick_analysis_udf(df["FileContent"]))
 df = df.filter(df["diff_quick"] > 0.1)
 df = df.cache()
 df = df.withColumn("diff_exact", precise_analysis_udf(df["FileContent"]))
-df = df.filter(df["diff_exact"] > 0.1)
-df = df.withColumn("matching_blocks", get_diff_udf(df["FileContent"]))
-df = df.cache()
-Match = namedtuple("Match", "a b size")
+df = df.filter(df["diff_exact"] > 0.1).sort("diff_exact", ascending=False)
+result = df.limit(25).collect()
 
-print("Detected plagiarism:")
+file_names = [row["FileName"] for row in result]
+results = [row["diff_exact"] for row in result]
 
-verbose = True
-
-for row in df.collect():
-    matching_blocks = eval(row["matching_blocks"])
-    file_repo = f"{row['Repository']}/{row['FileName']}"
-    for match in matching_blocks:
-        if match.size > 10:
-            print(
-                f"Sequence in {file_repo} from byte {match.a} = sequence from {match.b} in source file, length = {match.size}")
-            if verbose:
-                print(f"\x1b[31m\"{source[match.a:match.a + match.size]}\"\x1b[0m")
+sys.stdout = console_stdout
+print(dict(zip(file_names, results)))
 
 spark.stop()
 spark_context.stop()
