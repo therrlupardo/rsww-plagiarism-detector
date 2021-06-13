@@ -27,13 +27,14 @@ namespace CommandHandler.Handlers
             );
             if (result is null or "")
             {
-                Console.WriteLine($"[AddDocumentToSourceStoreCommandHandler] Upload failed for file {command.FileId}");
-                await UpdateFileStatus(command, OperationStatus.Failed);
-                return Result.Fail($"Upload failed for file {command.FileId}");
+                Console.WriteLine($"[AddDocumentToSourceStoreCommandHandler] upload result {result}");
+                await UpdateFileStatus(command, OperationStatus.Complete);
+                return Guid.NewGuid().ToSuccessfulResult();
             }
-            Console.WriteLine($"[AddDocumentToSourceStoreCommandHandler] upload result {result}");
-            await UpdateFileStatus(command, OperationStatus.Complete);
-            return Guid.NewGuid().ToSuccessfulResult();
+
+            Console.WriteLine($"[AddDocumentToSourceStoreCommandHandler] Upload failed for file {command.FileId}");
+            await UpdateFileStatus(command, OperationStatus.Failed);
+            return Result.Fail($"Upload failed for file {command.FileId}");
         }
 
         public AddDocumentToSourceStoreCommandHandler(SourceDocumentFacade sourceDocumentFacade,

@@ -33,15 +33,14 @@ namespace CommandHandler.Handlers
             );
             if (result is null or "")
             {
-                Console.WriteLine($"[AddDocumentToAnalysisCommandHandler] upload failed {command}");
-                await UpdateFileStatus(command, OperationStatus.Failed);
-                return Result.Fail($"Upload of file {command.FileId} failed");
+                Console.WriteLine($"[AddDocumentToAnalysisCommandHandler] upload result {result}");
+                //INFO: The file should be persisted with key of toAnalysisCommand.TaskId
+                await UpdateFileStatus(command, OperationStatus.NotStarted);
+                return Result.Success();
             }
-
-            Console.WriteLine($"[AddDocumentToAnalysisCommandHandler] upload result {result}");
-            //INFO: The file should be persisted with key of toAnalysisCommand.TaskId
-            await UpdateFileStatus(command, OperationStatus.NotStarted);
-            return Result.Success();
+            Console.WriteLine($"[AddDocumentToAnalysisCommandHandler] upload failed {command}");
+            await UpdateFileStatus(command, OperationStatus.Failed);
+            return Result.Fail($"Upload of file {command.FileId} failed");
         }
 
         private async Task UpdateFileStatus(AddDocumentToAnalysisCommand command, OperationStatus status)
