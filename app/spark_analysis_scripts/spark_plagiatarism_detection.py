@@ -7,6 +7,8 @@ from pyspark.sql import SparkSession
 from pyspark.sql.functions import udf
 from collections import namedtuple
 
+from pyspark.sql.types import StructField, StructType, StringType
+
 
 def precise_analysis(file):
     return difflib.SequenceMatcher(None, source, file).ratio()
@@ -24,6 +26,7 @@ spark_context = pyspark.SparkContext.getOrCreate(
     pyspark.SparkConf() \
         .setMaster("spark://10.40.71.55:7077") \
         .setAppName("rsww3_save_source_file") \
+        .set("spark.executor.memory", "4096m") \
         .set("spark.driver.port", os.environ.get("SPARK_DRIVER_PORT")) \
         .set("spark.ui.port", os.environ.get("SPARK_UI_PORT")) \
         .set("spark.blockManager.port", os.environ.get("SPARK_BLOCKMANAGER_PORT")) \
@@ -45,7 +48,15 @@ source_df = spark.read.parquet("hdfs://10.40.71.55:9000/group3/sources.parquet")
 source = source_df.filter(source_df["FileId"] == source_id).collect()[0]["FileContent"]
 
 # performing analysis
-df = spark.read.parquet(analysis_repository_path)
+schema = StructType([
+    StructField("UserId", StringType(), True),
+    StructField("FileId", StringType(), True),
+    StructField("Repository", StringType(), True),
+    StructField("FileName", StringType(), True),
+    StructField("FileContent", StringType(), True)
+  ])
+
+df = spark.read.schema(schema).parquet(analysis_repository_path)
 df = df.withColumn("diff_quick", quick_analysis_udf(df["FileContent"]))
 df = df.filter(df["diff_quick"] > 0.1)
 df = df.cache()

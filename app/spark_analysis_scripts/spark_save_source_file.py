@@ -3,6 +3,7 @@ import sys
 import pyspark
 
 from pyspark.sql import SparkSession
+from pyspark.sql.types import StructField, StructType, StringType
 
 user_id = sys.argv[1]
 file_id = sys.argv[2]
@@ -14,6 +15,7 @@ spark_context = pyspark.SparkContext.getOrCreate(
     pyspark.SparkConf() \
         .setMaster("spark://10.40.71.55:7077") \
         .setAppName("rsww3_save_source_file") \
+        .set( "spark.executor.memory", "4096m") \
         .set("spark.driver.port", os.environ.get("SPARK_DRIVER_PORT")) \
         .set("spark.ui.port", os.environ.get("SPARK_UI_PORT")) \
         .set("spark.blockManager.port", os.environ.get("SPARK_BLOCKMANAGER_PORT")) \
@@ -25,7 +27,15 @@ spark = SparkSession.builder.config(conf=spark_context.getConf()).getOrCreate()
 analysis_repository_path = "hdfs://10.40.71.55:9000/group3/data.parquet"
 tmp_path = "hdfs://10.40.71.55:9000/group3/tmp.parquet"
 
-analysis_repository_df = spark.read.parquet(analysis_repository_path)
+schema = StructType([
+    StructField("UserId", StringType(), True),
+    StructField("FileId", StringType(), True),
+    StructField("Repository", StringType(), True),
+    StructField("FileName", StringType(), True),
+    StructField("FileContent", StringType(), True)
+])
+
+analysis_repository_df = spark.read.schema(schema).parquet(analysis_repository_path)
 analysis_repository_df.write.format("parquet").mode("overwrite").save(tmp_path)
 analysis_repository_df = spark.read.parquet(tmp_path)
 
