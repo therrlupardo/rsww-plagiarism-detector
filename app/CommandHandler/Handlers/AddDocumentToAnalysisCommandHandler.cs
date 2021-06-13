@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using CommandHandler.Configuration;
@@ -31,22 +32,23 @@ namespace CommandHandler.Handlers
                 _scriptsConfiguration.UploadAnalysis,
                 $"{command.UserId} {command.FileId} Repository  {command.FileToVerify.FileName} {command.FileToVerify.Content}"
             );
-            if (result is null or "")
+            Console.WriteLine(result);
+            if (result.TrimEnd().Split("\n").Last() == "-1")
             {
-                Console.WriteLine($"[AddDocumentToAnalysisCommandHandler] upload result {result}");
-                //INFO: The file should be persisted with key of toAnalysisCommand.TaskId
-                await UpdateFileStatus(command, OperationStatus.NotStarted);
-                return Result.Success();
+                Console.WriteLine($"[AddDocumentToAnalysisCommandHandler] upload failed {command}");
+                await UpdateFileStatus(command, OperationStatus.Failed);
+                return Result.Fail($"Upload of file {command.FileId} failed");
             }
-            Console.WriteLine($"[AddDocumentToAnalysisCommandHandler] upload failed {command}");
-            await UpdateFileStatus(command, OperationStatus.Failed);
-            return Result.Fail($"Upload of file {command.FileId} failed");
+            Console.WriteLine($"[AddDocumentToAnalysisCommandHandler] upload successful");
+            //INFO: The file should be persisted with key of toAnalysisCommand.TaskId
+            await UpdateFileStatus(command, OperationStatus.NotStarted);
+            return Result.Success();
         }
 
         private async Task UpdateFileStatus(AddDocumentToAnalysisCommand command, OperationStatus status)
         {
             await _analysisFacade.SaveDocumentAnalysisStatusChangedEventAsync(
-                command.FileId, Guid.Empty, command.IssuedOn, command.UserId, status, 0.0,
+                command.FileId, Guid.Empty, command.UserId, status, 0.0,
                 command.FileToVerify.FileName);
         }
     }

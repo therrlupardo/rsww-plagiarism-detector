@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using CommandHandler.Configuration;
@@ -25,16 +26,16 @@ namespace CommandHandler.Handlers
                 _scriptsConfiguration.UploadSource,
                 $"{command.UserId} {command.FileId} Repository  {command.File.FileName} {command.File.Content}"
             );
-            if (result is null or "")
+            Console.WriteLine(result);
+            if (result.TrimEnd().Split("\n").Last() == "-1")
             {
-                Console.WriteLine($"[AddDocumentToSourceStoreCommandHandler] upload result {result}");
-                await UpdateFileStatus(command, OperationStatus.Complete);
-                return Guid.NewGuid().ToSuccessfulResult();
-            }
-
-            Console.WriteLine($"[AddDocumentToSourceStoreCommandHandler] Upload failed for file {command.FileId}");
-            await UpdateFileStatus(command, OperationStatus.Failed);
-            return Result.Fail($"Upload failed for file {command.FileId}");
+                Console.WriteLine($"[AddDocumentToSourceStoreCommandHandler] Upload failed for file {command.FileId}");
+                await UpdateFileStatus(command, OperationStatus.Failed);
+                return Result.Fail($"Upload failed for file {command.FileId}");
+            } 
+            Console.WriteLine($"[AddDocumentToSourceStoreCommandHandler] upload successful");
+            await UpdateFileStatus(command, OperationStatus.Complete);
+            return Guid.NewGuid().ToSuccessfulResult();
         }
 
         public AddDocumentToSourceStoreCommandHandler(SourceDocumentFacade sourceDocumentFacade,

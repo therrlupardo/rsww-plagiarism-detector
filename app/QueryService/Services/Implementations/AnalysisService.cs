@@ -32,7 +32,7 @@ namespace QueryService.Services.Implementations
 
 
             return analysesAndRelatedEvents.Select(events =>
-                    events.OrderByDescending(e => e.Status).First())
+                    events.OrderByDescending(e => e.OccurenceDate).First())
                 .Select(latestEvent => new AnalysisStatusDto(latestEvent))
                 .Select(a => a with { DocumentName = GetInitialEvent(a.DocumentId)?.DocumentName ?? "No info"})
                 .ToList();
@@ -64,7 +64,7 @@ namespace QueryService.Services.Implementations
             var analysisStatusChanges = analyses.Where(ev => selector(ev));
 
             return analysisStatusChanges
-                .OrderByDescending(s => s.Status)
+                .OrderByDescending(s => s.OccurenceDate)
                 .Select(a => a with { DocumentName = GetInitialEvent(a.DocumentId)?.DocumentName ?? "No info"})
                 .First()
                 ;

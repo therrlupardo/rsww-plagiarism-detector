@@ -11,21 +11,22 @@ def get_spark_session():
         pyspark.SparkConf() \
             .setMaster("spark://10.40.71.55:7077") \
             .setAppName("rsww3_analysis") \
-            .set("spark.executor.memory", "4096m") \
+            .set("spark.executor.memory", "8192m") \
             .set("spark.driver.port", os.environ.get("SPARK_DRIVER_PORT")) \
             .set("spark.ui.port", os.environ.get("SPARK_UI_PORT")) \
             .set("spark.blockManager.port", os.environ.get("SPARK_BLOCKMANAGER_PORT")) \
             .set("spark.driver.host", "10.40.71.55") \
             .set("spark.driver.bindAddress", "0.0.0.0")
     )
+    spark_context.setLogLevel("ERROR")
     spark = SparkSession.builder.config(conf=spark_context.getConf()).getOrCreate()
     
     return spark
 
-
+print("Started")
 try:
     spark = get_spark_session()
-except:
+except Exception as e:
     print("-1")
     sys.exit()
 
@@ -57,8 +58,9 @@ try:
     file_repository_df = source_repository_df.union(source_file_df)
     file_repository_df.write.format("parquet").mode("overwrite").save(source_repository_path)
     print("1")
-except:
+except Exception as e:
     print("-1")
+    print(e)
 finally:
     spark.stop()
     spark.sparkContext.stop()

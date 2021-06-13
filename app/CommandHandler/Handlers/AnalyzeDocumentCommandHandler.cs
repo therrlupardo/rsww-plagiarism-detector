@@ -32,7 +32,7 @@ namespace CommandHandler.Handlers
             {
                 var result = getAnalysisResult(command);
                 Console.WriteLine($"[{nameof(AnalyzeDocumentCommandHandler)}] analysis result {result}");
-            
+
                 //TODO: Wrap it in a service and send the notification to the frontend
                 await UpdateAnalysisStatus(command, OperationStatus.Complete, result);
 
@@ -40,16 +40,17 @@ namespace CommandHandler.Handlers
             }
             catch (NotSupportedException e)
             {
-                Console.WriteLine($"[{nameof(AnalyzeDocumentCommandHandler)}] Analysis for task {command.TaskId} failed.");
+                Console.WriteLine(
+                    $"[{nameof(AnalyzeDocumentCommandHandler)}] Analysis for task {command.TaskId} failed.");
                 await UpdateAnalysisStatus(command, OperationStatus.Failed);
                 return Result.Fail($"Analysis for task {command.TaskId} failed.");
             }
         }
 
-        private async Task UpdateAnalysisStatus(AnalyzeDocumentCommand command, OperationStatus status,  double result = 0.0)
+        private async Task UpdateAnalysisStatus(AnalyzeDocumentCommand command, OperationStatus status,
+            double result = 0.0)
         {
             await _analyzeEventsFacade.SaveDocumentAnalysisStatusChangedEventAsync(command.FileId, command.TaskId,
-                command.IssuedTime,
                 command.UserId, status, result);
         }
 
@@ -60,14 +61,11 @@ namespace CommandHandler.Handlers
                 command.FileId.ToString()
             );
             Console.WriteLine(scriptResult);
-
-            var splitted = scriptResult.Split("\n");
-            if (splitted.Last().StartsWith("RESULT = "))
+            var last = scriptResult.TrimEnd().Split("\n").Last();
+            if (double.TryParse(last, out var result))
             {
-                var last = splitted.Last();
-                return double.Parse(last.Replace("RESULT = ", "").Replace("%", ""));
+                return result;
             }
-
             throw new NotSupportedException(scriptResult);
         }
     }

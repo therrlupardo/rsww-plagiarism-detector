@@ -24,7 +24,7 @@ namespace QueryService.Services.Implementations
 
             return documents
                 .GroupBy(d => d.FileId)
-                .Select(docs => docs.OrderByDescending(d => d.Status).First())
+                .Select(docs => docs.OrderByDescending(d => d.OccurenceDate).First())
                 .Select(d =>
                 new SourceFile(d.FileId, d.UserId, d.FileName, d.Status, d.OccurenceDate)).ToList();
         }
