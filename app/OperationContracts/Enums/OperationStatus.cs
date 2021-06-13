@@ -9,6 +9,6 @@ namespace OperationContracts.Enums
         [Description("WAITING")] Waiting,
         [Description("RUNNING")] Running,
         [Description("COMPLETE")] Complete,
-        [Description("ERROR")] Failed
+        [Description("FAILED")] Failed
     }
 }
