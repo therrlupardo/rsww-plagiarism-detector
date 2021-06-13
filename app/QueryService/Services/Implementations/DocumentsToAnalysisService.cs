@@ -23,11 +23,14 @@ namespace QueryService.Services.Implementations
             var allAnalysisEvents = await _facade.GetAllUserDocumentAnalysesAsync(userId);
 
             var documents = allAnalysisEvents
-                .Where(e => e.Status == OperationStatus.NotStarted);
+                .Where(e => e.Status is OperationStatus.NotStarted or OperationStatus.NotInitialized or OperationStatus.Failed)
+                .GroupBy(e => e.DocumentId)
+                .Select(group => group.OrderByDescending(e => e.Status).First());
 
             return documents.Select(e => new DocumentToAnalysisResponse(e.DocumentId,
                 e.DocumentName,
-                e.OccurenceDate));
+                e.OccurenceDate,
+                e.Status));
         }
 
         public async Task<IEnumerable<AnalysisStatusDto>> GetDocumentsWithLatestAnalysisStatuses(

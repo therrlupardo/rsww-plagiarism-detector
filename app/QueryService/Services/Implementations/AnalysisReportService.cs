@@ -56,7 +56,7 @@ namespace QueryService.Services.Implementations
             document.Add(table);
         }
 
-        private void AddHighlightedResultRow(PdfPTable table, string result)
+        private void AddHighlightedResultRow(PdfPTable table, double result)
         {
             table.AddCell(new PdfPCell(new Phrase("Analysis result"))
             {

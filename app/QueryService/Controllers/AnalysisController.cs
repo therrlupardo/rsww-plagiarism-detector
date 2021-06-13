@@ -106,5 +106,5 @@ namespace QueryService.Controllers
     }
 
     public record AnalysisDto(string DocumentName, Guid DocumentId, Guid TaskId, string OperationStatus,
-        DateTime LastChangeDate, string Result);
+        DateTime LastChangeDate, double Result);
 }

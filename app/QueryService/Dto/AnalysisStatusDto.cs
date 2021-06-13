@@ -2,7 +2,7 @@
 using EventsFacade.Events;
 using OperationContracts.Enums;
 
-namespace QueryService.Services.Implementations
+namespace QueryService.Dto
 {
     public record AnalysisStatusDto
     {
@@ -21,6 +21,6 @@ namespace QueryService.Services.Implementations
         public Guid TaskId { get; init; }
         public OperationStatus Status { get; init; }
         public DateTime LatestChangeDate { get; init; }
-        public string Result { get; init; }
+        public double Result { get; init; }
     }
 }

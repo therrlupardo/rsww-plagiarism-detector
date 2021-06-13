@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using EventsFacade;
 using EventsFacade.Events;
 using OperationContracts.Enums;
+using QueryService.Dto;
 
 namespace QueryService.Services.Implementations
 {
@@ -26,7 +27,7 @@ namespace QueryService.Services.Implementations
                 allAnalysesEvents.FirstOrDefault(e => e.Status == OperationStatus.NotStarted && e.DocumentId == docId);
 
             var analysesAndRelatedEvents = allAnalysesEvents
-                .Where(a => a.Status != OperationStatus.NotStarted)
+                .Where(a => a.Status != OperationStatus.NotStarted && !a.TaskId.Equals(Guid.Empty))
                 .GroupBy(a => a.TaskId);
 
 

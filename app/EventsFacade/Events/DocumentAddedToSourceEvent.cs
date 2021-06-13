@@ -1,4 +1,5 @@
 ﻿using System;
+using OperationContracts.Enums;
 
 namespace EventsFacade.Events
 {
@@ -8,5 +9,7 @@ namespace EventsFacade.Events
 
         public string FileName { get; init; }
         public Guid UserId { get; init; }
+        
+        public OperationStatus Status { get; init; }
     }
 }

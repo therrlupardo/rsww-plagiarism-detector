@@ -25,17 +25,30 @@ namespace CommandHandler.Handlers
         public async Task<Result> HandleAsync(AddDocumentToAnalysisCommand command, CancellationToken cancellationToken)
         {
             Console.WriteLine($"[AddDocumentToAnalysisCommandHandler] received command {command}");
-
+            await UpdateFileStatus(command, OperationStatus.NotInitialized);
+            
             var result = PythonRunner.Run(
                 _scriptsConfiguration.UploadAnalysis,
                 $"{command.UserId} {command.FileId} Repository  {command.FileToVerify.FileName} {command.FileToVerify.Content}"
             );
+            if (result is null or "")
+            {
+                Console.WriteLine($"[AddDocumentToAnalysisCommandHandler] upload failed {command}");
+                await UpdateFileStatus(command, OperationStatus.Failed);
+                return Result.Fail($"Upload of file {command.FileId} failed");
+            }
+
             Console.WriteLine($"[AddDocumentToAnalysisCommandHandler] upload result {result}");
             //INFO: The file should be persisted with key of toAnalysisCommand.TaskId
-            await _analysisFacade.SaveDocumentAnalysisStatusChangedEventAsync(
-                command.FileId, Guid.Empty, command.IssuedOn, command.UserId, OperationStatus.NotStarted, null, command.FileToVerify.FileName);
-
+            await UpdateFileStatus(command, OperationStatus.NotStarted);
             return Result.Success();
+        }
+
+        private async Task UpdateFileStatus(AddDocumentToAnalysisCommand command, OperationStatus status)
+        {
+            await _analysisFacade.SaveDocumentAnalysisStatusChangedEventAsync(
+                command.FileId, Guid.Empty, command.IssuedOn, command.UserId, status, 0.0,
+                command.FileToVerify.FileName);
         }
     }
 }

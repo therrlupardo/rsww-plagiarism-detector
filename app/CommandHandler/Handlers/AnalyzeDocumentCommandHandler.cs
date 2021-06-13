@@ -26,21 +26,31 @@ namespace CommandHandler.Handlers
         {
             Console.WriteLine($"{nameof(AnalyzeDocumentCommandHandler)} received command {command} ");
 
-            await _analyzeEventsFacade.SaveDocumentAnalysisStatusChangedEventAsync(
-                command.FileId, command.TaskId, command.IssuedTime, command.UserId, OperationStatus.Running, null);
+            await UpdateAnalysisStatus(command, OperationStatus.Running);
 
-            // TODO: Perform the analysis here
-            var result = PythonRunner.Run(
+            var result = double.Parse(PythonRunner.Run(
                 _scriptsConfiguration.PerformAnalysis,
                 command.FileId.ToString()
-                );
+                ));
+            if (result < 0)
+            {
+                Console.WriteLine($"[{nameof(AnalyzeDocumentCommandHandler)}] Analysis for task {command.TaskId} failed with code {result}");
+                await UpdateAnalysisStatus(command, OperationStatus.Failed);
+                return Result.Fail($"Analysis for task {command.TaskId} failed with code {result}");
+            }
             Console.WriteLine($"[{nameof(AnalyzeDocumentCommandHandler)}] analysis result {result}");
             
             //TODO: Wrap it in a service and send the notification to the frontend
-            await _analyzeEventsFacade.SaveDocumentAnalysisStatusChangedEventAsync(command.FileId, command.TaskId, command.IssuedTime,
-                command.UserId, OperationStatus.Complete, result);
+            await UpdateAnalysisStatus(command, OperationStatus.Complete, result);
 
             return Result.Success();
+        }
+
+        private async Task UpdateAnalysisStatus(AnalyzeDocumentCommand command, OperationStatus status,  double result = 0.0)
+        {
+            await _analyzeEventsFacade.SaveDocumentAnalysisStatusChangedEventAsync(command.FileId, command.TaskId,
+                command.IssuedTime,
+                command.UserId, status, result);
         }
     }
 }

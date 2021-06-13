@@ -9,7 +9,7 @@ namespace OperationContracts
         OperationStatus Status,
         string FileName,
         DateTime Date,
-        string Result = "0.0"
+        double Result = 0.0
     )
     {
     }

@@ -4,9 +4,11 @@ namespace OperationContracts.Enums
 {
     public enum OperationStatus
     {
+        [Description("NOT INITIALIZED")] NotInitialized,
         [Description("NOT STARTED")] NotStarted,
         [Description("WAITING")] Waiting,
         [Description("RUNNING")] Running,
-        [Description("COMPLETE")] Complete
+        [Description("COMPLETE")] Complete,
+        [Description("ERROR")] Failed
     }
 }
