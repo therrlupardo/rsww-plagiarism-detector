@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using EventsFacade;
 using OperationContracts;
-using OperationContracts.Enums;
 using QueryService.Mock;
 
 namespace QueryService.Services.Implementations
@@ -23,8 +22,11 @@ namespace QueryService.Services.Implementations
         {
             var documents = await _sourceDocumentFacade.GetDocumentAddedToSourceEvents();
 
-            return documents.Select(d =>
-                new SourceFile(d.FileId, d.UserId, d.FileName, OperationStatus.Complete, d.OccurenceDate)).ToList();
+            return documents
+                .GroupBy(d => d.FileId)
+                .Select(docs => docs.OrderByDescending(d => d.OccurenceDate).First())
+                .Select(d =>
+                new SourceFile(d.FileId, d.UserId, d.FileName, d.Status, d.OccurenceDate)).ToList();
         }
 
         public SourceFile GetById(Guid id)

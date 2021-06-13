@@ -1,6 +1,6 @@
 <app-topbar title="New analysis"></app-topbar>
 <div class="d-flex flex-column">
-  <mat-spinner *ngIf="isLoading" 
+  <mat-spinner *ngIf="isLoading"
   class="loading-spinner row align-self-center w-40 mt-2"></mat-spinner>
   <ng-container *ngIf="!isLoading">
     <div class="row align-self-center w-40 mt-2">
@@ -11,7 +11,7 @@
       </div>
     </div>
     <div class="row col-12 align-self-center w-50 mt-4">
-      <button [ngClass]="{'btn-success': !startButtonDisabled, 'btn-secondary': startButtonDisabled}" 
+      <button [ngClass]="{'btn-success': !startButtonDisabled, 'btn-secondary': startButtonDisabled}"
       class="btn start-button" [disabled]="startButtonDisabled"
       (click)="startAnalysis()">Start analysis</button>
     </div>
@@ -20,6 +20,7 @@
           <thead class="thead-dark">
             <tr>
               <th scope="col">File name</th>
+              <th scope="col">Status</th>
             </tr>
           </thead>
           <tbody>
@@ -28,9 +29,10 @@
             (click)="toggleRow(item)"
             *ngFor="let item of uploadedFiles">
               <td>{{item.name}}</td>
+              <td>{{item.status}}</td>
             </tr>
           </tbody>
         </table>
     </div>
-  </ng-container>  
+  </ng-container>
 </div>

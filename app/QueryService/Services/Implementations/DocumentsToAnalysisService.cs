@@ -22,12 +22,19 @@ namespace QueryService.Services.Implementations
         {
             var allAnalysisEvents = await _facade.GetAllUserDocumentAnalysesAsync(userId);
 
+            DocumentAnalysisStatusChangedEvent GetInitialEvent(Guid docId) =>
+                allAnalysisEvents.First(e => e.Status == OperationStatus.NotInitialized && e.DocumentId == docId);
+            
             var documents = allAnalysisEvents
-                .Where(e => e.Status == OperationStatus.NotStarted);
+                .Where(e => e.Status is OperationStatus.NotStarted or OperationStatus.NotInitialized or OperationStatus.Failed)
+                .GroupBy(e => e.DocumentId)
+                .Select(group => group.OrderByDescending(e => e.OccurenceDate).First())
+                .Select(e => e with { DocumentName = GetInitialEvent(e.DocumentId).DocumentName });;
 
             return documents.Select(e => new DocumentToAnalysisResponse(e.DocumentId,
                 e.DocumentName,
-                e.OccurenceDate));
+                e.OccurenceDate,
+                Enum.GetName(typeof(OperationStatus), e.Status)));
         }
 
         public async Task<IEnumerable<AnalysisStatusDto>> GetDocumentsWithLatestAnalysisStatuses(
@@ -36,7 +43,7 @@ namespace QueryService.Services.Implementations
             var allAnalysisEvents = await _facade.GetAllUserDocumentAnalysesAsync(userId);
 
             DocumentAnalysisStatusChangedEvent GetInitialEvent(Guid docId) =>
-                allAnalysisEvents.First(e => e.Status == OperationStatus.NotStarted && e.DocumentId == docId);
+                allAnalysisEvents.First(e => e.Status == OperationStatus.NotInitialized && e.DocumentId == docId);
 
             var filesWithCorrespondingAnalysesEvents = allAnalysisEvents
                 .GroupBy(e => e.DocumentId)

@@ -5,13 +5,15 @@ import { Observable } from 'rxjs';
 export interface AnalysisObject {
   documentId: string;
   lastChangeDate: Date;
-  documentName:string;
+  documentName: string;
   operationStatus: string;
+  result: any;
 }
 
 export interface AnalysisFile {
   id: string;
   name: string;
+  status: any;
 }
 
 @Injectable({

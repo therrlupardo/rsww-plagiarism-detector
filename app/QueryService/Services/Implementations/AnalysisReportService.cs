@@ -71,12 +71,12 @@ namespace QueryService.Services.Implementations
                 MinimumHeight = 25,
                 VerticalAlignment = Element.ALIGN_CENTER,
                 PaddingLeft = 10,
-                BackgroundColor = result switch
-                {
-                    <= 30 => BaseColor.GREEN,
-                    <= 50 => BaseColor.YELLOW,
-                    _ => BaseColor.RED
-                }
+                // BackgroundColor = result switch
+                // {
+                //     <= 30 => BaseColor.GREEN,
+                //     <= 50 => BaseColor.YELLOW,
+                //     _ => BaseColor.RED
+                // }
             });
         }
 

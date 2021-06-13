@@ -2,7 +2,7 @@
 using EventsFacade.Events;
 using OperationContracts.Enums;
 
-namespace QueryService.Services.Implementations
+namespace QueryService.Dto
 {
     public record AnalysisStatusDto
     {
@@ -13,6 +13,7 @@ namespace QueryService.Services.Implementations
             DocumentName = @event.DocumentName;
             LatestChangeDate = @event.OccurenceDate;
             Status = @event.Status;
+            Result = @event.Result;
         }
 
         public string DocumentName { get; init; }
@@ -20,5 +21,6 @@ namespace QueryService.Services.Implementations
         public Guid TaskId { get; init; }
         public OperationStatus Status { get; init; }
         public DateTime LatestChangeDate { get; init; }
+        public double Result { get; init; }
     }
 }

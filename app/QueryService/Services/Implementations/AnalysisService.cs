@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using EventsFacade;
 using EventsFacade.Events;
 using OperationContracts.Enums;
+using QueryService.Dto;
 
 namespace QueryService.Services.Implementations
 {
@@ -26,7 +27,7 @@ namespace QueryService.Services.Implementations
                 allAnalysesEvents.FirstOrDefault(e => e.Status == OperationStatus.NotStarted && e.DocumentId == docId);
 
             var analysesAndRelatedEvents = allAnalysesEvents
-                .Where(a => a.Status != OperationStatus.NotStarted)
+                .Where(a => a.Status != OperationStatus.NotStarted && !a.TaskId.Equals(Guid.Empty))
                 .GroupBy(a => a.TaskId);
 
 
@@ -58,11 +59,15 @@ namespace QueryService.Services.Implementations
             Predicate<DocumentAnalysisStatusChangedEvent> selector, Guid userId)
         {
             var analyses = await _facade.GetAllUserDocumentAnalysesAsync(userId);
+            DocumentAnalysisStatusChangedEvent GetInitialEvent(Guid docId) =>
+                analyses.FirstOrDefault(e => e.Status == OperationStatus.NotStarted && e.DocumentId == docId);
             var analysisStatusChanges = analyses.Where(ev => selector(ev));
 
             return analysisStatusChanges
                 .OrderByDescending(s => s.OccurenceDate)
-                .First();
+                .Select(a => a with { DocumentName = GetInitialEvent(a.DocumentId)?.DocumentName ?? "No info"})
+                .First()
+                ;
         }
     }
 }
