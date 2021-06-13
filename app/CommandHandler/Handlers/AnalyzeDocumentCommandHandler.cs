@@ -40,7 +40,7 @@ namespace CommandHandler.Handlers
             }
             catch (NotSupportedException e)
             {
-                Console.WriteLine($"[{nameof(AnalyzeDocumentCommandHandler)}] Analysis for task {command.TaskId} failed.\n{e.Message}");
+                Console.WriteLine($"[{nameof(AnalyzeDocumentCommandHandler)}] Analysis for task {command.TaskId} failed.");
                 await UpdateAnalysisStatus(command, OperationStatus.Failed);
                 return Result.Fail($"Analysis for task {command.TaskId} failed.");
             }
@@ -59,6 +59,7 @@ namespace CommandHandler.Handlers
                 _scriptsConfiguration.PerformAnalysis,
                 command.FileId.ToString()
             );
+            Console.WriteLine(scriptResult);
 
             var splitted = scriptResult.Split("\n");
             if (splitted.Last().StartsWith("RESULT = "))
