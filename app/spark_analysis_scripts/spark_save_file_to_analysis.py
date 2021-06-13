@@ -14,7 +14,7 @@ file_content = sys.argv[5]
 spark_context = pyspark.SparkContext.getOrCreate(
     pyspark.SparkConf() \
         .setMaster("spark://10.40.71.55:7077") \
-        .setAppName("rsww3_save_source_file") \
+        .setAppName("rsww3_save_analysis_file") \
         .set("spark.executor.memory", "4096m") \
         .set("spark.driver.port", os.environ.get("SPARK_DRIVER_PORT")) \
         .set("spark.ui.port", os.environ.get("SPARK_UI_PORT")) \
